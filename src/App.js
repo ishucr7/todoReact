@@ -14,12 +14,12 @@ class App extends Component {
         <div>
           <nav className="navbar navbar-expand navbar-dark bg-dark">
             <a href="/tutorials" className="navbar-brand">
-              bezKoder
+              ToDoList
             </a>
             <div className="navbar-nav mr-auto">
               <li className="nav-item">
                 <Link to={"/tutorials"} className="nav-link">
-                  Tutorials
+                  Tasks
                 </Link>
               </li>
               <li className="nav-item">
