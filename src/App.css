@@ -1,6 +1,6 @@
 .list {
   text-align: left;
-  max-width: 750px;
+  /* max-width: 1000px; */
   margin: auto;
 }
 
@@ -13,3 +13,31 @@
   max-width: 300px;
   margin: auto;
 }
+
+.task-title {
+  overflow: hidden;
+  margin-right: 10px;
+}
+
+.pull-right {
+  float: right !important;
+}
+.badge
+{
+  display: inline-block;
+  min-width: 10px;
+  padding: 3px 7px;
+  font-size: 12px;
+  font-weight: bold;
+  line-height: 1;
+  color: #fff;
+  text-align: center;
+  white-space: nowrap;
+  vertical-align: baseline;
+  background-color: #777;
+  border-radius: 10px;
+}
+.bg-theme {
+  background-color: #68dff0;
+}
+

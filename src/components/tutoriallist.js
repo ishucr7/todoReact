@@ -33,16 +33,43 @@ export default class TutorialsList extends Component {
   }
 
   retrieveTutorials() {
-    TutorialDataService.getAll()
-      .then(response => {
-        this.setState({
-          tutorials: response.data
-        });
-        console.log(response.data);
-      })
-      .catch(e => {
-        console.log(e);
-      });
+    this.setState({
+        tutorials: [
+            {
+                'title': "Welcome ",
+                'description': "One",
+                'label': "Personal",
+                'status': 'New',
+                'priority': 'High'
+            },
+            {
+                'title': "Good night",
+                'description': "Two",
+                'label': "Work",
+                'status': 'In progress',
+                'priority': 'High'
+            },
+            {
+                'title': "Fuck off",
+                'description': "Three",
+                'label': "Personal",
+                'status': 'New',
+                'priority': 'Medium'
+            },
+        ]
+    // tutorials: response.data
+    });
+
+    // TutorialDataService.getAll()
+    //   .then(response => {
+    //     this.setState({
+    //       tutorials: response.data
+    //     });
+    //     console.log(response.data);
+    //   })
+    //   .catch(e => {
+    //     console.log(e);
+    //   });
   }
 
   refreshList() {
@@ -89,7 +116,7 @@ export default class TutorialsList extends Component {
 
     return (
       <div className="list row">
-        <div className="col-md-8">
+        <div className="col-md-10">
           <div className="input-group mb-3">
             <input
               type="text"
@@ -109,8 +136,9 @@ export default class TutorialsList extends Component {
             </div>
           </div>
         </div>
-        <div className="col-md-6">
-          <h4>Tutorials List</h4>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
+        <div className="col-md-10">
+          <h4>ToDo List</h4>
 
           <ul className="list-group">
             {tutorials &&
@@ -120,10 +148,36 @@ export default class TutorialsList extends Component {
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
-                  onClick={() => this.setActiveTutorial(tutorial, index)}
-                  key={index}
+                //   onClick={() => this.setActiveTutorial(tutorial, index)}
+                //   key={index}
                 >
-                  {tutorial.title}
+                <div class="task-title row">
+                    <div class="col-md-2">
+                        <span class="task-title-sp">{tutorial.title}   </span>
+                    </div>
+                    <div class="col-md-1">
+                        <span class="badge bg-theme">{tutorial.status}    </span>
+                    </div>
+                    <div class="col-md-1">
+                        <span class="badge bg-theme">{tutorial.priority}    </span>
+                    </div>
+                    <div class="col-md-1">
+                        <span class="badge bg-theme">{tutorial.label}    </span>
+                    </div>
+                    <div class="col-md-6 pull-right row">
+                        <div class="col-md-6">
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+                        </div>
+                        <div class="col-md-2">
+                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                        </div>
+                    </div>
+                </div>
                 </li>
               ))}
           </ul>
@@ -135,7 +189,7 @@ export default class TutorialsList extends Component {
             Remove All
           </button>
         </div>
-        <div className="col-md-6">
+        {/* <div className="col-md-6">
           {currentTutorial ? (
             <div>
               <h4>Tutorial</h4>
@@ -171,7 +225,7 @@ export default class TutorialsList extends Component {
               <p>Please click on a Tutorial...</p>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     );
   }
