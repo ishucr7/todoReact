@@ -171,7 +171,7 @@ export default class TutorialsList extends Component {
             Remove All
           </button>
         </div>
-        { /*<div className="col-md-6">
+        { <div className="col-md-6">
           {currentTutorial ? (
             <div>
               <h4>Tutorial</h4>
@@ -231,7 +231,7 @@ export default class TutorialsList extends Component {
               <p>Please click on a Task...</p>
             </div>
           )}
-        </div>*/ }
+        </div> }
       </div>
     );
   }
