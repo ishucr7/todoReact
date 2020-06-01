@@ -37,24 +37,27 @@ export default class TutorialsList extends Component {
         tutorials: [
             {
                 'title': "Welcome ",
-                'description': "One",
+                'duedate' : "2001-01-01",
+                'priority': 'High',
                 'label': "Personal",
-                'status': 'New',
-                'priority': 'High'
+                'status': 'New',                
+                'description': "One"
             },
             {
                 'title': "Good night",
-                'description': "Two",
+                'duedate' : "2001-01-01",
+                'priority': 'High',
                 'label': "Work",
                 'status': 'In progress',
-                'priority': 'High'
+                'description': "Two"
             },
             {
                 'title': "Fuck off",
-                'description': "Three",
+                'duedate' : "2001-01-01",
+                'priority': 'Medium',
                 'label': "Personal",
                 'status': 'New',
-                'priority': 'Medium'
+                'description': "Three"
             },
         ]
     // tutorials: response.data
@@ -155,8 +158,8 @@ export default class TutorialsList extends Component {
                     <div class="col-md-2">
                         <span class="task-title-sp">{tutorial.title}   </span>
                     </div>
-                    <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.status}    </span>
+                    <div class="col-md-1.5">
+                        <span class="badge bg-theme">{tutorial.duedate}    </span>
                     </div>
                     <div class="col-md-1">
                         <span class="badge bg-theme">{tutorial.priority}    </span>
@@ -164,6 +167,9 @@ export default class TutorialsList extends Component {
                     <div class="col-md-1">
                         <span class="badge bg-theme">{tutorial.label}    </span>
                     </div>
+                    <div class="col-md-1">
+                        <span class="badge bg-theme">{tutorial.status}    </span>
+                    </div>              
                     <div class="col-md-6 pull-right row">
                         <div class="col-md-6">
                         </div>
@@ -201,6 +207,30 @@ export default class TutorialsList extends Component {
               </div>
               <div>
                 <label>
+                  <strong>Due Date:</strong>
+                </label>{" "}
+                {currentTutorial.duedate}
+              </div>
+              <div>
+                <label>
+                  <strong>Priority:</strong>
+                </label>{" "}
+                {currentTutorial.priority}
+              </div>
+              <div>
+                <label>
+                  <strong>Label:</strong>
+                </label>{" "}
+                {currentTutorial.label}
+              </div>
+              <div>
+                <label>
+                  <strong>Status:</strong>
+                </label>{" "}
+                {currentTutorial.status}
+              </div>
+              <div>
+                <label>
                   <strong>Description:</strong>
                 </label>{" "}
                 {currentTutorial.description}
@@ -222,7 +252,7 @@ export default class TutorialsList extends Component {
           ) : (
             <div>
               <br />
-              <p>Please click on a Tutorial...</p>
+              <p>Please click on a Task...</p>
             </div>
           )}
         </div> */}

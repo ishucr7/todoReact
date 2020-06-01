@@ -13,10 +13,14 @@ export default class Tutorial extends Component {
 
     this.state = {
       currentTutorial: {
-        id: 2100,
-        title: "XYZ",
+        id: null,
+        title: "",
+        duedate: "",
+        priority: "",
+        label: "",
+        status: "", 
         description: "",
-        published: true
+        published: false
       },
       message: ""
     };
@@ -34,6 +38,58 @@ export default class Tutorial extends Component {
         currentTutorial: {
           ...prevState.currentTutorial,
           title: title
+        }
+      };
+    });
+  }
+
+  onChangeDuedate(e) {
+    const duedate = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          duedate: duedate
+        }
+      };
+    });
+  }
+
+  onChangePriority(e) {
+    const priority = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          priority: priority
+        }
+      };
+    });
+  }
+
+  onChangeLabel(e) {
+    const label = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          label: label
+        }
+      };
+    });
+  }
+
+  onChangeStatus(e) {
+    const status = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          status: status
         }
       };
     });
@@ -67,6 +123,10 @@ export default class Tutorial extends Component {
     var data = {
       id: this.state.currentTutorial.id,
       title: this.state.currentTutorial.title,
+      duedate: this.state.currentTutorial.duedate,
+      priority: this.state.currentTutorial.priority,
+      label: this.state.currentTutorial.label,
+      status: this.state.currentTutorial.status, 
       description: this.state.currentTutorial.description,
       published: status
     };
@@ -133,6 +193,46 @@ export default class Tutorial extends Component {
                 />
               </div>
               <div className="form-group">
+                <label htmlFor="duedate">Due Date</label>
+                <input
+                  type="date"
+                  className="form-control"
+                  id="duedate"
+                  value={currentTutorial.duedate}
+                  onChange={this.onChangeDuedate}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="priority">Priority</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="priority"
+                  value={currentTutorial.priority}
+                  onChange={this.onChangePriority}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="label">Label</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="label"
+                  value={currentTutorial.label}
+                  onChange={this.onChangeLabel}
+                />
+              </div>
+              <div className="form-group">
+                <label htmlFor="status">Status</label>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="status"
+                  value={currentTutorial.status}
+                  onChange={this.onChangeStatus}
+                />
+              </div>
+              <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <input
                   type="text"
@@ -186,7 +286,7 @@ export default class Tutorial extends Component {
         ) : (
           <div>
             <br />
-            <p>Please click on a Tutorial...</p>
+            <p>Please click on a Task...</p>
           </div>
         )}
       </div>
