@@ -194,8 +194,7 @@ export default class AddTutorial extends Component {
 
             <div className="form-group">
               <label htmlFor="description">Description</label>
-              <input
-                type="text"
+              < textarea
                 className="form-control"
                 id="description"
                 required
