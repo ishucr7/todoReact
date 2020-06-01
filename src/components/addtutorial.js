@@ -144,42 +144,52 @@ export default class AddTutorial extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="priority">Priority</label>
-              <input
-                type="text"
+              <label htmlFor="priority">Priority
+              <select
                 className="form-control"
                 id="priority"
                 required
                 value={this.state.priority}
                 onChange={this.onChangePriority}
-                name="priority"
-              />
+                name="priority">
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+              </select>
+              </label>
             </div>
 
             <div className="form-group">
-              <label htmlFor="label">Label</label>
-              <input
-                type="text"
+              <label htmlFor="label">Label
+              <select
                 className="form-control"
                 id="label"
                 required
                 value={this.state.label}
                 onChange={this.onChangeLabel}
-                name="label"
-              />
+                name="label">
+                <option value="personal">Personal</option>
+                <option value="work">Work</option>
+                <option value="shopping">Shopping</option>
+                <option value="others">Others</option>
+              </select>
+              </label>
             </div>
 
             <div className="form-group">
-              <label htmlFor="status">Status</label>
-              <input
-                type="text"
+              <label htmlFor="status">Status
+              <select
                 className="form-control"
                 id="status"
                 required
                 value={this.state.status}
                 onChange={this.onChangeStatus}
-                name="status"
-              />
+                name="status">
+                <option value="new">New</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+              </label>
             </div>
 
             <div className="form-group">
