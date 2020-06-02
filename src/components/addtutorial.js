@@ -109,7 +109,7 @@ export default class AddTutorial extends Component {
       label_id: this.state.label,
       description: this.state.description
     };
-
+    
     TutorialDataService.create(data)
       .then(response => {
         this.setState({
