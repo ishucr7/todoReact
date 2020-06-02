@@ -68,7 +68,7 @@ export default class AddTutorial extends Component {
       status: this.state.status, 
       description: this.state.description
     };
-
+    
     TutorialDataService.create(data)
       .then(response => {
         this.setState({
