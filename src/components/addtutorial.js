@@ -1,11 +1,22 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
+import SeederDataService from "../services/seeder.service";
 
 export default class AddTutorial extends Component {
   constructor(props) {
+
     super(props);
+
+    this.loadSeeder = this.loadSeeder.bind(this);
     this.onChangeTitle = this.onChangeTitle.bind(this);
+
     this.onChangeDescription = this.onChangeDescription.bind(this);
+    this.onChangeDuedate = this.onChangeDuedate.bind(this);
+
+    this.onChangeLabel = this.onChangeLabel.bind(this);
+    this.onChangePriority = this.onChangePriority.bind(this);
+    this.onChangeStatus = this.onChangeStatus.bind(this);
+
     this.saveTutorial = this.saveTutorial.bind(this);
     this.newTutorial = this.newTutorial.bind(this);
 
@@ -17,12 +28,42 @@ export default class AddTutorial extends Component {
       label: "",
       status: "", 
       description: "",
-      published: false,
+      submitted: false,
+      statuses: [],
+      labels: [],
+      priorities: [],
 
-      submitted: false
     };
   }
 
+
+  loadSeeder(){
+    console.log("Inside load Seeder");
+    SeederDataService.getAllLabels().then(response => {
+      console.log("Labels", response);
+      this.setState({
+        labels:response.data,
+        label: response.data[0]['id'],
+      });
+    })
+
+    SeederDataService.getAllStatuses().then(response => {
+      console.log("Statuses ", response);
+      this.setState({
+        statuses:response.data,
+        status: response.data[0]['id'],
+      });
+    })
+
+    SeederDataService.getAllPriorities().then(response => {
+      console.log("Priorities" ,response);
+      this.setState({
+        priorities:response.data,
+        priority: response.data[0]['id'],
+      });
+    })
+
+  }
   onChangeTitle(e) {
     this.setState({
       title: e.target.value
@@ -62,10 +103,10 @@ export default class AddTutorial extends Component {
   saveTutorial() {
     var data = {
       title: this.state.title,
-      duedate: this.state.duedate,
-      priority: this.state.priority,
-      label: this.state.label,
-      status: this.state.status, 
+      due_date: this.state.duedate,
+      priority_id: this.state.priority,
+      status_id: this.state.status,
+      label_id: this.state.label,
       description: this.state.description
     };
 
@@ -75,12 +116,10 @@ export default class AddTutorial extends Component {
           id: response.data.id,
           title: response.data.title,
           duedate: response.data.duedate,
-          priority: response.data.priority,
-          label: response.data.label,
-          status: response.data.status, 
+          priority: response.data.priority_id,
+          label: response.data.label_id,
+          status: response.data.status_id, 
           description: response.data.description,
-          published: response.data.published,
-
           submitted: true
         });
         console.log(response.data);
@@ -104,8 +143,15 @@ export default class AddTutorial extends Component {
       submitted: false
     });
   }
+  componentDidMount(){
+    this.loadSeeder();
+  }
 
   render() {
+    console.log('ENTERED');
+    console.log(this.state);
+    const {labels, statuses, priorities } = this.state;
+
     return (
       <div className="submit-form">
         {this.state.submitted ? (
@@ -138,7 +184,7 @@ export default class AddTutorial extends Component {
                 id="duedate"
                 required
                 value={this.state.duedate}
-                onChange={this.onChangeDueddate}
+                onChange={this.onChangeDuedate}
                 name="duedate"
               />
             </div>
@@ -152,13 +198,13 @@ export default class AddTutorial extends Component {
                 value={this.state.priority}
                 onChange={this.onChangePriority}
                 name="priority">
-                <option value="low">low</option>
-                <option value="medium">medium</option>
-                <option value="high">high</option>
+                {priorities.map(priority =>(
+                  // <option value="1">1234</option>
+                  <option key={priority.id} value={priority['id']}>{priority['name']}</option>
+                ))}
               </select>
               </label>
             </div>
-
             <div className="form-group">
               <label htmlFor="label">Label
               <select
@@ -168,10 +214,10 @@ export default class AddTutorial extends Component {
                 value={this.state.label}
                 onChange={this.onChangeLabel}
                 name="label">
-                <option value="personal">Personal</option>
-                <option value="work">Work</option>
-                <option value="shopping">Shopping</option>
-                <option value="others">Others</option>
+                
+                {labels.map(label =>(
+                  <option key={label.id} value={label.id}>{label.name}</option>
+                ))}
               </select>
               </label>
             </div>
@@ -185,9 +231,10 @@ export default class AddTutorial extends Component {
                 value={this.state.status}
                 onChange={this.onChangeStatus}
                 name="status">
-                <option value="new">New</option>
-                <option value="in-progress">In Progress</option>
-                <option value="completed">Completed</option>
+                
+                {statuses.map(status =>(
+                  <option key={status.id} value={status.id}>{status.name}</option>
+                ))}
               </select>
               </label>
             </div>

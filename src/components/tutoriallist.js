@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import { Link } from "react-router-dom";
+import SeederDataService from "../services/seeder.service";
 
 export default class TutorialsList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
     this.retrieveTutorials = this.retrieveTutorials.bind(this);
+    this.loadSeeder = this.loadSeeder.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.setActiveTutorial = this.setActiveTutorial.bind(this);
     this.removeAllTutorials = this.removeAllTutorials.bind(this);
@@ -20,7 +22,37 @@ export default class TutorialsList extends Component {
     };
   }
 
+  loadSeeder(){
+    console.log("Inside load Seeder");
+    SeederDataService.getAllLabels().then(response => {
+      console.log("Labels", response);
+      this.setState({
+        labels:response.data,
+        label: response.data[0]['id'],
+      });
+    })
+
+    SeederDataService.getAllStatuses().then(response => {
+      console.log("Statuses ", response);
+      this.setState({
+        statuses:response.data,
+        status: response.data[0]['id'],
+      });
+    })
+
+    SeederDataService.getAllPriorities().then(response => {
+      console.log("Priorities" ,response);
+      this.setState({
+        priorities:response.data,
+        priority: response.data[0]['id'],
+      });
+    })
+
+  }
+
+
   componentDidMount() {
+    this.loadSeeder();
     this.retrieveTutorials();
   }
 
@@ -33,6 +65,7 @@ export default class TutorialsList extends Component {
   }
 
   retrieveTutorials() {
+    console.log("inside retrwice");
     TutorialDataService.getAll()
       .then(response => {
         this.setState({
@@ -129,7 +162,7 @@ export default class TutorialsList extends Component {
                         <span class="task-title-sp">{tutorial.title}   </span>
                     </div>
                     <div class="col-md-1.5">
-                        <span class="badge bg-theme">{tutorial.duedate}    </span>
+                        <span class="badge bg-theme">{tutorial.due_date}    </span>
                     </div>
                     <div class="col-md-1">
                         <span class="badge bg-theme">{tutorial.priority}    </span>
