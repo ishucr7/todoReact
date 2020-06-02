@@ -15,19 +15,19 @@ class TutorialDataService {
   }
 
   update(id, data) {
-    return http.put(`/tutorials/${id}`, data);
+    return http.put(`/api/user/tasks/${id}`, data, { headers: authHeader() });
   }
 
   delete(id) {
-    return http.delete(`/tutorials/${id}`);
+    return http.delete(`/api/user/tasks/${id}`, { headers: authHeader() });
   }
 
   deleteAll() {
-    return http.delete(`/tutorials`);
+    return http.delete(`/api/user/tasks`, { headers: authHeader() });
   }
 
   findByTitle(title) {
-    return http.get(`/tutorials?title=${title}`);
+    return http.get(`/api/user/tasks?title=${title}`, { headers: authHeader() });
   }
 }
 

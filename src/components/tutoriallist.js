@@ -13,6 +13,7 @@ export default class TutorialsList extends Component {
     this.setActiveTutorial = this.setActiveTutorial.bind(this);
     this.removeAllTutorials = this.removeAllTutorials.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
+    this.deleteTutorial = this.deleteTutorial.bind(this);
 
     this.state = {
       tutorials: [],
@@ -91,6 +92,18 @@ export default class TutorialsList extends Component {
       currentTutorial: tutorial,
       currentIndex: index
     });
+  }
+
+  deleteTutorial(id) {    
+    TutorialDataService.delete(id)
+      .then(response => {
+        console.log(response.data);
+        this.props.history.push('/tutorials');
+        //this.refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   removeAllTutorials() {
@@ -187,9 +200,12 @@ export default class TutorialsList extends Component {
                             </Link>
                         </div>
                         <div class="col-md-2">
-                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
-                              <i class="fa fa-trash-o "></i>
-                            </Link>
+                            <button
+                            className="badge badge-danger mr-2"
+                            onClick={() => {this.deleteTutorial(tutorial.id);this.refreshList();}}
+                            >
+                            <i class="fa fa-trash-o "></i>
+                            </button>    
                         </div>
                     </div>
                 </div>
