@@ -33,43 +33,16 @@ export default class TutorialsList extends Component {
   }
 
   retrieveTutorials() {
-    this.setState({
-        tutorials: [
-            {
-                'title': "Welcome ",
-                'description': "One",
-                'label': "Personal",
-                'status': 'New',
-                'priority': 'High'
-            },
-            {
-                'title': "Good night",
-                'description': "Two",
-                'label': "Work",
-                'status': 'In progress',
-                'priority': 'High'
-            },
-            {
-                'title': "Fuck off",
-                'description': "Three",
-                'label': "Personal",
-                'status': 'New',
-                'priority': 'Medium'
-            },
-        ]
-    // tutorials: response.data
-    });
-
-    // TutorialDataService.getAll()
-    //   .then(response => {
-    //     this.setState({
-    //       tutorials: response.data
-    //     });
-    //     console.log(response.data);
-    //   })
-    //   .catch(e => {
-    //     console.log(e);
-    //   });
+    TutorialDataService.getAll()
+      .then(response => {
+        this.setState({
+          tutorials: response.data
+        });
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
   }
 
   refreshList() {
@@ -148,15 +121,15 @@ export default class TutorialsList extends Component {
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
-                //   onClick={() => this.setActiveTutorial(tutorial, index)}
-                //   key={index}
+                   onClick={() => this.setActiveTutorial(tutorial, index)}
+                   key={index}
                 >
                 <div class="task-title row">
                     <div class="col-md-2">
                         <span class="task-title-sp">{tutorial.title}   </span>
                     </div>
-                    <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.status}    </span>
+                    <div class="col-md-1.5">
+                        <span class="badge bg-theme">{tutorial.duedate}    </span>
                     </div>
                     <div class="col-md-1">
                         <span class="badge bg-theme">{tutorial.priority}    </span>
@@ -164,17 +137,26 @@ export default class TutorialsList extends Component {
                     <div class="col-md-1">
                         <span class="badge bg-theme">{tutorial.label}    </span>
                     </div>
+                    <div class="col-md-1">
+                        <span class="badge bg-theme">{tutorial.status}    </span>
+                    </div>              
                     <div class="col-md-6 pull-right row">
                         <div class="col-md-6">
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-success btn-xs"><i class="fa fa-check"></i></button>
+                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
+                              <i class="fa fa-check"></i>
+                            </Link>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-primary btn-xs"><i class="fa fa-pencil"></i></button>
+                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
+                              <i class="fa fa-pencil"></i>
+                            </Link>
                         </div>
                         <div class="col-md-2">
-                            <button class="btn btn-danger btn-xs"><i class="fa fa-trash-o "></i></button>
+                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
+                              <i class="fa fa-trash-o "></i>
+                            </Link>
                         </div>
                     </div>
                 </div>
@@ -189,7 +171,7 @@ export default class TutorialsList extends Component {
             Remove All
           </button>
         </div>
-        {/* <div className="col-md-6">
+        { <div className="col-md-6">
           {currentTutorial ? (
             <div>
               <h4>Tutorial</h4>
@@ -198,6 +180,30 @@ export default class TutorialsList extends Component {
                   <strong>Title:</strong>
                 </label>{" "}
                 {currentTutorial.title}
+              </div>
+              <div>
+                <label>
+                  <strong>Due Date:</strong>
+                </label>{" "}
+                {currentTutorial.duedate}
+              </div>
+              <div>
+                <label>
+                  <strong>Priority:</strong>
+                </label>{" "}
+                {currentTutorial.priority}
+              </div>
+              <div>
+                <label>
+                  <strong>Label:</strong>
+                </label>{" "}
+                {currentTutorial.label}
+              </div>
+              <div>
+                <label>
+                  <strong>Status:</strong>
+                </label>{" "}
+                {currentTutorial.status}
               </div>
               <div>
                 <label>
@@ -222,10 +228,10 @@ export default class TutorialsList extends Component {
           ) : (
             <div>
               <br />
-              <p>Please click on a Tutorial...</p>
+              <p>Please click on a Task...</p>
             </div>
           )}
-        </div> */}
+        </div> }
       </div>
     );
   }

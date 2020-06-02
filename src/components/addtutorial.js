@@ -12,7 +12,11 @@ export default class AddTutorial extends Component {
     this.state = {
       id: null,
       title: "",
-      description: "", 
+      duedate: "",
+      priority: "",
+      label: "",
+      status: "", 
+      description: "",
       published: false,
 
       submitted: false
@@ -25,6 +29,30 @@ export default class AddTutorial extends Component {
     });
   }
 
+  onChangeDuedate(e) {
+    this.setState({
+      duedate: e.target.value
+    });
+  }
+
+  onChangePriority(e) {
+    this.setState({
+      priority: e.target.value
+    });
+  }
+
+  onChangeLabel(e) {
+    this.setState({
+      label: e.target.value
+    });
+  }
+
+  onChangeStatus(e) {
+    this.setState({
+      status: e.target.value
+    });
+  }
+
   onChangeDescription(e) {
     this.setState({
       description: e.target.value
@@ -34,6 +62,10 @@ export default class AddTutorial extends Component {
   saveTutorial() {
     var data = {
       title: this.state.title,
+      duedate: this.state.duedate,
+      priority: this.state.priority,
+      label: this.state.label,
+      status: this.state.status, 
       description: this.state.description
     };
 
@@ -42,6 +74,10 @@ export default class AddTutorial extends Component {
         this.setState({
           id: response.data.id,
           title: response.data.title,
+          duedate: response.data.duedate,
+          priority: response.data.priority,
+          label: response.data.label,
+          status: response.data.status, 
           description: response.data.description,
           published: response.data.published,
 
@@ -58,6 +94,10 @@ export default class AddTutorial extends Component {
     this.setState({
       id: null,
       title: "",
+      duedate: "",
+      priority: "",
+      label: "",
+      status: "", 
       description: "",
       published: false,
 
@@ -91,9 +131,70 @@ export default class AddTutorial extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="description">Description</label>
+              <label htmlFor="duedate">Due Date</label>
               <input
-                type="text"
+                type="date"
+                className="form-control"
+                id="duedate"
+                required
+                value={this.state.duedate}
+                onChange={this.onChangeDueddate}
+                name="duedate"
+              />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="priority">Priority
+              <select
+                className="form-control"
+                id="priority"
+                required
+                value={this.state.priority}
+                onChange={this.onChangePriority}
+                name="priority">
+                <option value="low">low</option>
+                <option value="medium">medium</option>
+                <option value="high">high</option>
+              </select>
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="label">Label
+              <select
+                className="form-control"
+                id="label"
+                required
+                value={this.state.label}
+                onChange={this.onChangeLabel}
+                name="label">
+                <option value="personal">Personal</option>
+                <option value="work">Work</option>
+                <option value="shopping">Shopping</option>
+                <option value="others">Others</option>
+              </select>
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="status">Status
+              <select
+                className="form-control"
+                id="status"
+                required
+                value={this.state.status}
+                onChange={this.onChangeStatus}
+                name="status">
+                <option value="new">New</option>
+                <option value="in-progress">In Progress</option>
+                <option value="completed">Completed</option>
+              </select>
+              </label>
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="description">Description</label>
+              < textarea
                 className="form-control"
                 id="description"
                 required
