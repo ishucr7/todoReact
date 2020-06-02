@@ -1,10 +1,15 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 
-export default class Tutorial extends Component {
+export default class EditTutorial extends Component {
   constructor(props) {
     super(props);
+    this.onChangeTitle = this.onChangeTitle.bind(this);
+    this.onChangeDescription = this.onChangeDescription.bind(this);
     this.getTutorial = this.getTutorial.bind(this);
+    this.updatePublished = this.updatePublished.bind(this);
+    this.updateTutorial = this.updateTutorial.bind(this);
+    this.deleteTutorial = this.deleteTutorial.bind(this);
 
     this.state = {
       currentTutorial: {
@@ -25,6 +30,82 @@ export default class Tutorial extends Component {
     this.getTutorial(this.props.match.params.id);
   }
 
+  onChangeTitle(e) {
+    const title = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          title: title
+        }
+      };
+    });
+  }
+
+  onChangeDuedate(e) {
+    const duedate = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          duedate: duedate
+        }
+      };
+    });
+  }
+
+  onChangePriority(e) {
+    const priority = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          priority: priority
+        }
+      };
+    });
+  }
+
+  onChangeLabel(e) {
+    const label = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          label: label
+        }
+      };
+    });
+  }
+
+  onChangeStatus(e) {
+    const status = e.target.value;
+
+    this.setState(function(prevState) {
+      return {
+        currentTutorial: {
+          ...prevState.currentTutorial,
+          status: status
+        }
+      };
+    });
+  }
+
+  onChangeDescription(e) {
+    const description = e.target.value;
+    
+    this.setState(prevState => ({
+      currentTutorial: {
+        ...prevState.currentTutorial,
+        description: description
+      }
+    }));
+  }
+
   getTutorial(id) {
     TutorialDataService.get(id)
       .then(response => {
@@ -38,6 +119,60 @@ export default class Tutorial extends Component {
       });
   }
 
+  updatePublished(status) {
+    var data = {
+      id: this.state.currentTutorial.id,
+      title: this.state.currentTutorial.title,
+      duedate: this.state.currentTutorial.duedate,
+      priority: this.state.currentTutorial.priority,
+      label: this.state.currentTutorial.label,
+      status: this.state.currentTutorial.status, 
+      description: this.state.currentTutorial.description,
+      published: status
+    };
+
+    TutorialDataService.update(this.state.currentTutorial.id, data)
+      .then(response => {
+        this.setState(prevState => ({
+          currentTutorial: {
+            ...prevState.currentTutorial,
+            published: status
+          }
+        }));
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
+  updateTutorial() {
+    TutorialDataService.update(
+      this.state.currentTutorial.id,
+      this.state.currentTutorial
+    )
+      .then(response => {
+        console.log(response.data);
+        this.setState({
+          message: "The tutorial was updated successfully!"
+        });
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
+  deleteTutorial() {    
+    TutorialDataService.delete(this.state.currentTutorial.id)
+      .then(response => {
+        console.log(response.data);
+        this.props.history.push('/tutorials');
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
   render() {
      const { currentTutorial } = this.state;
 
@@ -45,66 +180,66 @@ export default class Tutorial extends Component {
       <div>
         {currentTutorial ? (
           <div className="edit-form">
-            <h4>Task</h4>
+            <h4>Tutorial</h4>
             <form>
               <div className="form-group">
                 <label htmlFor="title">Title</label>
                 <input
-                  readOnly
                   type="text"
                   className="form-control"
                   id="title"
                   value={currentTutorial.title}
+                  onChange={this.onChangeTitle}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="duedate">Due Date</label>
                 <input
-                  readOnly
                   type="date"
                   className="form-control"
                   id="duedate"
                   value={currentTutorial.due_date}
+                  onChange={this.onChangeDuedate}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="priority">Priority</label>
                 <input
-                  readOnly
                   type="text"
                   className="form-control"
                   id="priority"
                   value={currentTutorial.priority_id}
+                  onChange={this.onChangePriority}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="label">Label</label>
                 <input
-                  readOnly
                   type="text"
                   className="form-control"
                   id="label"
                   value={currentTutorial.label_id}
+                  onChange={this.onChangeLabel}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="status">Status</label>
                 <input
-                  readOnly
                   type="text"
                   className="form-control"
                   id="status"
                   value={currentTutorial.status_id}
+                  onChange={this.onChangeStatus}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <input
-                  readOnly
                   type="text"
                   className="form-control"
                   id="description"
                   value={currentTutorial.description}
+                  onChange={this.onChangeDescription}
                 />
               </div>
 

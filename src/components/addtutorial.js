@@ -143,6 +143,7 @@ export default class AddTutorial extends Component {
       submitted: false
     });
   }
+
   componentDidMount(){
     this.loadSeeder();
   }
