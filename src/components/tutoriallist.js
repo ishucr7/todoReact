@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import { Link } from "react-router-dom";
 import SeederDataService from "../services/seeder.service";
+import moment from 'moment';
 
 export default class TutorialsList extends Component {
   constructor(props) {
@@ -55,6 +56,7 @@ loadSeeder(){
 
   componentDidMount() {
     this.loadSeeder();
+    this.refreshList();
     this.retrieveTutorials();
   }
 
@@ -176,16 +178,16 @@ loadSeeder(){
                         <span class="task-title-sp">{tutorial.title}   </span>
                     </div>
                     <div class="col-md-3">
-                        <span class="badge bg-theme">{tutorial.due_date}    </span>
+                        <span class="badge bg-theme">{moment(tutorial.due_date).format("YYYY-MM-DD")}    </span>
                     </div>
                     <div class="col-md-1.5">
-                        <span class="badge bg-theme">{tutorial.priority_id}    </span>
+                        <span class="badge bg-theme">{tutorial.priority}    </span>
                     </div>
                     <div class="col-md-1.5">
-                        <span class="badge bg-theme">{tutorial.label_id}    </span>
+                        <span class="badge bg-theme">{tutorial.label}    </span>
                     </div>
                     <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.status_id}    </span>
+                        <span class="badge bg-theme">{tutorial.status}    </span>
                     </div>              
                     <div class="col-md-3 pull-right row">
                         <div class="col-md-3">

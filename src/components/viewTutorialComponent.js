@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import { Link } from "react-router-dom";
+import moment from 'moment';
 
 export default class viewTutorial extends Component {
   constructor(props) {
@@ -66,7 +67,7 @@ export default class viewTutorial extends Component {
                   type="date"
                   className="form-control"
                   id="duedate"
-                  value={currentTutorial.due_date}
+                  value={moment(currentTutorial.duedate).format("YYYY-MM-DD")}
                 />
               </div>
               <div className="form-group">
@@ -76,7 +77,7 @@ export default class viewTutorial extends Component {
                   type="text"
                   className="form-control"
                   id="priority"
-                  value={currentTutorial.priority_id}
+                  value={currentTutorial.priority}
                 />
               </div>
               <div className="form-group">
@@ -86,7 +87,7 @@ export default class viewTutorial extends Component {
                   type="text"
                   className="form-control"
                   id="label"
-                  value={currentTutorial.label_id}
+                  value={currentTutorial.label}
                 />
               </div>
               <div className="form-group">
@@ -96,7 +97,7 @@ export default class viewTutorial extends Component {
                   type="text"
                   className="form-control"
                   id="status"
-                  value={currentTutorial.status_id}
+                  value={currentTutorial.status}
                 />
               </div>
               <div className="form-group">

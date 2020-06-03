@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import SeederDataService from "../services/seeder.service";
+import moment from 'moment';
 
 export default class Tutorial extends Component {
   constructor(props) {
@@ -316,7 +317,7 @@ export default class Tutorial extends Component {
                   type="date"
                   className="form-control"
                   id="duedate"
-                  value={currentTutorial.duedate}
+                  value={moment(currentTutorial.duedate).format("YYYY-MM-DD")}
                   onChange={this.onChangeDuedate}
                 />
               </div>
