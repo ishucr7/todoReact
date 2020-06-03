@@ -16,11 +16,49 @@ export default class TutorialsList extends Component {
       tutorials: [],
       currentTutorial: null,
       currentIndex: -1,
-      searchTitle: ""
+      searchTitle: "",
+      statuses: [],
+      labels: [],
+      priorities: []
     };
   }
 
+<<<<<<< Updated upstream
   componentDidMount() {
+=======
+  loadSeeder(){
+    console.log("Inside load Seeder");
+    SeederDataService.getAllLabels().then(response => {
+      console.log("Labels", response);
+      this.setState({
+        labels:response.data,
+        //label: response.data[0]['id'],
+      });
+    })
+
+    SeederDataService.getAllStatuses().then(response => {
+      console.log("Statuses ", response);
+      this.setState({
+        statuses:response.data,
+        //status: response.data[0]['id'],
+      });
+    })
+
+    SeederDataService.getAllPriorities().then(response => {
+      console.log("Priorities" ,response);
+      this.setState({
+        priorities:response.data,
+        //priority: response.data[0]['id'],
+      });
+    })
+
+  }
+
+
+  componentDidMount() {
+    this.loadSeeder();
+    this.refreshList();
+>>>>>>> Stashed changes
     this.retrieveTutorials();
   }
 
@@ -60,6 +98,21 @@ export default class TutorialsList extends Component {
     });
   }
 
+<<<<<<< Updated upstream
+=======
+  deleteTutorial(id) {    
+    TutorialDataService.delete(id)
+      .then(response => {
+        console.log(response.data);
+        this.props.history.push('/tutorials');
+        this.refreshList();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
+>>>>>>> Stashed changes
   removeAllTutorials() {
     TutorialDataService.deleteAll()
       .then(response => {
@@ -85,7 +138,7 @@ export default class TutorialsList extends Component {
   }
 
   render() {
-    const { searchTitle, tutorials, currentTutorial, currentIndex } = this.state;
+    const { searchTitle, tutorials, currentTutorial, currentIndex,labels, statuses, priorities } = this.state;
 
     return (
       <div className="list row">
@@ -121,42 +174,57 @@ export default class TutorialsList extends Component {
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
-                   onClick={() => this.setActiveTutorial(tutorial, index)}
-                   key={index}
+                   // onClick={() => this.setActiveTutorial(tutorial, index)}
+                   // key={index}
                 >
                 <div class="task-title row">
                     <div class="col-md-2">
                         <span class="task-title-sp">{tutorial.title}   </span>
                     </div>
+<<<<<<< Updated upstream
                     <div class="col-md-1.5">
                         <span class="badge bg-theme">{tutorial.duedate}    </span>
+=======
+                    <div class="col-md-3">
+                        <span class="badge bg-theme">{tutorial.due_date}    </span>
+>>>>>>> Stashed changes
+                    </div>
+                    <div class="col-md-1.5">
+                        <span class="badge bg-theme">{tutorial.priority_id}    </span>
+                    </div>
+                    <div class="col-md-1.5">
+                        <span class="badge bg-theme">{tutorial.label_id}    </span>
                     </div>
                     <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.priority}    </span>
-                    </div>
-                    <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.label}    </span>
-                    </div>
-                    <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.status}    </span>
+                        <span class="badge bg-theme">{tutorial.status_id}    </span>
                     </div>              
-                    <div class="col-md-6 pull-right row">
-                        <div class="col-md-6">
+                    <div class="col-md-3 pull-right row">
+                        <div class="col-md-3">
                         </div>
-                        <div class="col-md-2">
-                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
+                        <div class="col-md-1">
+                            <Link to={"/tutorials/view/" + tutorial.id} className="badge badge-primary">
                               <i class="fa fa-check"></i>
                             </Link>
                         </div>
-                        <div class="col-md-2">
+                        <div class="col-md-1">
                             <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
                               <i class="fa fa-pencil"></i>
                             </Link>
                         </div>
+<<<<<<< Updated upstream
                         <div class="col-md-2">
                             <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
                               <i class="fa fa-trash-o "></i>
                             </Link>
+=======
+                        <div class="col-md-1">
+                            <button
+                            className="badge badge-danger mr-2"
+                            onClick={() => {this.deleteTutorial(tutorial.id);/*this.refreshList();*/}}
+                            >
+                            <i class="fa fa-trash-o "></i>
+                            </button>    
+>>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
@@ -165,13 +233,19 @@ export default class TutorialsList extends Component {
           </ul>
 
           <button
-            className="m-3 btn btn-sm btn-danger"
+            className="m-1 btn btn-sm btn-danger"
             onClick={this.removeAllTutorials}
           >
             Remove All
           </button>
+          <Link to={"/add/"}
+            className="float-right m-1 btn btn-sm btn-success"
+            
+          >
+            Add
+          </Link>
         </div>
-        { <div className="col-md-6">
+        { /*<div className="col-md-6">
           {currentTutorial ? (
             <div>
               <h4>Tutorial</h4>
@@ -231,7 +305,7 @@ export default class TutorialsList extends Component {
               <p>Please click on a Task...</p>
             </div>
           )}
-        </div> }
+        </div> */}
       </div>
     );
   }

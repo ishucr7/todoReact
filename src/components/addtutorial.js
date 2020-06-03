@@ -1,5 +1,11 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
+<<<<<<< Updated upstream
+=======
+import SeederDataService from "../services/seeder.service";
+import { Link } from "react-router-dom";
+
+>>>>>>> Stashed changes
 
 export default class AddTutorial extends Component {
   constructor(props) {
@@ -74,10 +80,17 @@ export default class AddTutorial extends Component {
         this.setState({
           id: response.data.id,
           title: response.data.title,
+<<<<<<< Updated upstream
           duedate: response.data.duedate,
           priority: response.data.priority,
           label: response.data.label,
           status: response.data.status, 
+=======
+          duedate: response.data.due_date,
+          priority: response.data.priority_id,
+          label: response.data.label_id,
+          status: response.data.status_id, 
+>>>>>>> Stashed changes
           description: response.data.description,
           published: response.data.published,
 
@@ -111,9 +124,9 @@ export default class AddTutorial extends Component {
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <button className="btn btn-success" onClick={this.newTutorial}>
-              Add
-            </button>
+            <Link to={"/tutorials/"} className="btn btn-success">
+              View All tasks
+            </Link>
           </div>
         ) : (
           <div>
@@ -136,7 +149,6 @@ export default class AddTutorial extends Component {
                 type="date"
                 className="form-control"
                 id="duedate"
-                required
                 value={this.state.duedate}
                 onChange={this.onChangeDueddate}
                 name="duedate"
@@ -204,9 +216,9 @@ export default class AddTutorial extends Component {
               />
             </div>
 
-            <button onClick={this.saveTutorial} className="btn btn-success">
+            <Link to={"/tutorials/"} onClick={this.saveTutorial} className="btn btn-success">
               Submit
-            </button>
+            </Link>
           </div>
         )}
       </div>
