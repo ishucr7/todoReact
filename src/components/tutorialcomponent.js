@@ -2,15 +2,10 @@ import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import SeederDataService from "../services/seeder.service";
 
-
 export default class Tutorial extends Component {
   constructor(props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
-<<<<<<< Updated upstream
-    this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.getTutorial = this.getTutorial.bind(this);
-=======
     this.onChangeDuedate = this.onChangeDuedate.bind(this);
     this.onChangePriority = this.onChangePriority.bind(this);
     this.onChangeLabel = this.onChangeLabel.bind(this);
@@ -20,7 +15,6 @@ export default class Tutorial extends Component {
     this.getTutorial = this.getTutorial.bind(this);
     this.loadSeeder = this.loadSeeder.bind(this);
     
->>>>>>> Stashed changes
     this.updatePublished = this.updatePublished.bind(this);
     this.updateTutorial = this.updateTutorial.bind(this);
     this.deleteTutorial = this.deleteTutorial.bind(this);
@@ -246,17 +240,10 @@ export default class Tutorial extends Component {
     var data = {
       id: this.state.currentTutorial.id,
       title: this.state.currentTutorial.title,
-<<<<<<< Updated upstream
-      duedate: this.state.currentTutorial.duedate,
-      priority: this.state.currentTutorial.priority,
-      label: this.state.currentTutorial.label,
-      status: this.state.currentTutorial.status, 
-=======
       due_date: this.state.currentTutorial.duedate,
       priority_id: this.state.currentTutorial.priority,
       label_id: this.state.currentTutorial.label,
       status_id: this.state.currentTutorial.status, 
->>>>>>> Stashed changes
       description: this.state.currentTutorial.description,
       published: status
     };
@@ -284,11 +271,7 @@ export default class Tutorial extends Component {
       .then(response => {
         console.log(response.data);
         this.setState({
-<<<<<<< Updated upstream
-          message: "The tutorial was updated successfully!"
-=======
           message: "Changes saved successfully!"
->>>>>>> Stashed changes
         });
       })
       .catch(e => {
@@ -296,25 +279,18 @@ export default class Tutorial extends Component {
       });
   }
 
-  deleteTutorial() {    
+  deleteTutorial() { 
+    console .log("delete id",this.state.currentTutorial.title);   
     TutorialDataService.delete(this.state.currentTutorial.id)
       .then(response => {
         console.log(response.data);
-<<<<<<< Updated upstream
-        this.props.history.push('/tutorials')
-=======
         this.props.history.push('/tutorials');
->>>>>>> Stashed changes
       })
       .catch(e => {
         console.log(e);
       });
   }
 
-<<<<<<< Updated upstream
-=======
-
->>>>>>> Stashed changes
   render() {
      const { currentTutorial,labels, statuses, priorities } = this.state;
 
@@ -340,45 +316,12 @@ export default class Tutorial extends Component {
                   type="date"
                   className="form-control"
                   id="duedate"
-<<<<<<< Updated upstream
                   value={currentTutorial.duedate}
-=======
-                  value={currentTutorial.due_date}
->>>>>>> Stashed changes
                   onChange={this.onChangeDuedate}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="priority">Priority</label>
-<<<<<<< Updated upstream
-                <input
-                  type="text"
-                  className="form-control"
-                  id="priority"
-                  value={currentTutorial.priority}
-                  onChange={this.onChangePriority}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="label">Label</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="label"
-                  value={currentTutorial.label}
-                  onChange={this.onChangeLabel}
-                />
-              </div>
-              <div className="form-group">
-                <label htmlFor="status">Status</label>
-                <input
-                  type="text"
-                  className="form-control"
-                  id="status"
-                  value={currentTutorial.status}
-                  onChange={this.onChangeStatus}
-                />
-=======
                 <select
                 className="form-control"
                 id="priority"
@@ -418,7 +361,6 @@ export default class Tutorial extends Component {
                   <option key={status.id} value={status.id}>{status.name}</option>
                 ))}
               </select>
->>>>>>> Stashed changes
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description</label>
@@ -429,13 +371,6 @@ export default class Tutorial extends Component {
                   value={currentTutorial.description}
                   onChange={this.onChangeDescription}
                 />
-              </div>
-
-              <div className="form-group">
-                <label>
-                  <strong>Status:</strong>
-                </label>
-                {currentTutorial.published ? "Published" : "Pending"}
               </div>
             </form>
 

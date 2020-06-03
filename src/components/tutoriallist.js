@@ -1,12 +1,14 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import { Link } from "react-router-dom";
+import SeederDataService from "../services/seeder.service";
 
 export default class TutorialsList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
     this.retrieveTutorials = this.retrieveTutorials.bind(this);
+    this.loadSeeder = this.loadSeeder.bind(this);
     this.refreshList = this.refreshList.bind(this);
     this.setActiveTutorial = this.setActiveTutorial.bind(this);
     this.removeAllTutorials = this.removeAllTutorials.bind(this);
@@ -23,10 +25,7 @@ export default class TutorialsList extends Component {
     };
   }
 
-<<<<<<< Updated upstream
-  componentDidMount() {
-=======
-  loadSeeder(){
+loadSeeder(){
     console.log("Inside load Seeder");
     SeederDataService.getAllLabels().then(response => {
       console.log("Labels", response);
@@ -54,11 +53,8 @@ export default class TutorialsList extends Component {
 
   }
 
-
   componentDidMount() {
     this.loadSeeder();
-    this.refreshList();
->>>>>>> Stashed changes
     this.retrieveTutorials();
   }
 
@@ -71,6 +67,7 @@ export default class TutorialsList extends Component {
   }
 
   retrieveTutorials() {
+    console.log("inside retrwice");
     TutorialDataService.getAll()
       .then(response => {
         this.setState({
@@ -98,8 +95,6 @@ export default class TutorialsList extends Component {
     });
   }
 
-<<<<<<< Updated upstream
-=======
   deleteTutorial(id) {    
     TutorialDataService.delete(id)
       .then(response => {
@@ -112,7 +107,6 @@ export default class TutorialsList extends Component {
       });
   }
 
->>>>>>> Stashed changes
   removeAllTutorials() {
     TutorialDataService.deleteAll()
       .then(response => {
@@ -181,13 +175,8 @@ export default class TutorialsList extends Component {
                     <div class="col-md-2">
                         <span class="task-title-sp">{tutorial.title}   </span>
                     </div>
-<<<<<<< Updated upstream
-                    <div class="col-md-1.5">
-                        <span class="badge bg-theme">{tutorial.duedate}    </span>
-=======
                     <div class="col-md-3">
                         <span class="badge bg-theme">{tutorial.due_date}    </span>
->>>>>>> Stashed changes
                     </div>
                     <div class="col-md-1.5">
                         <span class="badge bg-theme">{tutorial.priority_id}    </span>
@@ -207,24 +196,14 @@ export default class TutorialsList extends Component {
                             </Link>
                         </div>
                         <div class="col-md-1">
-                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
+                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-secondary">
                               <i class="fa fa-pencil"></i>
                             </Link>
                         </div>
-<<<<<<< Updated upstream
                         <div class="col-md-2">
                             <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
                               <i class="fa fa-trash-o "></i>
                             </Link>
-=======
-                        <div class="col-md-1">
-                            <button
-                            className="badge badge-danger mr-2"
-                            onClick={() => {this.deleteTutorial(tutorial.id);/*this.refreshList();*/}}
-                            >
-                            <i class="fa fa-trash-o "></i>
-                            </button>    
->>>>>>> Stashed changes
                         </div>
                     </div>
                 </div>
