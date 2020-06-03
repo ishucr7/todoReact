@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import SeederDataService from "../services/seeder.service";
+import { Link } from "react-router-dom";
 
 export default class AddTutorial extends Component {
   constructor(props) {
@@ -23,7 +24,7 @@ export default class AddTutorial extends Component {
     this.state = {
       id: null,
       title: "",
-      duedate: "",
+      duedate: null,
       priority: "",
       label: "",
       status: "", 
@@ -115,7 +116,7 @@ export default class AddTutorial extends Component {
         this.setState({
           id: response.data.id,
           title: response.data.title,
-          duedate: response.data.duedate,
+          duedate: response.data.due_date,
           priority: response.data.priority_id,
           label: response.data.label_id,
           status: response.data.status_id, 
@@ -133,7 +134,7 @@ export default class AddTutorial extends Component {
     this.setState({
       id: null,
       title: "",
-      duedate: "",
+      duedate: null,
       priority: "",
       label: "",
       status: "", 
@@ -152,15 +153,20 @@ export default class AddTutorial extends Component {
     console.log('ENTERED');
     console.log(this.state);
     const {labels, statuses, priorities } = this.state;
+    console.log("----asdadsasd----");
+    console.log(labels);
+    console.log(statuses);
+    console.log(priorities);
+    console.log("----asdasdasd----");
 
     return (
       <div className="submit-form">
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <button className="btn btn-success" onClick={this.newTutorial}>
-              Add
-            </button>
+            <Link to={"/tutorials/"} className="btn btn-success">
+              View All tasks
+            </Link>
           </div>
         ) : (
           <div>
@@ -183,7 +189,6 @@ export default class AddTutorial extends Component {
                 type="date"
                 className="form-control"
                 id="duedate"
-                required
                 value={this.state.duedate}
                 onChange={this.onChangeDuedate}
                 name="duedate"
@@ -252,9 +257,9 @@ export default class AddTutorial extends Component {
               />
             </div>
 
-            <button onClick={this.saveTutorial} className="btn btn-success">
+            <Link to={"/tutorials/"} onClick={this.saveTutorial} className="btn btn-success">
               Submit
-            </button>
+            </Link>
           </div>
         )}
       </div>

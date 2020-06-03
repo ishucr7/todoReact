@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
 import { Link } from "react-router-dom";
 import SeederDataService from "../services/seeder.service";
+import moment from 'moment';
 
 export default class TutorialsList extends Component {
   constructor(props) {
@@ -19,17 +20,20 @@ export default class TutorialsList extends Component {
       tutorials: [],
       currentTutorial: null,
       currentIndex: -1,
-      searchTitle: ""
+      searchTitle: "",
+      statuses: [],
+      labels: [],
+      priorities: []
     };
   }
 
-  loadSeeder(){
+loadSeeder(){
     console.log("Inside load Seeder");
     SeederDataService.getAllLabels().then(response => {
       console.log("Labels", response);
       this.setState({
         labels:response.data,
-        label: response.data[0]['id'],
+        //label: response.data[0]['id'],
       });
     })
 
@@ -37,7 +41,7 @@ export default class TutorialsList extends Component {
       console.log("Statuses ", response);
       this.setState({
         statuses:response.data,
-        status: response.data[0]['id'],
+        //status: response.data[0]['id'],
       });
     })
 
@@ -45,15 +49,15 @@ export default class TutorialsList extends Component {
       console.log("Priorities" ,response);
       this.setState({
         priorities:response.data,
-        priority: response.data[0]['id'],
+        //priority: response.data[0]['id'],
       });
     })
 
   }
 
-
   componentDidMount() {
     this.loadSeeder();
+    this.refreshList();
     this.retrieveTutorials();
   }
 
@@ -94,12 +98,12 @@ export default class TutorialsList extends Component {
     });
   }
 
-  deleteTutorial(id) {    
+  deleteTutorial(id) {
     TutorialDataService.delete(id)
       .then(response => {
         console.log(response.data);
         this.props.history.push('/tutorials');
-        //this.refreshList();
+        this.refreshList();
       })
       .catch(e => {
         console.log(e);
@@ -131,7 +135,7 @@ export default class TutorialsList extends Component {
   }
 
   render() {
-    const { searchTitle, tutorials, currentTutorial, currentIndex } = this.state;
+    const { searchTitle, tutorials, currentTutorial, currentIndex,labels, statuses, priorities } = this.state;
 
     return (
       <div className="list row">
@@ -167,45 +171,50 @@ export default class TutorialsList extends Component {
                     "list-group-item " +
                     (index === currentIndex ? "active" : "")
                   }
-                   onClick={() => this.setActiveTutorial(tutorial, index)}
-                   key={index}
+                   // onClick={() => this.setActiveTutorial(tutorial, index)}
+                   // key={index}
                 >
                 <div class="task-title row">
                     <div class="col-md-2">
                         <span class="task-title-sp">{tutorial.title}   </span>
                     </div>
-                    <div class="col-md-1.5">
-                        <span class="badge bg-theme">{tutorial.due_date}    </span>
+                    <div class="col-md-3">
+                      {(tutorial.due_date) ?
+                        <span class="badge bg-theme">{moment(tutorial.due_date).format("YYYY-MM-DD")}    </span>
+                        : <span></span>
+                      }
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1.5">
                         <span class="badge bg-theme">{tutorial.priority}    </span>
                     </div>
-                    <div class="col-md-1">
+                    <div class="col-md-1.5">
                         <span class="badge bg-theme">{tutorial.label}    </span>
                     </div>
                     <div class="col-md-1">
                         <span class="badge bg-theme">{tutorial.status}    </span>
                     </div>              
-                    <div class="col-md-6 pull-right row">
-                        <div class="col-md-6">
+                    <div class="col-md-3 pull-right row">
+                        <div class="col-md-3">
                         </div>
-                        <div class="col-md-2">
-                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
+                        <div class="col-md-1">
+                            <Link to={"/tutorials/view/" + tutorial.id} className="badge badge-primary">
                               <i class="fa fa-check"></i>
                             </Link>
                         </div>
-                        <div class="col-md-2">
-                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
+                        <div class="col-md-1">
+                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-secondary">
                               <i class="fa fa-pencil"></i>
                             </Link>
                         </div>
                         <div class="col-md-2">
-                            <button
-                            className="badge badge-danger mr-2"
-                            onClick={() => {this.deleteTutorial(tutorial.id);this.refreshList();}}
-                            >
+                          <button className = "badge badge-warning" onClick={() => {
+                            this.deleteTutorial(
+                            tutorial.id);
+                          }                          
+                          }
+                          >
                             <i class="fa fa-trash-o "></i>
-                            </button>    
+                          </button>
                         </div>
                     </div>
                 </div>
@@ -214,73 +223,18 @@ export default class TutorialsList extends Component {
           </ul>
 
           <button
-            className="m-3 btn btn-sm btn-danger"
+            className="m-1 btn btn-sm btn-danger"
             onClick={this.removeAllTutorials}
           >
             Remove All
           </button>
+          <Link to={"/add/"}
+            className="float-right m-1 btn btn-sm btn-success"
+            
+          >
+            Add
+          </Link>
         </div>
-        { <div className="col-md-6">
-          {currentTutorial ? (
-            <div>
-              <h4>Tutorial</h4>
-              <div>
-                <label>
-                  <strong>Title:</strong>
-                </label>{" "}
-                {currentTutorial.title}
-              </div>
-              <div>
-                <label>
-                  <strong>Due Date:</strong>
-                </label>{" "}
-                {currentTutorial.duedate}
-              </div>
-              <div>
-                <label>
-                  <strong>Priority:</strong>
-                </label>{" "}
-                {currentTutorial.priority}
-              </div>
-              <div>
-                <label>
-                  <strong>Label:</strong>
-                </label>{" "}
-                {currentTutorial.label}
-              </div>
-              <div>
-                <label>
-                  <strong>Status:</strong>
-                </label>{" "}
-                {currentTutorial.status}
-              </div>
-              <div>
-                <label>
-                  <strong>Description:</strong>
-                </label>{" "}
-                {currentTutorial.description}
-              </div>
-              <div>
-                <label>
-                  <strong>Status:</strong>
-                </label>{" "}
-                {currentTutorial.published ? "Published" : "Pending"}
-              </div>
-
-              <Link
-                to={"/tutorials/" + currentTutorial.id}
-                className="badge badge-warning"
-              >
-                Edit
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <br />
-              <p>Please click on a Task...</p>
-            </div>
-          )}
-        </div> }
       </div>
     );
   }

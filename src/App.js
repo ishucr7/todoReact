@@ -14,6 +14,7 @@ import BoardAdmin from "./components/board-admin.component";
 
 import AddTutorial from "./components/addtutorial";
 import Tutorial from "./components/tutorialcomponent";
+import ViewTutorial from "./components/viewTutorialComponent";
 import TutorialsList from "./components/tutoriallist";
 
 class App extends Component {
@@ -132,7 +133,8 @@ class App extends Component {
               <Route path="/admin" component={BoardAdmin} />
 
               <Route exact path={["/", "/tutorials"]} component={TutorialsList} />
-              <Route exact path="/add" component={AddTutorial} />
+              <Route exact path="/add" component={AddTutorial} />              
+              <Route path="/tutorials/view/:id" component={ViewTutorial} />
               <Route path="/tutorials/:id" component={Tutorial} />
 
             </Switch>
