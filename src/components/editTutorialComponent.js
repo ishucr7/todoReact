@@ -1,21 +1,12 @@
 import React, { Component } from "react";
 import TutorialDataService from "../services/tutorial.service";
-import SeederDataService from "../services/seeder.service";
-import moment from 'moment';
 
-export default class Tutorial extends Component {
+export default class EditTutorial extends Component {
   constructor(props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
-    this.onChangeDuedate = this.onChangeDuedate.bind(this);
-    this.onChangePriority = this.onChangePriority.bind(this);
-    this.onChangeLabel = this.onChangeLabel.bind(this);
-    this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
-
     this.getTutorial = this.getTutorial.bind(this);
-    this.loadSeeder = this.loadSeeder.bind(this);
-    
     this.updatePublished = this.updatePublished.bind(this);
     this.updateTutorial = this.updateTutorial.bind(this);
     this.deleteTutorial = this.deleteTutorial.bind(this);
@@ -31,11 +22,12 @@ export default class Tutorial extends Component {
         description: "",
         published: false
       },
-      message: "",
-      statuses: [],
-      labels: [],
-      priorities: []
+      message: ""
     };
+  }
+
+  componentDidMount() {
+    this.getTutorial(this.props.match.params.id);
   }
 
   onChangeTitle(e) {
@@ -66,7 +58,7 @@ export default class Tutorial extends Component {
 
   onChangePriority(e) {
     const priority = e.target.value;
-    console.log("ppppppppppp ",priority);
+
     this.setState(function(prevState) {
       return {
         currentTutorial: {
@@ -105,7 +97,7 @@ export default class Tutorial extends Component {
 
   onChangeDescription(e) {
     const description = e.target.value;
-
+    
     this.setState(prevState => ({
       currentTutorial: {
         ...prevState.currentTutorial,
@@ -114,41 +106,7 @@ export default class Tutorial extends Component {
     }));
   }
 
-
-  loadSeeder(){
-    console.log("Inside load Seeder");
-    SeederDataService.getAllLabels().then(response => {
-      console.log("Labels", response);
-      this.setState({
-        labels:response.data,
-        //label: response.data[0]['id'],
-      });
-    })
-
-    SeederDataService.getAllStatuses().then(response => {
-      console.log("Statuses ", response);
-      this.setState({
-        statuses:response.data,
-        //status: response.data[0]['id'],
-      });
-    })
-
-    SeederDataService.getAllPriorities().then(response => {
-      console.log("Priorities" ,response);
-      this.setState({
-        priorities:response.data,
-        //currentTutorial.priority: response.data[0]['id'],
-      });
-    })
-  }
-
-  componentDidMount() {
-    this.loadSeeder();
-    this.getTutorial(this.props.match.params.id);
-  }
-
   getTutorial(id) {
-    console.log("****",id);
     TutorialDataService.get(id)
       .then(response => {
         this.setState({
@@ -165,10 +123,10 @@ export default class Tutorial extends Component {
     var data = {
       id: this.state.currentTutorial.id,
       title: this.state.currentTutorial.title,
-      due_date: this.state.currentTutorial.duedate,
-      priority_id: this.state.currentTutorial.priority,
-      label_id: this.state.currentTutorial.label,
-      status_id: this.state.currentTutorial.status, 
+      duedate: this.state.currentTutorial.duedate,
+      priority: this.state.currentTutorial.priority,
+      label: this.state.currentTutorial.label,
+      status: this.state.currentTutorial.status, 
       description: this.state.currentTutorial.description,
       published: status
     };
@@ -196,7 +154,7 @@ export default class Tutorial extends Component {
       .then(response => {
         console.log(response.data);
         this.setState({
-          message: "Changes saved successfully!"
+          message: "The tutorial was updated successfully!"
         });
       })
       .catch(e => {
@@ -204,8 +162,7 @@ export default class Tutorial extends Component {
       });
   }
 
-  deleteTutorial() { 
-    console .log("delete id",this.state.currentTutorial.title);   
+  deleteTutorial() {    
     TutorialDataService.delete(this.state.currentTutorial.id)
       .then(response => {
         console.log(response.data);
@@ -217,104 +174,106 @@ export default class Tutorial extends Component {
   }
 
   render() {
-     const { currentTutorial,labels, statuses, priorities } = this.state;
+     const { currentTutorial } = this.state;
 
     return (
       <div>
         {currentTutorial ? (
           <div className="edit-form">
-            <h4>Task</h4>
+            <h4>Tutorial</h4>
             <form>
               <div className="form-group">
                 <label htmlFor="title">Title</label>
                 <input
-                  readOnly
                   type="text"
                   className="form-control"
                   id="title"
                   value={currentTutorial.title}
+                  onChange={this.onChangeTitle}
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="duedate">Due Date</label>
                 <input
-                  readOnly
                   type="date"
                   className="form-control"
                   id="duedate"
-                  value={currentTutorial.duedate ? moment(currentTutorial.duedate).format("YYYY-MM-DD") : null}
+                  value={currentTutorial.due_date}
                   onChange={this.onChangeDuedate}
-
                 />
               </div>
               <div className="form-group">
                 <label htmlFor="priority">Priority</label>
-                <select
-                className="form-control"
-                id="priority"
-                required
-                value={currentTutorial.priority}
-                onChange={this.onChangePriority}
-                name="priority">
-                {priorities.map(priority =>(
-                  <option key={priority.id} value={priority.id}>{priority.name}</option>
-                ))}
-              </select>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="priority"
+                  value={currentTutorial.priority_id}
+                  onChange={this.onChangePriority}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="label">Label</label>
-                <select
-                className="form-control"
-                id="label"
-                required
-                value={currentTutorial.label}
-                onChange={this.onChangeLabel}
-                name="label">
-                {labels.map(label =>(
-                  <option key={label.id} value={label.id}>{label.name}</option>
-                ))}
-              </select>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="label"
+                  value={currentTutorial.label_id}
+                  onChange={this.onChangeLabel}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="status">Status</label>
-                <select
-                className="form-control"
-                id="status"
-                required
-                value={currentTutorial.status}
-                onChange={this.onChangeStatus}
-                name="status">
-                {priorities.map(status =>(
-                  <option key={status.id} value={status.id}>{status.name}</option>
-                ))}
-              </select>
+                <input
+                  type="text"
+                  className="form-control"
+                  id="status"
+                  value={currentTutorial.status_id}
+                  onChange={this.onChangeStatus}
+                />
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description</label>
                 <input
-                  readOnly
                   type="text"
                   className="form-control"
                   id="description"
                   value={currentTutorial.description}
+                  onChange={this.onChangeDescription}
                 />
               </div>
 
             </form>
 
+            {currentTutorial.published ? (
+              <button
+                className="badge badge-primary mr-2"
+                onClick={() => this.updatePublished(false)}
+              >
+                UnPublish
+              </button>
+            ) : (
+              <button
+                className="badge badge-primary mr-2"
+                onClick={() => this.updatePublished(true)}
+              >
+                Publish
+              </button>
+            )}
+
             <button
               className="badge badge-danger mr-2"
               onClick={this.deleteTutorial}
             >
-              Delete Task
+              Delete
             </button>
 
             <button
               type="submit"
-              className="float-right badge badge-success"
+              className="badge badge-success"
               onClick={this.updateTutorial}
             >
-              Save Changes
+              Update
             </button>
             <p>{this.state.message}</p>
           </div>

@@ -210,7 +210,6 @@ loadSeeder(){
                           <button className = "badge badge-warning" onClick={() => {
                             this.deleteTutorial(
                             tutorial.id);
-                            // this.refreshList();
                           }                          
                           }
                           >
