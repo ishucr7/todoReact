@@ -317,7 +317,7 @@ export default class Tutorial extends Component {
                   type="date"
                   className="form-control"
                   id="duedate"
-                  value={moment(currentTutorial.duedate).format("YYYY-MM-DD")}
+                  value={currentTutorial.duedate ? moment(currentTutorial.duedate).format("YYYY-MM-DD") : null}
                   onChange={this.onChangeDuedate}
                 />
               </div>

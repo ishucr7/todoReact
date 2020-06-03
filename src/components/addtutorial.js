@@ -24,7 +24,7 @@ export default class AddTutorial extends Component {
     this.state = {
       id: null,
       title: "",
-      duedate: "",
+      duedate: null,
       priority: "",
       label: "",
       status: "", 
@@ -134,7 +134,7 @@ export default class AddTutorial extends Component {
     this.setState({
       id: null,
       title: "",
-      duedate: "",
+      duedate: null,
       priority: "",
       label: "",
       status: "", 
@@ -152,6 +152,11 @@ export default class AddTutorial extends Component {
     console.log('ENTERED');
     console.log(this.state);
     const {labels, statuses, priorities } = this.state;
+    console.log("----asdadsasd----");
+    console.log(labels);
+    console.log(statuses);
+    console.log(priorities);
+    console.log("----asdasdasd----");
 
     return (
       <div className="submit-form">

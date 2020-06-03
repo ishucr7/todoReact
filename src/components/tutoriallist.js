@@ -14,6 +14,7 @@ export default class TutorialsList extends Component {
     this.setActiveTutorial = this.setActiveTutorial.bind(this);
     this.removeAllTutorials = this.removeAllTutorials.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
+    this.deleteTutorial = this.deleteTutorial.bind(this);
 
     this.state = {
       tutorials: [],
@@ -97,7 +98,7 @@ loadSeeder(){
     });
   }
 
-  deleteTutorial(id) {    
+  deleteTutorial(id) {
     TutorialDataService.delete(id)
       .then(response => {
         console.log(response.data);
@@ -178,7 +179,10 @@ loadSeeder(){
                         <span class="task-title-sp">{tutorial.title}   </span>
                     </div>
                     <div class="col-md-3">
+                      {(tutorial.due_date) ?
                         <span class="badge bg-theme">{moment(tutorial.due_date).format("YYYY-MM-DD")}    </span>
+                        : <span></span>
+                      }
                     </div>
                     <div class="col-md-1.5">
                         <span class="badge bg-theme">{tutorial.priority}    </span>
@@ -203,9 +207,15 @@ loadSeeder(){
                             </Link>
                         </div>
                         <div class="col-md-2">
-                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-warning">
-                              <i class="fa fa-trash-o "></i>
-                            </Link>
+                          <button className = "badge badge-warning" onClick={() => {
+                            this.deleteTutorial(
+                            tutorial.id);
+                            // this.refreshList();
+                          }                          
+                          }
+                          >
+                            <i class="fa fa-trash-o "></i>
+                          </button>
                         </div>
                     </div>
                 </div>
@@ -226,67 +236,6 @@ loadSeeder(){
             Add
           </Link>
         </div>
-        { /*<div className="col-md-6">
-          {currentTutorial ? (
-            <div>
-              <h4>Tutorial</h4>
-              <div>
-                <label>
-                  <strong>Title:</strong>
-                </label>{" "}
-                {currentTutorial.title}
-              </div>
-              <div>
-                <label>
-                  <strong>Due Date:</strong>
-                </label>{" "}
-                {currentTutorial.duedate}
-              </div>
-              <div>
-                <label>
-                  <strong>Priority:</strong>
-                </label>{" "}
-                {currentTutorial.priority}
-              </div>
-              <div>
-                <label>
-                  <strong>Label:</strong>
-                </label>{" "}
-                {currentTutorial.label}
-              </div>
-              <div>
-                <label>
-                  <strong>Status:</strong>
-                </label>{" "}
-                {currentTutorial.status}
-              </div>
-              <div>
-                <label>
-                  <strong>Description:</strong>
-                </label>{" "}
-                {currentTutorial.description}
-              </div>
-              <div>
-                <label>
-                  <strong>Status:</strong>
-                </label>{" "}
-                {currentTutorial.published ? "Published" : "Pending"}
-              </div>
-
-              <Link
-                to={"/tutorials/" + currentTutorial.id}
-                className="badge badge-warning"
-              >
-                Edit
-              </Link>
-            </div>
-          ) : (
-            <div>
-              <br />
-              <p>Please click on a Task...</p>
-            </div>
-          )}
-        </div> */}
       </div>
     );
   }
