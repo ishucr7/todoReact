@@ -1,3 +1,7 @@
+body, html {
+  height: 100%;
+}
+
 .list {
   text-align: left;
   /* max-width: 1000px; */
@@ -5,12 +9,12 @@
 }
 
 .submit-form {
-  max-width: 300px;
+  max-width: 500px;
   margin: auto;
 }
 
 .edit-form {
-  max-width: 300px;
+  max-width: 450px;
   margin: auto;
 }
 
@@ -25,7 +29,8 @@
 .badge
 {
   display: inline-block;
-  min-width: 10px;
+  /* min-width: 15px; */
+  width: 71px;
   padding: 3px 7px;
   font-size: 12px;
   font-weight: bold;
@@ -72,4 +77,42 @@ label {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
+}
+
+body {
+  background-image: url('https://cdn.pixabay.com/photo/2013/10/02/23/03/dawn-190055_960_720.jpg');
+  /* background-size: auto;
+  background-repeat: no-repeat; */
+  height: 100%;
+
+  background-attachment: fixed;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.golu{
+  /* background-attachment: fixed; */
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%;
+  overflow: hidden;
+  z-index: 4;
+  /* margin: */
+}
+.main {
+  margin-top: 100px; 
+}
+
+.db-white{
+  padding: 38px;
+  background-color: rgb(218, 216, 224);
+}
+
+.color-azure{
+  color:azure;
+}
+h4{
+  color:azure;
 }

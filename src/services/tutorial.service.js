@@ -2,8 +2,15 @@ import http from "../http-common";
 import authHeader from './auth-header';
 
 class TutorialDataService {
+  getTasksByTeamId(id){
+    return http.get(`/api/teams/${id}/tasks`, { headers: authHeader() });  
+  }
+
   getAll() {
     return http.get("/api/user/tasks", { headers: authHeader() });  
+  }
+  getComments(id) {
+    return http.get(`/api/user/comments/${id}`, { headers: authHeader() });  
   }
 
   get(id) {
@@ -27,7 +34,8 @@ class TutorialDataService {
   }
 
   findByTitle(title) {
-    return http.get(`/api/user/tasks?title=${title}`, { headers: authHeader() });
+    console.log("inside find byd title in service ", title);
+    return http.get(`/api/user/tasks/search/?title=${title}`, { headers: authHeader() });
   }
 }
 

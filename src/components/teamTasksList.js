@@ -1,26 +1,28 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
+import TeamDataService from "../services/tutorial.service";
 import { Link } from "react-router-dom";
 import SeederDataService from "../services/seeder.service";
 import moment from 'moment';
 
-export default class TutorialsList extends Component {
+export default class TeamTasksList extends Component {
   constructor(props) {
     super(props);
+
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.retrieveTutorials = this.retrieveTutorials.bind(this);
+
+    this.retrieveTasks = this.retrieveTasks.bind(this);
     this.loadSeeder = this.loadSeeder.bind(this);
-    this.refreshList = this.refreshList.bind(this);
-    this.removeAllTutorials = this.removeAllTutorials.bind(this);
+    this.removeAllTasks = this.removeAllTasks.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
-    this.deleteTutorial = this.deleteTutorial.bind(this);
+    this.deleteTeam = this.deleteTeam.bind(this);
 
     this.state = {
-      tutorials: [],
+      tasks: [],
       searchTitle: "",
       statuses: [],
       labels: [],
-      priorities: []
+      priorities: [],
+      team_id: this.props.match.params.id,
     };
   }
 
@@ -54,7 +56,7 @@ loadSeeder(){
 
   componentDidMount() {
     this.loadSeeder();
-    this.refreshList();
+    this.retrieveTasks(this.props.match.params.id);
   }
 
   onChangeSearchTitle(e) {
@@ -65,42 +67,41 @@ loadSeeder(){
     });
   }
 
-  retrieveTutorials() {
+  retrieveTasks(id) {
     console.log("inside retrwice");
-    TutorialDataService.getAll()
+    setTimeout(() => {
+    TeamDataService.getTasksByTeamId(id)
       .then(response => {
         this.setState({
-          tutorials: response.data
+          tasks: response.data
         });
         console.log(response.data);
       })
       .catch(e => {
         console.log(e);
       });
-  }
-
-  refreshList() {
-    this.retrieveTutorials();
+    }, 1000);
   }
 
 
-  deleteTutorial(id) {
-    TutorialDataService.delete(id)
+  deleteTeam(id) {
+    TeamDataService.delete(id)
       .then(response => {
         console.log(response.data);
-        this.props.history.push('/tutorials');
-        this.refreshList();
+        this.props.history.push('/tasks');
+        this.retrieveTasks(this.props.match.params.id);
       })
       .catch(e => {
         console.log(e);
       });
   }
 
-  removeAllTutorials() {
-    TutorialDataService.deleteAll()
+  removeAllTasks() {
+    TeamDataService.deleteAll()
       .then(response => {
         console.log(response.data);
-        this.refreshList();
+        this.retrieveTasks(this.props.match.params.id);
+
       })
       .catch(e => {
         console.log(e);
@@ -108,10 +109,10 @@ loadSeeder(){
   }
 
   searchTitle() {
-    TutorialDataService.findByTitle(this.state.searchTitle)
+    TeamDataService.findByTitle(this.state.searchTitle)
       .then(response => {
         this.setState({
-          tutorials: response.data
+          tasks: response.data
         });
         console.log("SEARCH TITLE THING ", response.data);
       })
@@ -121,7 +122,7 @@ loadSeeder(){
   }
 
   render() {
-    const { searchTitle, tutorials, currentTutorial,labels, statuses, priorities } = this.state;
+    const { searchTitle, tasks, team_id, currentTeam,labels, statuses, priorities } = this.state;
 
     return (
       <div className="list row">
@@ -147,11 +148,11 @@ loadSeeder(){
         </div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div className="col-md-10">
-          <h4>ToDo List</h4>
+          <h4>Team ToDo List</h4>
 
           <ul className="list-group">
-            {tutorials &&
-              tutorials.map((tutorial, index) => (
+            {tasks &&
+              tasks.map((tutorial, index) => (
                 <li className="list-group-item ">
                 <div class="task-title row">
                     <div class="col-md-2">
@@ -172,27 +173,23 @@ loadSeeder(){
                     <div class="col-md-1">
                         <span class="badge bg-theme">{tutorial.status}    </span>
                     </div>              
+                    <div class="col-md-1">
+                    </div>              
                     <div class="col-md-3 pull-right row">
-                        <div class="col-md-3">
-                        </div>
-                        <div class="col-md-1">
-                            <Link to={"/tutorials/view/" + tutorial.id} className="badge badge-primary">
-                              <i class="fa fa-check"></i>
-                            </Link>
-                        </div>
-                        <div class="col-md-1">
-                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-secondary">
-                              <i class="fa fa-pencil"></i>
-                            </Link>
-                        </div>
                         <div class="col-md-2">
-                          <button className = "badge badge-warning" onClick={() => {
-                            this.deleteTutorial(
+                            <Link to={"/teams/"+team_id + "/tasks/" + tutorial.id + "/view/" } className="badge badge-primary">
+                                Open
+                            </Link>
+                        </div>
+                        <div class="col-md-1"></div>
+                        <div class="col-md-2">
+                          <button className = "badge badge-primary" onClick={() => {
+                            this.deleteTeam(
                             tutorial.id);
                           }                          
                           }
                           >
-                            <i class="fa fa-trash-o "></i>
+                              Delete
                           </button>
                         </div>
                     </div>
@@ -203,11 +200,11 @@ loadSeeder(){
 
           <button
             className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllTutorials}
+            onClick={this.removeAllTasks}
           >
             Remove All
           </button>
-          <Link to={"/add/"}
+          <Link to={"/teams/" + team_id + "/tasks/create"}
             className="float-right m-1 btn btn-sm btn-success"
             
           >

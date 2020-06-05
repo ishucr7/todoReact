@@ -16,6 +16,10 @@ class SeederDataService {
         console.log("inside get All Priorities");
         return http.get("/api/priorities");
     }
+
+    getAllUsers(){
+        return http.get("/api/getAllUsers");
+    }
 }
 
 export default new SeederDataService();
