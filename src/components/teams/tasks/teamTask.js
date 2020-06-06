@@ -477,7 +477,6 @@ export default class TeamTask extends Component {
             >
               Save Changes
             </button>
-            <p>{this.state.message}</p>
           </div>
       </div>
     );
