@@ -1,26 +1,26 @@
 import React, { Component } from "react";
-import TutorialDataService from "../../services/tutorial.service";
+import TaskDataService from "../../services/tasks.service";
 import { Link } from "react-router-dom";
 import SeederDataService from "../../services/seeder.service";
 import moment from 'moment';
 
-export default class TutorialsList extends Component {
+export default class TasksList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-    this.retrieveTutorials = this.retrieveTutorials.bind(this);
+    this.retrieveTasks = this.retrieveTasks.bind(this);
     this.loadSeeder = this.loadSeeder.bind(this);
     this.refreshList = this.refreshList.bind(this);
-    this.removeAllTutorials = this.removeAllTutorials.bind(this);
+    this.removeAllTasks = this.removeAllTasks.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
-    this.deleteTutorial = this.deleteTutorial.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
     this.handlePriorityColor = this.handlePriorityColor.bind(this);
     this.handleStatusColor = this.handleStatusColor.bind(this);
     this.handleLabelColor = this.handleLabelColor.bind(this);
     
 
     this.state = {
-      tutorials: [],
+      tasks: [],
       searchTitle: "",
       statuses: [],
       labels: [],
@@ -69,30 +69,32 @@ loadSeeder(){
     });
   }
 
-  retrieveTutorials() {
+  retrieveTasks() {
     console.log("inside retrwice");
-    TutorialDataService.getAll()
+    setTimeout(() => {
+      TaskDataService.getAll()
       .then(response => {
         this.setState({
-          tutorials: response.data
+          tasks: response.data
         });
         console.log(response.data);
       })
       .catch(e => {
         console.log(e);
       });
+    }, 1000);
   }
 
   refreshList() {
-    this.retrieveTutorials();
+    this.retrieveTasks();
   }
 
 
-  deleteTutorial(id) {
-    TutorialDataService.delete(id)
+  deleteTask(id) {
+    TaskDataService.delete(id)
       .then(response => {
         console.log(response.data);
-        this.props.history.push('/tutorials');
+        this.props.history.push('/me/tasks/list');
         this.refreshList();
       })
       .catch(e => {
@@ -100,8 +102,8 @@ loadSeeder(){
       });
   }
 
-  removeAllTutorials() {
-    TutorialDataService.deleteAll()
+  removeAllTasks() {
+    TaskDataService.deleteAll()
       .then(response => {
         console.log(response.data);
         this.refreshList();
@@ -112,10 +114,10 @@ loadSeeder(){
   }
 
   searchTitle() {
-    TutorialDataService.findByTitle(this.state.searchTitle)
+    TaskDataService.findByTitle(this.state.searchTitle)
       .then(response => {
         this.setState({
-          tutorials: response.data
+          tasks: response.data
         });
         console.log("SEARCH TITLE THING ", response.data);
       })
@@ -168,7 +170,7 @@ loadSeeder(){
     }
   }
   render() {
-    const { searchTitle, tutorials, currentTutorial,labels, statuses, priorities } = this.state;
+    const { searchTitle, tasks, currentTask,labels, statuses, priorities } = this.state;
 
     return (
       <div className="list row">
@@ -202,13 +204,13 @@ loadSeeder(){
             <div className="ml-auto">
              <button
             className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllTutorials}
+            onClick={this.removeAllTasks}
           >
             Remove All
           </button>
             </div>
             <div className="input-group-append ">
-             <Link to={"/add/"}
+             <Link to={"/me/tasks/create/"}
             className="float-right m-1 btn btn-sm btn-success"
             
           >
@@ -220,50 +222,43 @@ loadSeeder(){
           
 
           <ul className="list-group">
-            {tutorials &&
-              tutorials.map((tutorial, index) => (
+            {tasks &&
+              tasks.map((task, index) => (
                 <li className="list-group-item ">
                 <div className="task-title row">
                     <div className="col-md-2">
-                        <span className="task-title-sp Highlight">{tutorial.title}   </span>
+                        <span className="task-title-sp Highlight">{task.title}   </span>
                     </div>
                     <div class="col-md-2">
-                      {(tutorial.due_date) ?
-                        <span className="badge Clay">{moment(tutorial.due_date).format("DD-MM-YYYY")}    </span>
+                      {(task.due_date) ?
+                        <span className="badge Clay">{moment(task.due_date).format("DD-MM-YYYY")}    </span>
                         : <span></span>
                       }
                     </div>
                     <div class="col-md-1">
-                        <span className={this.handlePriorityColor(tutorial.priority)}>{tutorial.priority} </span>
+                        <span className={this.handlePriorityColor(task.priority)}>{task.priority} </span>
                     </div>
                     <div class="col-md-1">
-                        <span className={this.handleLabelColor(tutorial.label)}>{tutorial.label}    </span>
+                        <span className={this.handleLabelColor(task.label)}>{task.label}    </span>
                     </div>
                     <div class="col-md-2">
-                        <span className={this.handleStatusColor(tutorial.status)}>{tutorial.status}    </span>
+                        <span className={this.handleStatusColor(task.status)}>{task.status}    </span>
                     </div>              
                     <div class="col-md-4 pull-right row">
                         <div class="col-md-1">
                         </div>
-                        <div class="col-md-4">
-                            <span>
-                            <Link to={"/tutorials/view/" + tutorial.id} className="badge badge-primary">
-                              View
-                            </Link>
-                            </span>
-                        </div>
                         <div class="col-md-3.5">
                             <span>
-                            <Link to={"/tutorials/" + tutorial.id} className="badge Hovering2">
-                              Edit
+                            <Link to={"/me/tasks/" + task.id + "/open"} className="badge Hovering2">
+                              Open
                             </Link>
                             </span>
                         </div>
                         <div class="col-md-3">
                           <span>
                           <button className = "badge badge-danger Hovering buttonAsALink" onClick={() => {
-                            this.deleteTutorial(
-                            tutorial.id);
+                            this.deleteTask(
+                            task.id);
                           }                          
                           }
                           >

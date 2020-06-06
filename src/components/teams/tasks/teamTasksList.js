@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TeamDataService from "../../../services/tutorial.service";
+import TeamDataService from "../../../services/tasks.service";
 import { Link } from "react-router-dom";
 import SeederDataService from "../../../services/seeder.service";
 import moment from 'moment';
@@ -89,10 +89,11 @@ loadSeeder(){
 
 
   deleteTeam(id) {
+    const team_id = this.state.team_id; 
     TeamDataService.delete(id)
       .then(response => {
         console.log(response.data);
-        this.props.history.push('/tasks');
+        this.props.history.push('/teams/' + team_id + '/tasks/list');
         this.retrieveTasks(this.props.match.params.id);
       })
       .catch(e => {
@@ -224,32 +225,32 @@ loadSeeder(){
 
           <ul className="list-group">
             {tasks &&
-              tasks.map((tutorial, index) => (
+              tasks.map((task, index) => (
                 <li className="list-group-item ">
                 <div class="task-title row">
                     <div class="col-md-2">
-                        <span class="task-title-sp Highlight">{tutorial.title}   </span>
+                        <span class="task-title-sp Highlight">{task.title}   </span>
                     </div>
                     <div class="col-md-2">
-                      {(tutorial.due_date) ?
-                        <span class="badge Clay">{moment(tutorial.due_date).format("DD-MM-YYYY")}    </span>
+                      {(task.due_date) ?
+                        <span class="badge Clay">{moment(task.due_date).format("DD-MM-YYYY")}    </span>
                         : <span></span>
                       }
                     </div>
                     <div class="col-md-1">
-                        <span class={this.handlePriorityColor(tutorial.priority)}>{tutorial.priority}    </span>
+                        <span class={this.handlePriorityColor(task.priority)}>{task.priority}    </span>
                     </div>
                     <div class="col-md-1">
-                        <span class={this.handleLabelColor(tutorial.label)}>{tutorial.label}    </span>
+                        <span class={this.handleLabelColor(task.label)}>{task.label}    </span>
                     </div>
                     <div class="col-md-2">
-                        <span class={this.handleStatusColor(tutorial.status)}>{tutorial.status}    </span>
+                        <span class={this.handleStatusColor(task.status)}>{task.status}    </span>
                     </div>              
                     <div class="col-md-4">
                     </div>              
                     <div class="col-md-1 pull-right row">
                         <div class="col-md-2">
-                            <Link to={"/teams/"+team_id + "/tasks/" + tutorial.id + "/view/" } className="badge badge-primary">
+                            <Link to={"/teams/"+team_id + "/tasks/" + task.id + "/open/" } className="badge badge-primary">
                                 Open
                             </Link>
                         </div>
@@ -257,7 +258,7 @@ loadSeeder(){
                         <div class="col-md-2">
                           <button className = "badge badge-danger Hovering buttonAsALink" onClick={() => {
                             this.deleteTeam(
-                            tutorial.id);
+                            task.id);
                           }                          
                           }
                           >

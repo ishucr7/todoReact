@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import TaskDataService from "../../../services/tutorial.service";
-import SeederDataService from "../../../services/seeder.service";
-import TeamDataService from "../../../services/teams.service";
+import TaskDataService from "../../services/tasks.service";
+import SeederDataService from "../../services/seeder.service";
 import moment from 'moment';
 
-export default class TeamTask extends Component {
+export default class Task extends Component {
   constructor(props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -14,7 +13,6 @@ export default class TeamTask extends Component {
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onChangeComment = this.onChangeComment.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.onChangeAssigneeId = this.onChangeAssigneeId.bind(this);
 
     this.getTask = this.getTask.bind(this);
     this.loadSeeder = this.loadSeeder.bind(this);
@@ -24,7 +22,7 @@ export default class TeamTask extends Component {
 
     this.state = {
       currentTask: {
-        id: this.props.match.params.taskId,
+        id: null,
         title: "",
         duedate: "",
         priority: "",
@@ -34,30 +32,13 @@ export default class TeamTask extends Component {
         published: false,
         newComment: "",
         oldComments: null,
-        assignee_id: "",
       },
       message: "",
       statuses: [],
       labels: [],
-      priorities: [],
-      allUsers: [],
-      team_id: this.props.match.params.id,
-    //   task_id: this.props.match.params.taskId,
+      priorities: []
     };
   }
-
-  onChangeAssigneeId(e){
-    const ass = e.target.value;
-    this.setState(function(prevState) {
-        return {
-          currentTask: {
-            ...prevState.currentTask,
-            assignee_id: ass
-          }
-        };
-      });
-    }
-
 
   onChangeTitle(e) {
     const title = e.target.value;
@@ -174,27 +155,12 @@ export default class TeamTask extends Component {
         //currentTask.priority: response.data[0]['id'],
       });
     })
-
-    const team_id = this.state.team_id;
-
-    TeamDataService.getTeam(team_id).then(response => {
-        var arr = [];
-        for(var i=0;i<response.data.user_list.length; i++){
-            arr.push({
-                'id': response.data.user_ids[i].user_id,
-                'email': response.data.user_list[i]
-            });
-        }
-        this.setState({
-          allUsers: arr // basically members of this team.
-        });
-      })
   }
 
   componentDidMount() {
     this.loadSeeder();
-    this.getTask(this.props.match.params.taskId);
-    this.getComments(this.props.match.params.taskId);
+    this.getTask(this.props.match.params.id);
+    this.getComments(this.props.match.params.id);
   }
 
   getTask(id) {
@@ -235,21 +201,9 @@ export default class TeamTask extends Component {
 
 
   updateTask() {
-    // (this.state.currentTask.assignee_id!=="" ? this.state.assignee_id : null)
-    const assignee_id = ((this.state.currentTask.assignee_id && this.state.currentTask.assignee_id.length) ?
-        this.state.currentTask.assignee_id : null)
-    // console.log()
-      this.setState( prevState => ({
-        currentTask: {
-            ...prevState.currentTask,
-            assignee_id: assignee_id
-        }
-      }));
-
-      TaskDataService.update(
-        this.state.currentTask.id,
-        this.state.currentTask,
-        // this.state.task_id
+    TaskDataService.update(
+      this.state.currentTask.id,
+      this.state.currentTask
     )
       .then(response => {
         console.log(response.data);
@@ -267,7 +221,7 @@ export default class TeamTask extends Component {
     TaskDataService.delete(this.state.currentTask.id)
       .then(response => {
         console.log(response.data);
-        this.props.history.push('/tutorials');
+        this.props.history.push('/me/tasks/list');
       })
       .catch(e => {
         console.log(e);
@@ -275,7 +229,7 @@ export default class TeamTask extends Component {
   }
 
   render() {
-     const { currentTask,labels, allUsers, statuses, priorities } = this.state;
+     const { currentTask,labels, statuses, priorities } = this.state;
     console.log('Lets see the state', this.state);
     return (
       <div>
@@ -283,7 +237,7 @@ export default class TeamTask extends Component {
           <div className="edit-form db-white">
             <h4>Task</h4>
             <form>
-              <div className="form-group task-title" >
+              <div className="form-group">
                 <label htmlFor="title">Title</label>
                 <input
                   type="text"
@@ -293,7 +247,7 @@ export default class TeamTask extends Component {
                   value={currentTask.title}
                 />
               </div>
-              <div className="form-group task-title">
+              <div className="form-group">
                 <label htmlFor="duedate">Due Date</label>
                 <input
                   type="date"
@@ -304,25 +258,6 @@ export default class TeamTask extends Component {
 
                 />
               </div>
-
-              <div className="form-group">
-              <label htmlFor="assignee">Assigned To:
-              <select
-                className="form-control"
-                id="assignee"
-                required
-                value={this.state.currentTask.assignee_id}
-                onChange={this.onChangeAssigneeId}
-                name="assignee">
-                <option key="" value=""> None</option>
-
-                {allUsers.map(user =>(
-                  <option key={user.id} value={user['id']}>{user['email']}</option>
-                ))}
-              </select>
-              </label>
-            </div>
-
               <div className="form-group">
                 <label htmlFor="priority">Priority</label>
                 <select
