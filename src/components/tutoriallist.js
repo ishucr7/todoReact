@@ -194,7 +194,30 @@ loadSeeder(){
         </div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div className="col-md-11">
-          <h4>ToDo List</h4>
+        <div className="col-md-13 ">
+          <div className="input-group mb-3">
+            <div className="mr-auto">
+            <h4>ToDo List</h4>
+            </div>
+            <div className="ml-auto">
+             <button
+            className="m-1 btn btn-sm btn-danger"
+            onClick={this.removeAllTutorials}
+          >
+            Remove All
+          </button>
+            </div>
+            <div className="input-group-append ">
+             <Link to={"/add/"}
+            className="float-right m-1 btn btn-sm btn-success"
+            
+          >
+            Add
+          </Link>
+            </div>
+          </div>
+        </div>
+          
 
           <ul className="list-group">
             {tutorials &&
@@ -254,18 +277,8 @@ loadSeeder(){
               ))}
           </ul>
 
-          <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllTutorials}
-          >
-            Remove All
-          </button>
-          <Link to={"/add/"}
-            className="float-right m-1 btn btn-sm btn-success"
-            
-          >
-            Add
-          </Link>
+          
+          
         </div>
       </div>
     );
