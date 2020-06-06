@@ -41,17 +41,25 @@ export default class TeamTasksList extends Component {
   }
 
   filter_status(){
-    console.log("taskssssssss",this.state.tasks);
-    var filtered_tasks = FilterService.getTasks({
-      'allTasks': this.state.alltasks,
-      'filter_status': this.state.filter.status,
-      'filter_priority': this.state.filter.priority,
-      'filter_label': this.state.filter.label,
-    });
-    this.setState({
-      tasks: filtered_tasks
-    });
+      TaskDataService.getTasksByTeamId(this.state.team_id)
+        .then(response => {
+          var filtered_tasks = FilterService.getTasks({
+            'allTasks': response.data,
+            'filter_status': this.state.filter.status,
+            'filter_priority': this.state.filter.priority,
+            'filter_label': this.state.filter.label,
+          });
+          this.setState({
+            tasks: filtered_tasks,
+            alltasks: response.data
+          });
+          console.log(response.data);
+        })
+        .catch(e => {
+          console.log(e);
+        });
   }
+
    onChangePriorityFilter(e) {
     const priority = e.target.value;
     console.log("filter by priority",priority);
@@ -371,7 +379,7 @@ export default class TeamTasksList extends Component {
                         <div class="col-md-2"></div>
                         <div class="col-md-5">
                           <button className = "badge badge-danger Hovering buttonAsALink" onClick={() => {
-                            this.deleteTeam(
+                            this.deleteTask(
                             task.id);
                           }                          
                           }

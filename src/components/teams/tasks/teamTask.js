@@ -421,7 +421,7 @@ export default class TeamTask extends Component {
               className="m-1 btn btn-sm btn-danger"
               onClick={this.deleteTask}
             >
-              Delete Task
+              Delete
             </button>
 
             <button
@@ -429,7 +429,7 @@ export default class TeamTask extends Component {
               className="float-right m-1 btn btn-sm btn-success"
               onClick={this.updateTask}
             >
-              Save Changes
+              Save
             </button>
             <p>{this.state.message}</p>
 
@@ -481,9 +481,6 @@ export default class TeamTask extends Component {
                ))}
             </div>
              : "" }
-
-
-            
           </div>
       </div>
     );
