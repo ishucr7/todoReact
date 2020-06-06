@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TeamDataService from "../services/teams.service";
+import TeamDataService from "../../services/teams.service";
 import { Link } from "react-router-dom";
 import moment from 'moment';
 

@@ -5,24 +5,26 @@ import "./App.css";
 
 import AuthService from "./services/auth.service";
 
-import Login from "./components/login.component";
-import Register from "./components/register.component";
-import Home from "./components/home.component";
+import Login from "./components/user/login.component";
+import Register from "./components/user/register.component";
+import Home from "./components/user/home.component";
 import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
 
-import AddTutorial from "./components/addtutorial";
-import Tutorial from "./components/tutorialcomponent";
-import ViewTutorial from "./components/viewTutorialComponent";
-import TutorialsList from "./components/tutoriallist";
-import TeamTasksList from "./components/teamTasksList";
-import AddTeamTask from "./components/addTeamTask";
+import AddTutorial from "./components/tasks/addtutorial";
+import Tutorial from "./components/tasks/tutorialcomponent";
+import ViewTutorial from "./components/tasks/viewTutorialComponent";
+import TutorialsList from "./components/tasks/tutoriallist";
 
-import TeamsList from "./components/teamsList";
-import AddTeam from "./components/addTeam";
-import ViewTeam from "./components/viewTeam";
-import ViewTeamTask from "./components/viewTeamTask";
+
+import AddTeam from "./components/teams/addTeam";
+import ViewTeam from "./components/teams/viewTeam";
+import TeamsList from "./components/teams/teamsList";
+
+import ViewTeamTask from "./components/teams/tasks/viewTeamTask";
+import TeamTasksList from "./components/teams/tasks/teamTasksList";
+import AddTeamTask from "./components/teams/tasks/addTeamTask";
 
 class App extends Component {
   constructor(props) {

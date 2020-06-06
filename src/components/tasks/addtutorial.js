@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
-import SeederDataService from "../services/seeder.service";
+import TutorialDataService from "../../services/tutorial.service";
+import SeederDataService from "../../services/seeder.service";
 import { Link } from "react-router-dom";
 
 export default class AddTutorial extends Component {

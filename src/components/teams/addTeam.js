@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import TeamDataService from "../services/teams.service";
-import SeederDataService from "../services/seeder.service";
+import TeamDataService from "../../services/teams.service";
+import SeederDataService from "../../services/seeder.service";
 import { Link } from "react-router-dom";
-import AuthService from "../services/auth.service";
+import AuthService from "../../services/auth.service";
 
 export default class AddTeam extends Component {
   constructor(props) {
