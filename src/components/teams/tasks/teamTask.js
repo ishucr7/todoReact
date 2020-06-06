@@ -324,7 +324,7 @@ export default class TeamTask extends Component {
     return (
       <div>
           <div className="edit-form db-white">
-            <h4>Task</h4>
+            <h4 className="BlackHeading">Task</h4>
               <div className="form-group task-title" >
                 <label htmlFor="title">Title</label>
                 <input
@@ -417,6 +417,21 @@ export default class TeamTask extends Component {
                 value={currentTask.description}
                 />
               </div>
+              <button
+              className="m-1 btn btn-sm btn-danger"
+              onClick={this.deleteTask}
+            >
+              Delete Task
+            </button>
+
+            <button
+              type="submit"
+              className="float-right m-1 btn btn-sm btn-success"
+              onClick={this.updateTask}
+            >
+              Save Changes
+            </button>
+            <p>{this.state.message}</p>
 
               <div className="form-group">
                 <label htmlFor="Comment"><b>Add Comment</b>
@@ -428,7 +443,12 @@ export default class TeamTask extends Component {
                         onChange={this.onChangeComment}
                         name="comment"
                       />
-                      <button class="btn btn-success" onClick={this.addComment}>Add</button>
+                    {/* </div> */}
+                    {/* <div class="col-md-2"> */}
+                    <div>
+                        <button class="btn btn-success MarginTop"  onClick={this.addComment}>Add</button>
+                    </div>
+                    {/* </div> */}
                   </div>
                 </label>
               </div>
@@ -461,22 +481,6 @@ export default class TeamTask extends Component {
                ))}
             </div>
              : "" }
-
-
-            <button
-              className="badge badge-danger mr-2"
-              onClick={this.deleteTask}
-            >
-              Delete Task
-            </button>
-
-            <button
-              type="submit"
-              className="float-right badge badge-success"
-              onClick={this.updateTask}
-            >
-              Save Changes
-            </button>
           </div>
       </div>
     );

@@ -223,7 +223,7 @@ export default class Task extends Component {
     return (
       <div>
           <div className="edit-form db-white">
-            <h4>Task</h4>
+            <h4 className="BlackHeading">Task</h4>
             <form>
               <div className="form-group">
                 <label htmlFor="title">Title</label>
