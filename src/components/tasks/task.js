@@ -24,10 +24,16 @@ export default class Task extends Component {
       currentTask: {
         id: null,
         title: "",
-        duedate: "",
+        due_date: "",
+        // names
         priority: "",
         label: "",
         status: "",
+        // ids
+        priority_id: "",
+        label_id: "",
+        status_id: "",
+
         description: "",
         published: false,
         newComment: "",
@@ -67,52 +73,51 @@ export default class Task extends Component {
   }
 
   onChangeDuedate(e) {
-    const duedate = e.target.value;
+    const due_date = e.target.value;
 
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          duedate: duedate
+          due_date: due_date
         }
       };
     });
   }
 
   onChangePriority(e) {
-    const priority = e.target.value;
-    console.log("ppppppppppp ",priority);
+    const priority_id = e.target.value;
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          priority: priority
+          priority_id: priority_id
         }
       };
     });
   }
 
   onChangeLabel(e) {
-    const label = e.target.value;
+    const label_id = e.target.value;
 
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          label: label
+          label_id: label_id
         }
       };
     });
   }
 
   onChangeStatus(e) {
-    const status = e.target.value;
+    const status_id = e.target.value;
 
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          status: status
+          status_id: status_id
         }
       };
     });
@@ -134,26 +139,35 @@ export default class Task extends Component {
     console.log("Inside load Seeder");
     SeederDataService.getAllLabels().then(response => {
       console.log("Labels", response);
-      this.setState({
+      this.setState(prevState => ({
         labels:response.data,
-        //label: response.data[0]['id'],
-      });
+        currentTask: {
+          ...prevState.currentTask,
+          label_id: response.data[0]['id'],
+        }
+      }));
     })
 
     SeederDataService.getAllStatuses().then(response => {
       console.log("Statuses ", response);
-      this.setState({
-        statuses:response.data,
-        //status: response.data[0]['id'],
-      });
+      this.setState(prevState => ({
+        statuses: response.data,
+        currentTask: {
+          ...prevState.currentTask,
+          status_id: response.data[0]['id'],
+        }
+      }));
     })
 
     SeederDataService.getAllPriorities().then(response => {
       console.log("Priorities" ,response);
-      this.setState({
-        priorities:response.data,
-        //currentTask.priority: response.data[0]['id'],
-      });
+      this.setState(prevState => ({
+        priorities: response.data,
+        currentTask: {
+          ...prevState.currentTask,
+          priority_id: response.data[0]['id'],
+        }
+      }));
     })
   }
 
@@ -185,9 +199,7 @@ export default class Task extends Component {
     )
       .then(response => {
         console.log(response.data);
-        this.setState({
-          message: "Changes saved successfully!"
-        });
+        this.props.history.push('/me/tasks/list');
       })
       .catch(e => {
         console.log(e);
@@ -195,7 +207,6 @@ export default class Task extends Component {
   }
 
   deleteTask() { 
-    console.log("delete id",this.state.currentTask.title);   
     TaskDataService.delete(this.state.currentTask.id)
       .then(response => {
         console.log(response.data);
@@ -211,7 +222,6 @@ export default class Task extends Component {
     console.log('Lets see the state', this.state);
     return (
       <div>
-        {currentTask ? (
           <div className="edit-form db-white">
             <h4>Task</h4>
             <form>
@@ -226,12 +236,12 @@ export default class Task extends Component {
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="duedate">Due Date</label>
+                <label htmlFor="due_date">Due Date</label>
                 <input
                   type="date"
                   className="form-control"
-                  id="duedate"
-                  value={currentTask.duedate ? moment(currentTask.duedate).format("YYYY-MM-DD") : null}
+                  id="due_date"
+                  value={currentTask.due_date ? moment(currentTask.due_date).format("YYYY-MM-DD") : null}
                   onChange={this.onChangeDuedate}
 
                 />
@@ -242,7 +252,7 @@ export default class Task extends Component {
                 className="form-control"
                 id="priority"
                 required
-                value={currentTask.priority}
+                value={currentTask.priority_id}
                 onChange={this.onChangePriority}
                 name="priority">
                 {priorities.map(priority =>(
@@ -256,7 +266,7 @@ export default class Task extends Component {
                 className="form-control"
                 id="label"
                 required
-                value={currentTask.label}
+                value={currentTask.label_id}
                 onChange={this.onChangeLabel}
                 name="label">
                 {labels.map(label =>(
@@ -270,7 +280,7 @@ export default class Task extends Component {
                 className="form-control"
                 id="status"
                 required
-                value={currentTask.status}
+                value={currentTask.status_id}
                 onChange={this.onChangeStatus}
                 name="status">
                 {priorities.map(status =>(
@@ -306,14 +316,7 @@ export default class Task extends Component {
             >
               Save Changes
             </button>
-            <p>{this.state.message}</p>
           </div>
-        ) : (
-          <div>
-            <br />
-            <p>Please click on a Task...</p>
-          </div>
-        )}
       </div>
     );
   }

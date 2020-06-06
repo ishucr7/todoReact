@@ -52,7 +52,7 @@ export default class AddTask extends Component {
       console.log("Labels", response);
       this.setState({
         labels:response.data,
-        label: response.data[0]['id'],
+        label_id: response.data[0]['id'],
       });
     })
 
@@ -60,7 +60,7 @@ export default class AddTask extends Component {
       console.log("Statuses ", response);
       this.setState({
         statuses:response.data,
-        status: response.data[0]['id'],
+        status_id: response.data[0]['id'],
       });
     })
 
@@ -68,7 +68,7 @@ export default class AddTask extends Component {
       console.log("Priorities" ,response);
       this.setState({
         priorities:response.data,
-        priority: response.data[0]['id'],
+        priority_id: response.data[0]['id'],
       });
     })
 

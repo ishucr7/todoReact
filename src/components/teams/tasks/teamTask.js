@@ -32,7 +32,7 @@ export default class TeamTask extends Component {
       currentTask: {
         id: this.props.match.params.taskId,
         title: "",
-        duedate: "",
+        due_date: "",
         // Names
         priority: "",
         label: "",
@@ -97,13 +97,13 @@ export default class TeamTask extends Component {
   }
 
   onChangeDuedate(e) {
-    const duedate = e.target.value;
+    const due_date = e.target.value;
 
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          duedate: duedate
+          due_date: due_date
         }
       };
     });
@@ -336,12 +336,12 @@ export default class TeamTask extends Component {
                 />
               </div>
               <div className="form-group task-title">
-                <label htmlFor="duedate">Due Date</label>
+                <label htmlFor="due_date">Due Date</label>
                 <input
                   type="date"
                   className="form-control"
-                  id="duedate"
-                  value={currentTask.duedate ? moment(currentTask.duedate).format("YYYY-MM-DD") : null}
+                  id="due_date"
+                  value={currentTask.due_date ? moment(currentTask.due_date).format("YYYY-MM-DD") : null}
                   onChange={this.onChangeDuedate}
 
                 />
