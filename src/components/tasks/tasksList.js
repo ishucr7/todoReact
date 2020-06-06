@@ -24,7 +24,8 @@ export default class TasksList extends Component {
       searchTitle: "",
       statuses: [],
       labels: [],
-      priorities: []
+      priorities: [],
+      filter: ['all','all','all'],
     };
   }
 
