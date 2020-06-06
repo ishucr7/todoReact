@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TaskDataService from "../../../services/tasks.service";
+import CommentDataService from "../../../services/comments.service";
 import SeederDataService from "../../../services/seeder.service";
 import TeamDataService from "../../../services/teams.service";
 import moment from 'moment';
@@ -16,6 +17,7 @@ export default class TeamTask extends Component {
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeAssigneeId = this.onChangeAssigneeId.bind(this);
 
+    this.addComment = this.addComment.bind(this);
     this.getTask = this.getTask.bind(this);
     this.loadSeeder = this.loadSeeder.bind(this);
     
@@ -42,7 +44,9 @@ export default class TeamTask extends Component {
       priorities: [],
       allUsers: [],
       team_id: this.props.match.params.id,
-    //   task_id: this.props.match.params.taskId,
+      task_id: this.props.match.params.taskId,
+      newComment: "",
+      oldComments: [],
     };
   }
 
@@ -74,14 +78,8 @@ export default class TeamTask extends Component {
 
   onChangeComment(e) {
     const comment = e.target.value;
-
-    this.setState(function(prevState) {
-      return {
-        currentTask: {
-          ...prevState.currentTask,
-          newComment: comment
-        }
-      };
+    this.setState({
+      newComment: comment,
     });
   }
 
@@ -211,21 +209,36 @@ export default class TeamTask extends Component {
       });
   }
 
-  getComments(id) {
-    // console.log("****",id);
+  addComment(e){
+    const task_id = this.state.task_id;
+    const new_comment = this.state.newComment;
+    var old_comments = this.state.oldComments;
+    old_comments.push(new_comment);
+    CommentDataService.createComment({
+      'body': this.state.newComment,
+      'task_id': task_id,
+    })
+    .then(response => {
+      this.setState({
+        newComment: "",
+        oldComments: old_comments
+      });
+      
+      this.getComments(task_id);
+        console.log("yo");
+    })
+    .catch(e => {
+      console.log(e);
+    });    
+  }
+
+  getComments(taskId) {
     setTimeout(() => {
-    TaskDataService.getComments(id)
+      CommentDataService.getComments(taskId)
       .then(response => {
-        this.setState(function(prevState) {
-          return {
-            currentTask: {
-              ...prevState.currentTask,
-              oldComments: response.data,
-            }
-          };
+        this.setState({
+          oldComments: response.data,
         });
-      console.log("COMMENTS   " , response.data);
-      console.log(this.state);
       })
       .catch(e => {
         console.log(e);
@@ -235,10 +248,9 @@ export default class TeamTask extends Component {
 
 
   updateTask() {
-    // (this.state.currentTask.assignee_id!=="" ? this.state.assignee_id : null)
+    console.log("updating task ------ ");
     const assignee_id = ((this.state.currentTask.assignee_id && this.state.currentTask.assignee_id.length) ?
         this.state.currentTask.assignee_id : null)
-    // console.log()
       this.setState( prevState => ({
         currentTask: {
             ...prevState.currentTask,
@@ -276,14 +288,13 @@ export default class TeamTask extends Component {
   }
 
   render() {
-     const { currentTask,labels, allUsers, statuses, priorities } = this.state;
+     const { currentTask,labels, allUsers, oldComments, statuses, priorities } = this.state;
     console.log('Lets see the state', this.state);
     return (
       <div>
         {currentTask ? (
           <div className="edit-form db-white">
             <h4>Task</h4>
-            <form>
               <div className="form-group task-title" >
                 <label htmlFor="title">Title</label>
                 <input
@@ -368,7 +379,7 @@ export default class TeamTask extends Component {
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description</label>
-                <input
+                <textarea
                   type="text"
                   className="form-control"
                   id="description"
@@ -378,6 +389,26 @@ export default class TeamTask extends Component {
               </div>
 
               <div className="form-group">
+                <label htmlFor="Comment"><b>Add Comment</b>
+                  {/* <div class="row"> */}
+                    {/* <div class="col-md-11"> */}
+                    <div class="">
+                      < textarea
+                        className="form-control"
+                        id="newComment"
+                        value={this.state.newComment}
+                        onChange={this.onChangeComment}
+                        name="comment"
+                      />
+                    {/* </div> */}
+                    {/* <div class="col-md-2"> */}
+                        <button class="btn btn-success" onClick={this.addComment}>Add</button>
+                    {/* </div> */}
+                  </div>
+                </label>
+              </div>
+
+              {/* <div className="form-group">
               <label htmlFor="Comment">Add Comment</label>
               < textarea
                 className="form-control"
@@ -386,15 +417,16 @@ export default class TeamTask extends Component {
                 onChange={this.onChangeComment}
                 name="comment"
               />
-            </div>
-            </form>
-            {currentTask.oldComments ?
+            </div> */}
+            {oldComments ?
             <div className="form-group">
               <label htmlFor="Comment"><b>Comments</b></label>
 
-               {currentTask.oldComments.map(comment =>(
+               {oldComments.map(comment =>(
                  <div>
                 <label htmlFor="Comment">{comment.created_by}</label>
+               <label htmlFor="time">Last edit: {moment(comment.updatedAt).format("DD-MM-YYYY h:mm:s a")}</label>
+               
                 <textarea
                 className="form-control"
                 readOnly

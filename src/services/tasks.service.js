@@ -9,10 +9,7 @@ class TaskDataService {
   getAll() {
     return http.get("/api/user/tasks", { headers: authHeader() });  
   }
-  getComments(id) {
-    return http.get(`/api/user/comments/${id}`, { headers: authHeader() });  
-  }
-
+  
   get(id) {
     return http.get(`/api/user/tasks/${id}`, { headers: authHeader() });
   }
