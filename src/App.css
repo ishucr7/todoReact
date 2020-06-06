@@ -156,6 +156,19 @@ body {
 }
 
 
+.MarginTop{
+  marginTop:5px;
+}
+
+.AntiBold{
+  font-weight: normal;
+}
+
+.BlackHeading{
+  color:black;
+  font-weight: bold;
+}
+
 h4{
   color:azure;
 }
