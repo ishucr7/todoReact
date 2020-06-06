@@ -306,7 +306,7 @@ export default class Task extends Component {
               className="badge badge-danger mr-2"
               onClick={this.deleteTask}
             >
-              Delete Task
+              Delete
             </button>
 
             <button
@@ -314,7 +314,7 @@ export default class Task extends Component {
               className="float-right badge badge-success"
               onClick={this.updateTask}
             >
-              Save Changes
+              Save
             </button>
           </div>
       </div>

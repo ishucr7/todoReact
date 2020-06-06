@@ -122,20 +122,42 @@ loadSeeder(){
       this.filter_status();
     });
   }
+
   filter_status(){
-    console.log("tasks--",this.state.filter);
-    var filtered_tasks = FilterService.getTasks({
-      'allTasks': this.state.alltasks,
-      'filter_status': this.state.filter.status,
-      'filter_priority': this.state.filter.priority,
-      'filter_label': this.state.filter.label,
-    });
-    this.setState({
-      tasks: filtered_tasks
-    });
-    console.log("filtered tasks--",this.state.tasks);
+    TaskDataService.getAll()
+      .then(response => {
+        var filtered_tasks = FilterService.getTasks({
+          'allTasks': response.data,
+          'filter_status': this.state.filter.status,
+          'filter_priority': this.state.filter.priority,
+          'filter_label': this.state.filter.label,
+        });
+        this.setState({
+          tasks: filtered_tasks,
+          alltasks: response.data
+        });
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+}
+
+
+  // filter_status(){
+  //   console.log("tasks--",this.state.filter);
+  //   var filtered_tasks = FilterService.getTasks({
+  //     'allTasks': this.state.alltasks,
+  //     'filter_status': this.state.filter.status,
+  //     'filter_priority': this.state.filter.priority,
+  //     'filter_label': this.state.filter.label,
+  //   });
+  //   this.setState({
+  //     tasks: filtered_tasks
+  //   });
+  //   console.log("filtered tasks--",this.state.tasks);
     
-  }
+  // }
 
   retrieveTasks() {
     console.log("inside retrwice");
