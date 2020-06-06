@@ -38,7 +38,7 @@ export default class AddTask extends Component {
       team_id: this.props.match.params.id,
       assignee_id: "",
       allUsers: [],
-      team_id: this.props.match.params.taskId,
+      task_id: this.props.match.params.taskId,
 
     };
   }

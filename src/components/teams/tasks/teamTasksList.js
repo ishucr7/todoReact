@@ -25,6 +25,7 @@ export default class TeamTasksList extends Component {
     
 
     this.state = {
+      alltasks: [],
       tasks: [],
       searchTitle: "",
       statuses: [],
@@ -40,8 +41,9 @@ export default class TeamTasksList extends Component {
   }
 
   filter_status(){
+    console.log("taskssssssss",this.state.tasks);
     var filtered_tasks = FilterService.getTasks({
-      'allTasks': this.state.tasks,
+      'allTasks': this.state.alltasks,
       'filter_status': this.state.filter.status,
       'filter_priority': this.state.filter.priority,
       'filter_label': this.state.filter.label,
@@ -53,32 +55,44 @@ export default class TeamTasksList extends Component {
    onChangePriorityFilter(e) {
     const priority = e.target.value;
     console.log("filter by priority",priority);
-    this.setState({
-      filter:{
-        priority: priority
-      }
+    this.setState(function(prevState) {
+      return {
+        filter: {
+          ...prevState.filter,
+          priority: priority,
+        }
+      };
+    },()=>{console.log("filter by priority",priority,this.state.filter.priority);
+      this.filter_status();
     });
-    this.filter_status();
   }
   onChangeStatusFilter(e) {
     const status = e.target.value;
-    console.log("filter by status",status);
-    this.setState({
-      filter:{
-        status: status
-      }
+    console.log("filter by status",status,this.state.filter.status);
+    this.setState(function(prevState) {
+      return {
+        filter: {
+          ...prevState.filter,
+          status: status,
+        }
+      };
+    },()=>{console.log("filter by status",status,this.state.filter.status);
+      this.filter_status();
     });
-    this.filter_status();
   }
   onChangeLabelFilter(e) {
     const label = e.target.value;
     console.log("filter by label",label);
-    this.setState({
-      filter:{
-        label: label
-      }
+    this.setState(function(prevState) {
+      return {
+        filter: {
+          ...prevState.filter,
+          label: label,
+        }
+      };
+    },()=>{console.log("filter by label",label,this.state.filter.label);
+      this.filter_status();
     });
-    this.filter_status();
   }
 
   loadSeeder(){
@@ -128,7 +142,8 @@ export default class TeamTasksList extends Component {
     TeamDataService.getTasksByTeamId(id)
       .then(response => {
         this.setState({
-          tasks: response.data
+          tasks: response.data,
+          alltasks: response.data
         });
         console.log(response.data);
       })
@@ -223,7 +238,7 @@ export default class TeamTasksList extends Component {
 
 
   render() {
-    const { searchTitle, tasks, team_id, currentTeam,labels, statuses, priorities , filter} = this.state;
+    const { searchTitle,alltasks, tasks, team_id, currentTeam,labels, statuses, priorities , filter} = this.state;
 
     return (
       <div className="list row">

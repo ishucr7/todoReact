@@ -2,8 +2,9 @@
 class FilterService {
     
     getTasks(info){
-        var allTasks = info.tasks;
+        var allTasks = info.allTasks;
         var filtered_tasks = [];
+        console.log("ssssss",info.filter_status,info.filter_label,info.filter_priority);
         allTasks.forEach(task => {
             var s,p,l;
             s=p=l=0;

@@ -25,6 +25,7 @@ export default class TasksList extends Component {
     
 
     this.state = {
+      alltasks: [],
       tasks: [],
       searchTitle: "",
       statuses: [],
@@ -82,36 +83,49 @@ loadSeeder(){
   onChangePriorityFilter(e) {
     const priority = e.target.value;
     console.log("filter by priority",priority);
-    this.setState({
-      filter:{
-        priority: priority
-      }
+    this.setState(function(prevState) {
+      return {
+        filter: {
+          ...prevState.filter,
+          priority: priority,
+        }
+      };
+    },()=>{console.log("filter by priority",priority,this.state.filter.priority);
+      this.filter_status();
     });
-    this.filter_status();
   }
   onChangeStatusFilter(e) {
     const status = e.target.value;
-    console.log("filter by status",status);
-    this.setState({
-      filter:{
-        status: status
-      }
+    console.log("filter by status",status,this.state.filter.status);
+    this.setState(function(prevState) {
+      return {
+        filter: {
+          ...prevState.filter,
+          status: status,
+        }
+      };
+    },()=>{console.log("filter by status",status,this.state.filter.status);
+      this.filter_status();
     });
-    this.filter_status();
   }
   onChangeLabelFilter(e) {
     const label = e.target.value;
     console.log("filter by label",label);
-    this.setState({
-      filter:{
-        label: label
-      }
+    this.setState(function(prevState) {
+      return {
+        filter: {
+          ...prevState.filter,
+          label: label,
+        }
+      };
+    },()=>{console.log("filter by label",label,this.state.filter.label);
+      this.filter_status();
     });
-    this.filter_status();
   }
   filter_status(){
+    console.log("tasks--",this.state.filter);
     var filtered_tasks = FilterService.getTasks({
-      'allTasks': this.state.tasks,
+      'allTasks': this.state.alltasks,
       'filter_status': this.state.filter.status,
       'filter_priority': this.state.filter.priority,
       'filter_label': this.state.filter.label,
@@ -119,6 +133,8 @@ loadSeeder(){
     this.setState({
       tasks: filtered_tasks
     });
+    console.log("filtered tasks--",this.state.tasks);
+    
   }
 
   retrieveTasks() {
@@ -127,7 +143,8 @@ loadSeeder(){
       TaskDataService.getAll()
       .then(response => {
         this.setState({
-          tasks: response.data
+          tasks: response.data,
+          alltasks: response.data
         });
         console.log(response.data);
       })
@@ -222,7 +239,7 @@ loadSeeder(){
     }
   }
   render() {
-    const { searchTitle, tasks, currentTask,labels, statuses, priorities, filter } = this.state;
+    const { searchTitle,alltasks, tasks, currentTask,labels, statuses, priorities, filter } = this.state;
 
     return (
       <div className="list row">
