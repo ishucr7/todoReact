@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import TutorialDataService from "../../../services/tutorial.service";
+import TaskDataService from "../../../services/tasks.service";
 import SeederDataService from "../../../services/seeder.service";
 import { Link } from "react-router-dom";
 
-export default class AddTutorial extends Component {
+export default class AddTask extends Component {
   constructor(props) {
 
     super(props);
@@ -19,8 +19,8 @@ export default class AddTutorial extends Component {
     this.onChangePriority = this.onChangePriority.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
 
-    this.saveTutorial = this.saveTutorial.bind(this);
-    this.newTutorial = this.newTutorial.bind(this);
+    this.saveTask = this.saveTask.bind(this);
+    this.newTask = this.newTask.bind(this);
 
     this.state = {
       id: null,
@@ -117,7 +117,7 @@ export default class AddTutorial extends Component {
     });
   }
 
-  saveTutorial() {
+  saveTask() {
     var data = {
       title: this.state.title,
       due_date: this.state.duedate,
@@ -130,7 +130,7 @@ export default class AddTutorial extends Component {
     };
     
     console.log("Before saving it " ,data);
-    TutorialDataService.create(data)
+    TaskDataService.create(data)
       .then(response => {
         this.setState({
           id: response.data.id,
@@ -149,7 +149,7 @@ export default class AddTutorial extends Component {
       });
   }
 
-  newTutorial() {
+  newTask() {
     this.setState({
       id: null,
       title: "",
@@ -178,7 +178,7 @@ export default class AddTutorial extends Component {
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <Link to={"/tutorials/"} className="btn btn-success">
+            <Link to={"/teams/" +team_id + "/tasks/list"} className="btn btn-success">
               View All tasks
             </Link>
           </div>
@@ -290,7 +290,7 @@ export default class AddTutorial extends Component {
               />
             </div>
 
-            <Link to={"/teams/"+ team_id + "/tasks/"} onClick={this.saveTutorial} className="btn btn-success">
+            <Link to={"/teams/"+ team_id + "/tasks/"} onClick={this.saveTask} className="btn btn-success">
               Submit
             </Link>
           </div>

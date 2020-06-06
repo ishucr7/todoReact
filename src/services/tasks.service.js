@@ -1,7 +1,7 @@
 import http from "../http-common";
 import authHeader from './auth-header';
 
-class TutorialDataService {
+class TaskDataService {
   getTasksByTeamId(id){
     return http.get(`/api/teams/${id}/tasks`, { headers: authHeader() });  
   }
@@ -39,4 +39,4 @@ class TutorialDataService {
   }
 }
 
-export default new TutorialDataService();
+export default new TaskDataService();

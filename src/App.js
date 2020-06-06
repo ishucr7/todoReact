@@ -12,17 +12,18 @@ import Profile from "./components/profile.component";
 import BoardUser from "./components/board-user.component";
 import BoardAdmin from "./components/board-admin.component";
 
-import AddTutorial from "./components/tasks/addtutorial";
-import Tutorial from "./components/tasks/tutorialcomponent";
-import ViewTutorial from "./components/tasks/viewTutorialComponent";
-import TutorialsList from "./components/tasks/tutoriallist";
+import AddTask from "./components/tasks/addTask";
+
+import Task from "./components/tasks/task";
+
+import TasksList from "./components/tasks/tasksList";
 
 
 import AddTeam from "./components/teams/addTeam";
 import ViewTeam from "./components/teams/viewTeam";
 import TeamsList from "./components/teams/teamsList";
 
-import ViewTeamTask from "./components/teams/tasks/viewTeamTask";
+import TeamTask from "./components/teams/tasks/teamTask";
 import TeamTasksList from "./components/teams/tasks/teamTasksList";
 import AddTeamTask from "./components/teams/tasks/addTeamTask";
 
@@ -60,7 +61,7 @@ class App extends Component {
       <Router>
         <div >
           <nav className="navbar navbar-expand navbar-dark bg-dark golu">
-            <a href="/tutorials" className="navbar-brand">
+            <a href="/me/tasks/list" className="navbar-brand">
               ToDoList
             </a>
             <div className="navbar-nav mr-auto">
@@ -72,13 +73,13 @@ class App extends Component {
               </li>
 
               <li className="nav-item">
-                <Link to={"/tutorials"} className="nav-link">
+                <Link to={"/me/tasks/list"} className="nav-link">
                   Tasks
                 </Link>
               </li>
 
               <li className="nav-item">
-                <Link to={"/add"} className="nav-link">
+                <Link to={"/me/tasks/create"} className="nav-link">
                   Add
                 </Link>
               </li>
@@ -155,13 +156,13 @@ class App extends Component {
               <Route path="/teams/create" component={AddTeam} />
               <Route path="/teams/list" component={TeamsList}/>
               <Route path="/teams/:id/tasks/create" component={AddTeamTask}/>
-              <Route path="/teams/:id/tasks/:taskId/view" component={ViewTeamTask}/>
+              <Route path="/teams/:id/tasks/:taskId/open" component={TeamTask}/>
               <Route path="/teams/:id/tasks/" component={TeamTasksList}/>
               <Route path="/teams/:id/view" component={ViewTeam}/>
-              <Route exact path={["/", "/tutorials"]} component={TutorialsList} />
-              <Route exact path="/add" component={AddTutorial} />              
-              <Route path="/tutorials/view/:id" component={ViewTutorial} />
-              <Route path="/tutorials/:id" component={Tutorial} />
+
+              <Route exact path={["/", "/me/tasks/list"]} component={TasksList} />
+              <Route exact path="/me/tasks/create" component={AddTask} />              
+              <Route path="/me/tasks/:id/open" component={Task} />
 
             </Switch>
           </div>
