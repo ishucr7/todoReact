@@ -1,10 +1,9 @@
 import React, { Component } from "react";
-import TaskDataService from "../services/tutorial.service";
-import SeederDataService from "../services/seeder.service";
-import TeamDataService from "../services/teams.service";
+import TutorialDataService from "../../services/tutorial.service";
+import SeederDataService from "../../services/seeder.service";
 import moment from 'moment';
 
-export default class TeamTask extends Component {
+export default class Tutorial extends Component {
   constructor(props) {
     super(props);
     this.onChangeTitle = this.onChangeTitle.bind(this);
@@ -14,17 +13,16 @@ export default class TeamTask extends Component {
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onChangeComment = this.onChangeComment.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
-    this.onChangeAssigneeId = this.onChangeAssigneeId.bind(this);
 
-    this.getTask = this.getTask.bind(this);
+    this.getTutorial = this.getTutorial.bind(this);
     this.loadSeeder = this.loadSeeder.bind(this);
     
-    this.updateTask = this.updateTask.bind(this);
-    this.deleteTask = this.deleteTask.bind(this);
+    this.updateTutorial = this.updateTutorial.bind(this);
+    this.deleteTutorial = this.deleteTutorial.bind(this);
 
     this.state = {
-      currentTask: {
-        id: this.props.match.params.taskId,
+      currentTutorial: {
+        id: null,
         title: "",
         duedate: "",
         priority: "",
@@ -34,38 +32,21 @@ export default class TeamTask extends Component {
         published: false,
         newComment: "",
         oldComments: null,
-        assignee_id: "",
       },
       message: "",
       statuses: [],
       labels: [],
-      priorities: [],
-      allUsers: [],
-      team_id: this.props.match.params.id,
-    //   task_id: this.props.match.params.taskId,
+      priorities: []
     };
   }
-
-  onChangeAssigneeId(e){
-    const ass = e.target.value;
-    this.setState(function(prevState) {
-        return {
-          currentTask: {
-            ...prevState.currentTask,
-            assignee_id: ass
-          }
-        };
-      });
-    }
-
 
   onChangeTitle(e) {
     const title = e.target.value;
 
     this.setState(function(prevState) {
       return {
-        currentTask: {
-          ...prevState.currentTask,
+        currentTutorial: {
+          ...prevState.currentTutorial,
           title: title
         }
       };
@@ -77,8 +58,8 @@ export default class TeamTask extends Component {
 
     this.setState(function(prevState) {
       return {
-        currentTask: {
-          ...prevState.currentTask,
+        currentTutorial: {
+          ...prevState.currentTutorial,
           newComment: comment
         }
       };
@@ -90,8 +71,8 @@ export default class TeamTask extends Component {
 
     this.setState(function(prevState) {
       return {
-        currentTask: {
-          ...prevState.currentTask,
+        currentTutorial: {
+          ...prevState.currentTutorial,
           duedate: duedate
         }
       };
@@ -103,8 +84,8 @@ export default class TeamTask extends Component {
     console.log("ppppppppppp ",priority);
     this.setState(function(prevState) {
       return {
-        currentTask: {
-          ...prevState.currentTask,
+        currentTutorial: {
+          ...prevState.currentTutorial,
           priority: priority
         }
       };
@@ -116,8 +97,8 @@ export default class TeamTask extends Component {
 
     this.setState(function(prevState) {
       return {
-        currentTask: {
-          ...prevState.currentTask,
+        currentTutorial: {
+          ...prevState.currentTutorial,
           label: label
         }
       };
@@ -129,8 +110,8 @@ export default class TeamTask extends Component {
 
     this.setState(function(prevState) {
       return {
-        currentTask: {
-          ...prevState.currentTask,
+        currentTutorial: {
+          ...prevState.currentTutorial,
           status: status
         }
       };
@@ -141,8 +122,8 @@ export default class TeamTask extends Component {
     const description = e.target.value;
 
     this.setState(prevState => ({
-      currentTask: {
-        ...prevState.currentTask,
+      currentTutorial: {
+        ...prevState.currentTutorial,
         description: description
       }
     }));
@@ -171,38 +152,23 @@ export default class TeamTask extends Component {
       console.log("Priorities" ,response);
       this.setState({
         priorities:response.data,
-        //currentTask.priority: response.data[0]['id'],
+        //currentTutorial.priority: response.data[0]['id'],
       });
     })
-
-    const team_id = this.state.team_id;
-
-    TeamDataService.getTeam(team_id).then(response => {
-        var arr = [];
-        for(var i=0;i<response.data.user_list.length; i++){
-            arr.push({
-                'id': response.data.user_ids[i].user_id,
-                'email': response.data.user_list[i]
-            });
-        }
-        this.setState({
-          allUsers: arr // basically members of this team.
-        });
-      })
   }
 
   componentDidMount() {
     this.loadSeeder();
-    this.getTask(this.props.match.params.taskId);
-    this.getComments(this.props.match.params.taskId);
+    this.getTutorial(this.props.match.params.id);
+    this.getComments(this.props.match.params.id);
   }
 
-  getTask(id) {
+  getTutorial(id) {
     console.log("****",id);
-    TaskDataService.get(id)
+    TutorialDataService.get(id)
       .then(response => {
         this.setState({
-          currentTask: response.data
+          currentTutorial: response.data
         });
         console.log(response.data);
       })
@@ -214,12 +180,12 @@ export default class TeamTask extends Component {
   getComments(id) {
     // console.log("****",id);
     setTimeout(() => {
-    TaskDataService.getComments(id)
+    TutorialDataService.getComments(id)
       .then(response => {
         this.setState(function(prevState) {
           return {
-            currentTask: {
-              ...prevState.currentTask,
+            currentTutorial: {
+              ...prevState.currentTutorial,
               oldComments: response.data,
             }
           };
@@ -234,22 +200,10 @@ export default class TeamTask extends Component {
 }
 
 
-  updateTask() {
-    // (this.state.currentTask.assignee_id!=="" ? this.state.assignee_id : null)
-    const assignee_id = ((this.state.currentTask.assignee_id && this.state.currentTask.assignee_id.length) ?
-        this.state.currentTask.assignee_id : null)
-    // console.log()
-      this.setState( prevState => ({
-        currentTask: {
-            ...prevState.currentTask,
-            assignee_id: assignee_id
-        }
-      }));
-
-      TaskDataService.update(
-        this.state.currentTask.id,
-        this.state.currentTask,
-        // this.state.task_id
+  updateTutorial() {
+    TutorialDataService.update(
+      this.state.currentTutorial.id,
+      this.state.currentTutorial
     )
       .then(response => {
         console.log(response.data);
@@ -262,9 +216,9 @@ export default class TeamTask extends Component {
       });
   }
 
-  deleteTask() { 
-    console.log("delete id",this.state.currentTask.title);   
-    TaskDataService.delete(this.state.currentTask.id)
+  deleteTutorial() { 
+    console.log("delete id",this.state.currentTutorial.title);   
+    TutorialDataService.delete(this.state.currentTutorial.id)
       .then(response => {
         console.log(response.data);
         this.props.history.push('/tutorials');
@@ -275,61 +229,42 @@ export default class TeamTask extends Component {
   }
 
   render() {
-     const { currentTask,labels, allUsers, statuses, priorities } = this.state;
+     const { currentTutorial,labels, statuses, priorities } = this.state;
     console.log('Lets see the state', this.state);
     return (
       <div>
-        {currentTask ? (
+        {currentTutorial ? (
           <div className="edit-form db-white">
             <h4>Task</h4>
             <form>
-              <div className="form-group task-title" >
+              <div className="form-group">
                 <label htmlFor="title">Title</label>
                 <input
                   type="text"
                   className="form-control"
                   id="title"
                   onChange={this.onChangeTitle}
-                  value={currentTask.title}
+                  value={currentTutorial.title}
                 />
               </div>
-              <div className="form-group task-title">
+              <div className="form-group">
                 <label htmlFor="duedate">Due Date</label>
                 <input
                   type="date"
                   className="form-control"
                   id="duedate"
-                  value={currentTask.duedate ? moment(currentTask.duedate).format("YYYY-MM-DD") : null}
+                  value={currentTutorial.duedate ? moment(currentTutorial.duedate).format("YYYY-MM-DD") : null}
                   onChange={this.onChangeDuedate}
 
                 />
               </div>
-
-              <div className="form-group">
-              <label htmlFor="assignee">Assigned To:
-              <select
-                className="form-control"
-                id="assignee"
-                required
-                value={this.state.currentTask.assignee_id}
-                onChange={this.onChangeAssigneeId}
-                name="assignee">
-                <option key="" value=""> None</option>
-
-                {allUsers.map(user =>(
-                  <option key={user.id} value={user['id']}>{user['email']}</option>
-                ))}
-              </select>
-              </label>
-            </div>
-
               <div className="form-group">
                 <label htmlFor="priority">Priority</label>
                 <select
                 className="form-control"
                 id="priority"
                 required
-                value={currentTask.priority}
+                value={currentTutorial.priority}
                 onChange={this.onChangePriority}
                 name="priority">
                 {priorities.map(priority =>(
@@ -343,7 +278,7 @@ export default class TeamTask extends Component {
                 className="form-control"
                 id="label"
                 required
-                value={currentTask.label}
+                value={currentTutorial.label}
                 onChange={this.onChangeLabel}
                 name="label">
                 {labels.map(label =>(
@@ -357,7 +292,7 @@ export default class TeamTask extends Component {
                 className="form-control"
                 id="status"
                 required
-                value={currentTask.status}
+                value={currentTutorial.status}
                 onChange={this.onChangeStatus}
                 name="status">
                 {priorities.map(status =>(
@@ -372,7 +307,7 @@ export default class TeamTask extends Component {
                   className="form-control"
                   id="description"
                 onChange={this.onChangeDescription}
-                value={currentTask.description}
+                value={currentTutorial.description}
                 />
               </div>
 
@@ -387,11 +322,11 @@ export default class TeamTask extends Component {
               />
             </div>
             </form>
-            {currentTask.oldComments ?
+            {currentTutorial.oldComments ?
             <div className="form-group">
               <label htmlFor="Comment"><b>Comments</b></label>
 
-               {currentTask.oldComments.map(comment =>(
+               {currentTutorial.oldComments.map(comment =>(
                  <div>
                 <label htmlFor="Comment">{comment.created_by}</label>
                 <textarea
@@ -407,7 +342,7 @@ export default class TeamTask extends Component {
 
             <button
               className="badge badge-danger mr-2"
-              onClick={this.deleteTask}
+              onClick={this.deleteTutorial}
             >
               Delete Task
             </button>
@@ -415,7 +350,7 @@ export default class TeamTask extends Component {
             <button
               type="submit"
               className="float-right badge badge-success"
-              onClick={this.updateTask}
+              onClick={this.updateTutorial}
             >
               Save Changes
             </button>
