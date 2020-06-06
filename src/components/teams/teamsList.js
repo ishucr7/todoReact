@@ -17,6 +17,19 @@ export default class Teams extends Component {
     };
   }
 
+  deleteTeam(id) {
+    const team_id = this.state.team_id; 
+    TeamDataService.delete(id)
+      .then(response => {
+        console.log(response.data);
+        this.props.history.push('/teams/list');
+        this.retrieveTeams();
+      })
+      .catch(e => {
+        console.log(e);
+      });
+  }
+
   componentDidMount() {
     this.refreshList();
   }
@@ -137,13 +150,14 @@ export default class Teams extends Component {
                               Open
                             </Link>
                         </div>
-                        {/* 
-                          Implement delete in the backend.
-                         */}
                         <div class="col-md-2">
-                            <Link to={"/teams/" + team.id} className="badge badge-danger Hovering">
-                            Delete
-                            </Link>
+                          <button className = "badge badge-danger Hovering buttonAsALink" onClick={() =>
+                          {
+                            this.deleteTeam(team.id);
+                          }}
+                          >
+                              Delete
+                          </button>
                         </div>
                     </div>
                 </div>

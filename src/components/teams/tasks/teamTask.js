@@ -14,6 +14,7 @@ export default class TeamTask extends Component {
     this.onChangeLabel = this.onChangeLabel.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
     this.onChangeComment = this.onChangeComment.bind(this);
+    this.deleteComment = this.deleteComment.bind(this);
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeAssigneeId = this.onChangeAssigneeId.bind(this);
 
@@ -23,15 +24,24 @@ export default class TeamTask extends Component {
     
     this.updateTask = this.updateTask.bind(this);
     this.deleteTask = this.deleteTask.bind(this);
+    this.label_id_mapper = {};
+    this.status_id_mapper = {};
+    this.priority_id_mapper = {};
 
     this.state = {
       currentTask: {
         id: this.props.match.params.taskId,
         title: "",
-        duedate: "",
+        due_date: "",
+        // Names
         priority: "",
         label: "",
         status: "",
+        // ids
+        priority_id: "",
+        label_id: "",
+        status_id: "",
+
         description: "",
         published: false,
         newComment: "",
@@ -47,6 +57,9 @@ export default class TeamTask extends Component {
       task_id: this.props.match.params.taskId,
       newComment: "",
       oldComments: [],
+      // label_id_mapper : {},
+      // status_id_mapper : {},
+      // priority_id_mapper : {},
     };
   }
 
@@ -84,52 +97,51 @@ export default class TeamTask extends Component {
   }
 
   onChangeDuedate(e) {
-    const duedate = e.target.value;
+    const due_date = e.target.value;
 
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          duedate: duedate
+          due_date: due_date
         }
       };
     });
   }
 
   onChangePriority(e) {
-    const priority = e.target.value;
-    console.log("ppppppppppp ",priority);
+    const priority_id = e.target.value;
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          priority: priority
+          priority_id: priority_id,
         }
       };
     });
   }
 
   onChangeLabel(e) {
-    const label = e.target.value;
+    const label_id = e.target.value;
 
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          label: label
+          label_id: label_id
         }
       };
     });
   }
 
   onChangeStatus(e) {
-    const status = e.target.value;
+    const status_id = e.target.value;
 
     this.setState(function(prevState) {
       return {
         currentTask: {
           ...prevState.currentTask,
-          status: status
+          status_id: status_id
         }
       };
     });
@@ -150,27 +162,34 @@ export default class TeamTask extends Component {
   loadSeeder(){
     console.log("Inside load Seeder");
     SeederDataService.getAllLabels().then(response => {
-      console.log("Labels", response);
-      this.setState({
+      this.setState(prevState => ({
         labels:response.data,
-        //label: response.data[0]['id'],
-      });
+        currentTask: {
+          ...prevState.currentTask,
+          label_id: response.data[0]['id']
+        }
+      }));
+      console.log("State agter labels seeder, " ,this.state);
     })
 
     SeederDataService.getAllStatuses().then(response => {
-      console.log("Statuses ", response);
-      this.setState({
+      this.setState(prevState => ({
         statuses:response.data,
-        //status: response.data[0]['id'],
-      });
+        currentTask: {
+          ...prevState.currentTask,
+          status_id: response.data[0]['id']
+        }
+      }));
     })
 
     SeederDataService.getAllPriorities().then(response => {
-      console.log("Priorities" ,response);
-      this.setState({
+      this.setState(prevState => ({
         priorities:response.data,
-        //currentTask.priority: response.data[0]['id'],
-      });
+        currentTask: {
+          ...prevState.currentTask,
+          priority_id: response.data[0]['id']
+        }
+      }));
     })
 
     const team_id = this.state.team_id;
@@ -232,6 +251,23 @@ export default class TeamTask extends Component {
     });    
   }
 
+  deleteComment(comment_id){
+    console.log("entering delete comment  ", comment_id);
+    var old_comments = this.state.oldComments.filter(function(comment){
+      return  comment_id !== comment.id;
+    });
+    CommentDataService.deleteComment(comment_id)
+      .then(response=> {
+        console.log("Was delete succesfully --- ", response);
+        this.setState({
+          oldComments: old_comments
+      });
+    })
+    .catch(e =>{
+      console.log(e);
+    });
+  }
+
   getComments(taskId) {
     setTimeout(() => {
       CommentDataService.getComments(taskId)
@@ -248,7 +284,8 @@ export default class TeamTask extends Component {
 
 
   updateTask() {
-    console.log("updating task ------ ");
+    const team_id = this.state.team_id; 
+
     const assignee_id = ((this.state.currentTask.assignee_id && this.state.currentTask.assignee_id.length) ?
         this.state.currentTask.assignee_id : null)
       this.setState( prevState => ({
@@ -261,13 +298,9 @@ export default class TeamTask extends Component {
       TaskDataService.update(
         this.state.currentTask.id,
         this.state.currentTask,
-        // this.state.task_id
     )
       .then(response => {
-        console.log(response.data);
-        this.setState({
-          message: "Changes saved successfully!"
-        });
+        this.props.history.push('/teams/' + team_id + '/tasks/list');
       })
       .catch(e => {
         console.log(e);
@@ -275,11 +308,9 @@ export default class TeamTask extends Component {
   }
 
   deleteTask() { 
-    console.log("delete id",this.state.currentTask.title);  
     const team_id = this.state.team_id; 
     TaskDataService.delete(this.state.currentTask.id)
       .then(response => {
-        console.log(response.data);
         this.props.history.push('/teams/' + team_id + '/tasks/list');
       })
       .catch(e => {
@@ -288,11 +319,10 @@ export default class TeamTask extends Component {
   }
 
   render() {
-     const { currentTask,labels, allUsers, oldComments, statuses, priorities } = this.state;
+    const { currentTask,labels, allUsers, oldComments, statuses, priorities } = this.state;
     console.log('Lets see the state', this.state);
     return (
       <div>
-        {currentTask ? (
           <div className="edit-form db-white">
             <h4>Task</h4>
               <div className="form-group task-title" >
@@ -306,12 +336,12 @@ export default class TeamTask extends Component {
                 />
               </div>
               <div className="form-group task-title">
-                <label htmlFor="duedate">Due Date</label>
+                <label htmlFor="due_date">Due Date</label>
                 <input
                   type="date"
                   className="form-control"
-                  id="duedate"
-                  value={currentTask.duedate ? moment(currentTask.duedate).format("YYYY-MM-DD") : null}
+                  id="due_date"
+                  value={currentTask.due_date ? moment(currentTask.due_date).format("YYYY-MM-DD") : null}
                   onChange={this.onChangeDuedate}
 
                 />
@@ -341,7 +371,7 @@ export default class TeamTask extends Component {
                 className="form-control"
                 id="priority"
                 required
-                value={currentTask.priority}
+                value={currentTask.priority_id}
                 onChange={this.onChangePriority}
                 name="priority">
                 {priorities.map(priority =>(
@@ -355,7 +385,7 @@ export default class TeamTask extends Component {
                 className="form-control"
                 id="label"
                 required
-                value={currentTask.label}
+                value={currentTask.label_id}
                 onChange={this.onChangeLabel}
                 name="label">
                 {labels.map(label =>(
@@ -369,10 +399,10 @@ export default class TeamTask extends Component {
                 className="form-control"
                 id="status"
                 required
-                value={currentTask.status}
+                value={currentTask.status_id}
                 onChange={this.onChangeStatus}
                 name="status">
-                {priorities.map(status =>(
+                {statuses.map(status =>(
                   <option key={status.id} value={status.id}>{status.name}</option>
                 ))}
               </select>
@@ -390,8 +420,6 @@ export default class TeamTask extends Component {
 
               <div className="form-group">
                 <label htmlFor="Comment"><b>Add Comment</b>
-                  {/* <div class="row"> */}
-                    {/* <div class="col-md-11"> */}
                     <div class="">
                       < textarea
                         className="form-control"
@@ -400,38 +428,35 @@ export default class TeamTask extends Component {
                         onChange={this.onChangeComment}
                         name="comment"
                       />
-                    {/* </div> */}
-                    {/* <div class="col-md-2"> */}
-                        <button class="btn btn-success" onClick={this.addComment}>Add</button>
-                    {/* </div> */}
+                      <button class="btn btn-success" onClick={this.addComment}>Add</button>
                   </div>
                 </label>
               </div>
-
-              {/* <div className="form-group">
-              <label htmlFor="Comment">Add Comment</label>
-              < textarea
-                className="form-control"
-                id="newComment"
-                value={this.state.newComment}
-                onChange={this.onChangeComment}
-                name="comment"
-              />
-            </div> */}
             {oldComments ?
             <div className="form-group">
               <label htmlFor="Comment"><b>Comments</b></label>
 
                {oldComments.map(comment =>(
                  <div>
-                <label htmlFor="Comment">{comment.created_by}</label>
-               <label htmlFor="time">Last edit: {moment(comment.updatedAt).format("DD-MM-YYYY h:mm:s a")}</label>
-               
-                <textarea
-                className="form-control"
-                readOnly
-                value={comment.body}
-                />
+                    <label htmlFor="Comment">{comment.created_by}</label>
+                    <div class="row">
+                      <div class="col-md-9">
+                        <label htmlFor="time">Last edit: {moment(comment.updatedAt).format("DD-MM-YY h:mm:s a")}</label>
+                      </div>
+                      <div class="col-md-2" >
+                        <label htmlFor="delete"><button className="badge badge-danger mr-2"
+                            onClick={() => {
+                              this.deleteComment(comment.id)
+                            }}
+                            > Delete</button>
+                        </label>
+                      </div>
+                    </div>
+                  <textarea
+                  className="form-control"
+                  readOnly
+                  value={comment.body}
+                  />
                 </div>
                ))}
             </div>
@@ -454,12 +479,6 @@ export default class TeamTask extends Component {
             </button>
             <p>{this.state.message}</p>
           </div>
-        ) : (
-          <div>
-            <br />
-            <p>Please click on a Task...</p>
-          </div>
-        )}
       </div>
     );
   }
