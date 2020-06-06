@@ -14,6 +14,10 @@ export default class TutorialsList extends Component {
     this.removeAllTutorials = this.removeAllTutorials.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
     this.deleteTutorial = this.deleteTutorial.bind(this);
+    this.handlePriorityColor = this.handlePriorityColor.bind(this);
+    this.handleStatusColor = this.handleStatusColor.bind(this);
+    this.handleLabelColor = this.handleLabelColor.bind(this);
+    
 
     this.state = {
       tutorials: [],
@@ -120,12 +124,55 @@ loadSeeder(){
       });
   }
 
+  handlePriorityColor(priority_name){
+    switch(priority_name){
+      case "High":{
+        return "badge Red"
+      }
+      case "Medium":{
+        return "badge Lime"
+      }
+      case "Low":{
+        return "badge Yellow"
+      }
+    }
+  }
+  handleStatusColor(status_name){
+    switch(status_name){
+      case "Completed":{
+        return "badge Silver"
+      }
+      case "In Progress":{
+        return "badge Gold"
+      }
+      case "New":{
+        return "badge RoyalBlue"
+      }
+    }
+  }
+
+  handleLabelColor(label_name){
+    switch(label_name){
+      case "Work":{
+        return "badge Purple"
+      }
+      case "Personal":{
+        return "badge Pink"
+      }
+      case "Shopping":{
+        return "badge Orange"
+      }
+      case "Others":{
+        return "badge lightBlue"
+      }
+    }
+  }
   render() {
     const { searchTitle, tutorials, currentTutorial,labels, statuses, priorities } = this.state;
 
     return (
       <div className="list row">
-        <div className="col-md-10">
+        <div className="col-md-11">
           <div className="input-group mb-3">
             <input
               type="text"
@@ -146,54 +193,60 @@ loadSeeder(){
           </div>
         </div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <div className="col-md-10">
+        <div className="col-md-11">
           <h4>ToDo List</h4>
 
           <ul className="list-group">
             {tutorials &&
               tutorials.map((tutorial, index) => (
                 <li className="list-group-item ">
-                <div class="task-title row">
-                    <div class="col-md-2">
-                        <span class="task-title-sp">{tutorial.title}   </span>
+                <div className="task-title row">
+                    <div className="col-md-2">
+                        <span className="task-title-sp Highlight">{tutorial.title}   </span>
                     </div>
                     <div class="col-md-2">
                       {(tutorial.due_date) ?
-                        <span class="badge bg-theme">{moment(tutorial.due_date).format("YYYY-MM-DD")}    </span>
+                        <span className="badge Clay">{moment(tutorial.due_date).format("DD-MM-YYYY")}    </span>
                         : <span></span>
                       }
                     </div>
                     <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.priority}    </span>
+                        <span className={this.handlePriorityColor(tutorial.priority)}>{tutorial.priority} </span>
                     </div>
                     <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.label}    </span>
+                        <span className={this.handleLabelColor(tutorial.label)}>{tutorial.label}    </span>
                     </div>
-                    <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.status}    </span>
+                    <div class="col-md-2">
+                        <span className={this.handleStatusColor(tutorial.status)}>{tutorial.status}    </span>
                     </div>              
-                    <div class="col-md-3 pull-right row">
-                        <div class="col-md-3">
-                        </div>
+                    <div class="col-md-4 pull-right row">
                         <div class="col-md-1">
+                        </div>
+                        <div class="col-md-4">
+                            <span>
                             <Link to={"/tutorials/view/" + tutorial.id} className="badge badge-primary">
-                              <i class="fa fa-check"></i>
+                              View
                             </Link>
+                            </span>
                         </div>
-                        <div class="col-md-1">
-                            <Link to={"/tutorials/" + tutorial.id} className="badge badge-secondary">
-                              <i class="fa fa-pencil"></i>
+                        <div class="col-md-3.5">
+                            <span>
+                            <Link to={"/tutorials/" + tutorial.id} className="badge Hovering2">
+                              Edit
                             </Link>
+                            </span>
                         </div>
-                        <div class="col-md-2">
-                          <button className = "badge badge-warning" onClick={() => {
+                        <div class="col-md-3">
+                          <span>
+                          <button className = "badge badge-danger Hovering buttonAsALink" onClick={() => {
                             this.deleteTutorial(
                             tutorial.id);
                           }                          
                           }
                           >
-                            <i class="fa fa-trash-o "></i>
+                            Delete
                           </button>
+                          </span>
                         </div>
                     </div>
                 </div>

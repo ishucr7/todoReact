@@ -56,7 +56,7 @@ class App extends Component {
 
     return (
       <Router>
-        <div class="ronaldo">
+        <div >
           <nav className="navbar navbar-expand navbar-dark bg-dark golu">
             <a href="/tutorials" className="navbar-brand">
               ToDoList

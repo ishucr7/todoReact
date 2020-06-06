@@ -234,7 +234,7 @@ export default class Tutorial extends Component {
     return (
       <div>
         {currentTutorial ? (
-          <div className="edit-form">
+          <div className="edit-form db-white">
             <h4>Task</h4>
             <form>
               <div className="form-group">

@@ -43,7 +43,7 @@ export default class ViewTeam extends Component {
     const {allUsers, moderator_name, Name} = this.state;
 
     return (
-      <div className="submit-form">
+      <div className="submit-form db-white">
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>

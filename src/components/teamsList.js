@@ -97,7 +97,7 @@ export default class Teams extends Component {
                 <li className="list-group-item ">
                 <div class="task-title row">
                     <div class="col-md-3">
-                        <span class="task-title-sp">{team.name}   </span>
+                        <span class="task-title-sp Highlight">{team.name}   </span>
                     </div>
                     <div class="col-md-3">
                         <span class="badge bg-theme">{team.moderator_name}    </span>
@@ -120,7 +120,7 @@ export default class Teams extends Component {
                           Implement delete in the backend.
                          */}
                         <div class="col-md-2">
-                            <Link to={"/teams/" + team.id} className="badge badge-secondary">
+                            <Link to={"/teams/" + team.id} className="badge badge-danger Hovering">
                             Delete
                             </Link>
                         </div>

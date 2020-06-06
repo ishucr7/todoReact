@@ -160,7 +160,7 @@ export default class AddTutorial extends Component {
     console.log("----asdasdasd----");
 
     return (
-      <div className="submit-form">
+      <div className="submit-form db-white">
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>

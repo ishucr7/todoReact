@@ -174,7 +174,7 @@ export default class AddTutorial extends Component {
     const {labels, team_id, statuses, allUsers, priorities } = this.state;
 
     return (
-      <div className="submit-form backNone">
+      <div className="submit-form backNone db-white">
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
