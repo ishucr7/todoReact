@@ -160,7 +160,6 @@ export default class Task extends Component {
   componentDidMount() {
     this.loadSeeder();
     this.getTask(this.props.match.params.id);
-    this.getComments(this.props.match.params.id);
   }
 
   getTask(id) {
@@ -177,27 +176,6 @@ export default class Task extends Component {
       });
   }
 
-  getComments(id) {
-    // console.log("****",id);
-    setTimeout(() => {
-    TaskDataService.getComments(id)
-      .then(response => {
-        this.setState(function(prevState) {
-          return {
-            currentTask: {
-              ...prevState.currentTask,
-              oldComments: response.data,
-            }
-          };
-        });
-      console.log("COMMENTS   " , response.data);
-      console.log(this.state);
-      })
-      .catch(e => {
-        console.log(e);
-      });
-    }, 1000);
-}
 
 
   updateTask() {
@@ -302,7 +280,7 @@ export default class Task extends Component {
               </div>
               <div className="form-group">
                 <label htmlFor="description">Description</label>
-                <input
+                <textarea
                   type="text"
                   className="form-control"
                   id="description"
@@ -311,33 +289,7 @@ export default class Task extends Component {
                 />
               </div>
 
-              <div className="form-group">
-              <label htmlFor="Comment">Add Comment</label>
-              < textarea
-                className="form-control"
-                id="newComment"
-                value={this.state.newComment}
-                onChange={this.onChangeComment}
-                name="comment"
-              />
-            </div>
             </form>
-            {currentTask.oldComments ?
-            <div className="form-group">
-              <label htmlFor="Comment"><b>Comments</b></label>
-
-               {currentTask.oldComments.map(comment =>(
-                 <div>
-                <label htmlFor="Comment">{comment.created_by}</label>
-                <textarea
-                className="form-control"
-                readOnly
-                value={comment.body}
-                />
-                </div>
-               ))}
-            </div>
-             : "" }
 
 
             <button
