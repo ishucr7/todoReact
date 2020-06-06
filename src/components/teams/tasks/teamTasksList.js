@@ -10,7 +10,10 @@ export default class TeamTasksList extends Component {
     super(props);
 
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
-
+    this.onChangePriorityFilter = this.onChangePriorityFilter.bind(this);
+    this.onChangeStatusFilter = this.onChangeStatusFilter.bind(this);
+    this.onChangeLabelFilter = this.onChangeLabelFilter.bind(this);
+    this.filter_status = this.filter_status.bind(this);
     this.retrieveTasks = this.retrieveTasks.bind(this);
     this.loadSeeder = this.loadSeeder.bind(this);
     this.removeAllTasks = this.removeAllTasks.bind(this);
@@ -28,41 +31,54 @@ export default class TeamTasksList extends Component {
       labels: [],
       priorities: [],
       team_id: this.props.match.params.id,
-      filter_status: 'all',
-      filter_priority: 'all',
-      filter_label: 'all',
+      filter: {
+        priority: "all",
+        status: "all",
+        label:"all"
+      },
     };
   }
 
-  filterStatus(){
+  filter_status(){
     var filtered_tasks = FilterService.getTasks({
       'allTasks': this.state.tasks,
-      'filter_status': this.state.filter_status,
-      'filter_priority': this.state.filter_priority,
-      'filter_label': this.state.filter_label,
+      'filter_status': this.state.filter.status,
+      'filter_priority': this.state.filter.priority,
+      'filter_label': this.state.filter.label,
     });
     this.setState({
       tasks: filtered_tasks
     });
   }
-
-  onChangeStatusFilter(e){
+   onChangePriorityFilter(e) {
+    const priority = e.target.value;
+    console.log("filter by priority",priority);
     this.setState({
-      filter_status: e.target.value,
+      filter:{
+        priority: priority
+      }
     });
-    this.filterStatus();
+    this.filter_status();
   }
-  onChangeLabelFilter(e){
+  onChangeStatusFilter(e) {
+    const status = e.target.value;
+    console.log("filter by status",status);
     this.setState({
-      filter_label: e.target.value,
+      filter:{
+        status: status
+      }
     });
-    this.filterStatus();
+    this.filter_status();
   }
-  onChangePriorityFilter(e){
+  onChangeLabelFilter(e) {
+    const label = e.target.value;
+    console.log("filter by label",label);
     this.setState({
-      filter_priority: e.target.value,
+      filter:{
+        label: label
+      }
     });
-    this.filterStatus();
+    this.filter_status();
   }
 
   loadSeeder(){
@@ -207,7 +223,7 @@ export default class TeamTasksList extends Component {
 
 
   render() {
-    const { searchTitle, tasks, team_id, currentTeam,labels, statuses, priorities } = this.state;
+    const { searchTitle, tasks, team_id, currentTeam,labels, statuses, priorities , filter} = this.state;
 
     return (
       <div className="list row">
@@ -237,6 +253,54 @@ export default class TeamTasksList extends Component {
           <div className="input-group mb-3">
             <div className="mr-auto">
             <h4>Team ToDo List</h4>
+            </div>
+            <div className="ml-auto">
+             <h5 style={{color:"white"}}> Filter By</h5>
+             </div>
+            <div className="ml-auto">
+             <select
+                className="form-control"
+                id="priority"
+                required
+                value={filter.priority}
+                onChange={this.onChangePriorityFilter}
+                name="priority">
+                <option selected disabled>Priority</option>
+                <option key="all" value="all">All</option>
+                {priorities.map(priority =>(
+                  <option key={priority.name} value={priority.name}>{priority.name}</option>
+                ))}
+              </select>
+            </div>            
+            <div className="ml-auto">
+              <select
+                className="form-control"
+                id="label"
+                required
+                value={filter.label}
+                onChange={this.onChangeLabelFilter}
+                name="label">
+                <option selected disabled>Label</option>
+                <option key="all" value="all">All</option>
+                {labels.map(label =>(
+                  <option key={label.name} value={label.name}>{label.name}</option>
+                ))}
+              </select>
+            </div>
+            <div className="ml-auto">
+             <select
+                className="form-control"
+                id="status"
+                required
+                value={filter.status}
+                onChange={this.onChangeStatusFilter}
+                name="status">
+                <option selected disabled>Status</option>
+                <option key="all" value="all">All</option>
+                {statuses.map(status =>(
+                  <option key={status.name} value={status.name}>{status.name}</option>
+                ))}
+              </select>
             </div>
             <div className="ml-auto">
              <button
