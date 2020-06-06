@@ -360,16 +360,16 @@ export default class TeamTasksList extends Component {
                     <div class="col-md-2">
                         <span class={this.handleStatusColor(task.status)}>{task.status}    </span>
                     </div>              
-                    <div class="col-md-4">
+                    <div class="col-md-1">
                     </div>              
-                    <div class="col-md-1 pull-right row">
-                        <div class="col-md-2">
+                    <div class="col-md-3.5 pull-right row">
+                        <div class="col-md-3">
                             <Link to={"/teams/"+team_id + "/tasks/" + task.id + "/open/" } className="badge badge-primary">
                                 Open
                             </Link>
                         </div>
-                        <div class="col-md-1"></div>
-                        <div class="col-md-2">
+                        <div class="col-md-2"></div>
+                        <div class="col-md-5">
                           <button className = "badge badge-danger Hovering buttonAsALink" onClick={() => {
                             this.deleteTeam(
                             task.id);

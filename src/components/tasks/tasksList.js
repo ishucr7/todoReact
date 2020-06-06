@@ -357,18 +357,20 @@ loadSeeder(){
                     </div>
                     <div class="col-md-2">
                         <span className={this.handleStatusColor(task.status)}>{task.status}    </span>
-                    </div>              
-                    <div class="col-md-4 pull-right row">
-                        <div class="col-md-1">
-                        </div>
-                        <div class="col-md-3.5">
+                    </div>  
+                    <div class="col-md-1">
+                    </div>            
+                    <div class="col-md-3.5 pull-right row">                        
+                        <div class="col-md-3">
                             <span>
                             <Link to={"/me/tasks/" + task.id + "/open"} className="badge Hovering2">
                               Open
                             </Link>
                             </span>
                         </div>
-                        <div class="col-md-3">
+                        <div class="col-md-2">
+                        </div>
+                        <div class="col-md-5">
                           <span>
                           <button className = "badge badge-danger Hovering buttonAsALink" onClick={() => {
                             this.deleteTask(
