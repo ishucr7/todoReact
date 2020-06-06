@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import TaskDataService from "../../../services/tasks.service";
 import SeederDataService from "../../../services/seeder.service";
+import TeamDataService from "../../../services/teams.service";
 import { Link } from "react-router-dom";
 
 export default class AddTask extends Component {
@@ -37,6 +38,7 @@ export default class AddTask extends Component {
       team_id: this.props.match.params.id,
       assignee_id: "",
       allUsers: [],
+      team_id: this.props.match.params.taskId,
 
     };
   }
@@ -68,12 +70,21 @@ export default class AddTask extends Component {
       });
     })
 
-    SeederDataService.getAllUsers().then(response => {
-        console.log("Priorities" ,response);
+    const team_id = this.props.match.params.id;
+
+    TeamDataService.getTeam(team_id).then(response => {
+        var arr = [];
+        for(var i=0;i<response.data.user_list.length; i++){
+            arr.push({
+                'id': response.data.user_ids[i].user_id,
+                'email': response.data.user_list[i]
+            });
+        }
         this.setState({
-            allUsers: response.data,
+          allUsers: arr // basically members of this team.
         });
       })
+
   
   }
   onChangeTitle(e) {

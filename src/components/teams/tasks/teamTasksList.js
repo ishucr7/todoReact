@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import TeamDataService from "../../../services/tasks.service";
 import { Link } from "react-router-dom";
 import SeederDataService from "../../../services/seeder.service";
+import FilterService from "../../../services/filter.service";
 import moment from 'moment';
 
 export default class TeamTasksList extends Component {
@@ -27,10 +28,44 @@ export default class TeamTasksList extends Component {
       labels: [],
       priorities: [],
       team_id: this.props.match.params.id,
+      filter_status: 'all',
+      filter_priority: 'all',
+      filter_label: 'all',
     };
   }
 
-loadSeeder(){
+  filterStatus(){
+    var filtered_tasks = FilterService.getTasks({
+      'allTasks': this.state.tasks,
+      'filter_status': this.state.filter_status,
+      'filter_priority': this.state.filter_priority,
+      'filter_label': this.state.filter_label,
+    });
+    this.setState({
+      tasks: filtered_tasks
+    });
+  }
+
+  onChangeStatusFilter(e){
+    this.setState({
+      filter_status: e.target.value,
+    });
+    this.filterStatus();
+  }
+  onChangeLabelFilter(e){
+    this.setState({
+      filter_label: e.target.value,
+    });
+    this.filterStatus();
+  }
+  onChangePriorityFilter(e){
+    this.setState({
+      filter_priority: e.target.value,
+    });
+    this.filterStatus();
+  }
+
+  loadSeeder(){
     console.log("Inside load Seeder");
     SeederDataService.getAllLabels().then(response => {
       console.log("Labels", response);
