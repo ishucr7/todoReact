@@ -1,9 +1,10 @@
 import React, { Component } from "react";
-import TutorialDataService from "../services/tutorial.service";
-import SeederDataService from "../services/seeder.service";
+import TaskDataService from "../../../services/tasks.service";
+import SeederDataService from "../../../services/seeder.service";
+import TeamDataService from "../../../services/teams.service";
 import { Link } from "react-router-dom";
 
-export default class AddTutorial extends Component {
+export default class AddTask extends Component {
   constructor(props) {
 
     super(props);
@@ -13,27 +14,34 @@ export default class AddTutorial extends Component {
 
     this.onChangeDescription = this.onChangeDescription.bind(this);
     this.onChangeDuedate = this.onChangeDuedate.bind(this);
-
+    
+    this.onChangeAssigneeId = this.onChangeAssigneeId.bind(this);
     this.onChangeLabel = this.onChangeLabel.bind(this);
     this.onChangePriority = this.onChangePriority.bind(this);
     this.onChangeStatus = this.onChangeStatus.bind(this);
 
-    this.saveTutorial = this.saveTutorial.bind(this);
-    this.newTutorial = this.newTutorial.bind(this);
+    this.saveTask = this.saveTask.bind(this);
 
     this.state = {
       id: null,
       title: "",
-      duedate: null,
+      due_date: null,
+      // name
       priority: "",
       label: "",
-      status: "", 
+      status: "",
+      // ids 
+      priority_id: "",
+      label_id: "",
+      status_id: "", 
       description: "",
-      submitted: false,
       statuses: [],
       labels: [],
       priorities: [],
-
+      team_id: this.props.match.params.id,
+      assignee_id: "",
+      allUsers: [],
+      task_id: this.props.match.params.taskId,
     };
   }
 
@@ -44,7 +52,7 @@ export default class AddTutorial extends Component {
       console.log("Labels", response);
       this.setState({
         labels:response.data,
-        label: response.data[0]['id'],
+        label_id: response.data[0]['id'],
       });
     })
 
@@ -52,7 +60,7 @@ export default class AddTutorial extends Component {
       console.log("Statuses ", response);
       this.setState({
         statuses:response.data,
-        status: response.data[0]['id'],
+        status_id: response.data[0]['id'],
       });
     })
 
@@ -60,11 +68,26 @@ export default class AddTutorial extends Component {
       console.log("Priorities" ,response);
       this.setState({
         priorities:response.data,
-        priority: response.data[0]['id'],
+        priority_id: response.data[0]['id'],
       });
     })
 
+    const team_id = this.props.match.params.id;
+
+    TeamDataService.getTeam(team_id).then(response => {
+        var arr = [];
+        for(var i=0;i<response.data.user_list.length; i++){
+            arr.push({
+                'id': response.data.user_ids[i].user_id,
+                'email': response.data.user_list[i]
+            });
+        }
+        this.setState({
+          allUsers: arr // basically members of this team.
+        });
+      })
   }
+
   onChangeTitle(e) {
     this.setState({
       title: e.target.value
@@ -73,25 +96,30 @@ export default class AddTutorial extends Component {
 
   onChangeDuedate(e) {
     this.setState({
-      duedate: e.target.value
+      due_date: e.target.value
     });
   }
 
   onChangePriority(e) {
     this.setState({
-      priority: e.target.value
+      priority_id: e.target.value
     });
   }
 
   onChangeLabel(e) {
     this.setState({
-      label: e.target.value
+      label_id: e.target.value
+    });
+  }
+  onChangeAssigneeId(e){
+    this.setState({
+      assignee_id: e.target.value
     });
   }
 
   onChangeStatus(e) {
     this.setState({
-      status: e.target.value
+      status_id: e.target.value
     });
   }
 
@@ -101,48 +129,35 @@ export default class AddTutorial extends Component {
     });
   }
 
-  saveTutorial() {
+  saveTask() {
     var data = {
       title: this.state.title,
-      due_date: this.state.duedate,
-      priority_id: this.state.priority,
-      status_id: this.state.status,
-      label_id: this.state.label,
-      description: this.state.description
+      due_date: this.state.due_date,
+      priority_id: this.state.priority_id,
+      status_id: this.state.status_id,
+      label_id: this.state.label_id,
+      description: this.state.description,
+      team_id: this.state.team_id,
+      assignee_id: (this.state.assignee_id!=="" ? this.state.assignee_id : null)
     };
     
-    TutorialDataService.create(data)
+    console.log("Before saving it " ,data);
+    TaskDataService.create(data)
       .then(response => {
         this.setState({
           id: response.data.id,
           title: response.data.title,
-          duedate: response.data.due_date,
-          priority: response.data.priority_id,
-          label: response.data.label_id,
-          status: response.data.status_id, 
+          due_date: response.data.due_date,
+          priority_id: response.data.priority_id,
+          label_id: response.data.label_id,
+          status_id: response.data.status_id, 
           description: response.data.description,
-          submitted: true
         });
         console.log(response.data);
       })
       .catch(e => {
         console.log(e);
       });
-  }
-
-  newTutorial() {
-    this.setState({
-      id: null,
-      title: "",
-      duedate: null,
-      priority: "",
-      label: "",
-      status: "", 
-      description: "",
-      published: false,
-
-      submitted: false
-    });
   }
 
   componentDidMount(){
@@ -152,23 +167,10 @@ export default class AddTutorial extends Component {
   render() {
     console.log('ENTERED');
     console.log(this.state);
-    const {labels, statuses, priorities } = this.state;
-    console.log("----asdadsasd----");
-    console.log(labels);
-    console.log(statuses);
-    console.log(priorities);
-    console.log("----asdasdasd----");
+    const {labels, team_id, statuses, allUsers, priorities } = this.state;
 
     return (
-      <div className="submit-form">
-        {this.state.submitted ? (
-          <div>
-            <h4>You submitted successfully!</h4>
-            <Link to={"/tutorials/"} className="btn btn-success">
-              View All tasks
-            </Link>
-          </div>
-        ) : (
+      <div className="submit-form backNone db-white">
           <div>
             <div className="form-group">
               <label htmlFor="title">Title</label>
@@ -184,15 +186,33 @@ export default class AddTutorial extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="duedate">Due Date</label>
+              <label htmlFor="due_date">Due Date</label>
               <input
                 type="date"
                 className="form-control"
-                id="duedate"
-                value={this.state.duedate}
+                id="due_date"
+                value={this.state.due_date}
                 onChange={this.onChangeDuedate}
-                name="duedate"
+                name="due_date"
               />
+            </div>
+
+            <div className="form-group">
+              <label htmlFor="assignee">Assigned To:
+              <select
+                className="form-control"
+                id="assignee"
+                required
+                value={this.state.assignee_id}
+                onChange={this.onChangeAssigneeId}
+                name="assignee">
+                <option key="" value=""> None</option>
+
+                {allUsers.map(user =>(
+                  <option key={user.id} value={user['id']}>{user['email']}</option>
+                ))}
+              </select>
+              </label>
             </div>
 
             <div className="form-group">
@@ -201,11 +221,10 @@ export default class AddTutorial extends Component {
                 className="form-control"
                 id="priority"
                 required
-                value={this.state.priority}
+                value={this.state.priority_id}
                 onChange={this.onChangePriority}
                 name="priority">
                 {priorities.map(priority =>(
-                  // <option value="1">1234</option>
                   <option key={priority.id} value={priority['id']}>{priority['name']}</option>
                 ))}
               </select>
@@ -217,7 +236,7 @@ export default class AddTutorial extends Component {
                 className="form-control"
                 id="label"
                 required
-                value={this.state.label}
+                value={this.state.label_id}
                 onChange={this.onChangeLabel}
                 name="label">
                 
@@ -234,7 +253,7 @@ export default class AddTutorial extends Component {
                 className="form-control"
                 id="status"
                 required
-                value={this.state.status}
+                value={this.state.status_id}
                 onChange={this.onChangeStatus}
                 name="status">
                 
@@ -257,11 +276,10 @@ export default class AddTutorial extends Component {
               />
             </div>
 
-            <Link to={"/tutorials/"} onClick={this.saveTutorial} className="btn btn-success">
+            <Link to={"/teams/"+ team_id + "/tasks/"} onClick={this.saveTask} className="btn btn-success">
               Submit
             </Link>
           </div>
-        )}
       </div>
     );
   }

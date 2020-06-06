@@ -1,3 +1,7 @@
+body, html {
+  height: 100%;
+}
+
 .list {
   text-align: left;
   /* max-width: 1000px; */
@@ -5,16 +9,17 @@
 }
 
 .submit-form {
-  max-width: 300px;
+  max-width: 500px;
   margin: auto;
 }
 
 .edit-form {
-  max-width: 300px;
+  max-width: 450px;
   margin: auto;
 }
 
 .task-title {
+  font-size: 16px;
   overflow: hidden;
   margin-right: 10px;
 }
@@ -25,11 +30,11 @@
 .badge
 {
   display: inline-block;
-  min-width: 10px;
+  /* min-width: 15px; */
+  width: 75px;
   padding: 3px 7px;
   font-size: 12px;
-  font-weight: bold;
-  line-height: 1;
+  line-height: 1.5;
   color: #fff;
   text-align: center;
   white-space: nowrap;
@@ -42,6 +47,7 @@
 }
 
 label {
+  font-weight: bold;
   display: block;
   margin-top: 10px;
 }
@@ -72,4 +78,116 @@ label {
   -moz-border-radius: 50%;
   -webkit-border-radius: 50%;
   border-radius: 50%;
+}
+
+body {
+  background-image: url('https://cdn.pixabay.com/photo/2013/10/02/23/03/dawn-190055_960_720.jpg');
+  /* background-size: auto;
+  background-repeat: no-repeat; */
+  height: 100%;
+
+  background-attachment: fixed;
+  /* Center and scale the image nicely */
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+.golu{
+  /* background-attachment: fixed; */
+  position: fixed; /* Set the navbar to fixed position */
+  top: 0; /* Position the navbar at the top of the page */
+  width: 100%;
+  overflow: hidden;
+  z-index: 4;
+  /* margin: */
+}
+.main {
+  margin-top: 100px; 
+}
+
+.db-white{
+  padding: 38px;
+  background-color: rgb(218, 216, 224);
+  border-radius: 15px 15px 15px 15px;
+}
+
+.color-azure{
+  color:azure;
+}
+
+
+.Clay{
+  background-color: azure;
+  color:black;
+}
+
+.Red{
+  background-color: purple;
+}
+.Lime{
+  background-color: #D291BC;
+}
+.Yellow{
+  background-color: #E0BBE4;
+}
+
+.Purple{
+  background-color: #094869;
+}
+.Pink{
+  background-color: #398684;
+}
+.Orange{
+  background-color: #77bd98;
+}
+.lightBlue{
+  background-color: #a6dba7;
+}
+
+.RoyalBlue{
+  background-color:#B96F6F;
+}
+.Gold{
+  background-color: #C88E8E;
+}
+.Silver{
+  background-color: #D7ACAC;
+}
+
+
+.MarginTop{
+  marginTop:5px;
+}
+
+.AntiBold{
+  font-weight: normal;
+}
+
+.BlackHeading{
+  color:black;
+  font-weight: bold;
+}
+
+h4{
+  color:azure;
+}
+.Highlight{
+  font-weight: bolder;
+}
+
+.buttonAsALink{
+  border-radius: 10px 10px 10px 10px;
+  height: 24px;
+  border: none;
+}
+
+
+.Hovering:hover {
+  background: red;
+}
+
+.Hovering2:hover {
+  color: white;
+  background:#d39e00;
 }
