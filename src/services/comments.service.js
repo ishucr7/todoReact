@@ -9,6 +9,15 @@ class CommentDataService {
     console.log("Sending create comment request");
     return http.post(`/api/user/comments/`,data, { headers: authHeader() });  
   }
+
+  deleteComment(id){
+    console.log("Entered delete function in service");
+    return http.delete(`/api/user/comments/${id}`, { headers: authHeader()});
+  }
+
+  editComment(id, data){
+    return http.put(`/api/user/comments/${id}`, data, { headers: authHeader() });
+  }
 }
 
 export default new CommentDataService();

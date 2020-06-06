@@ -22,9 +22,9 @@ class TeamDataService {
 //     return http.put(`/api/user/tasks/${id}`, data, { headers: authHeader() });
 //   }
 
-//   delete(id) {
-//     return http.delete(`/api/user/tasks/${id}`, { headers: authHeader() });
-//   }
+  delete(id) {
+    return http.delete(`/api/user/teams/${id}`, { headers: authHeader() });
+  }
 
 //   deleteAll() {
 //     return http.delete(`/api/user/tasks`, { headers: authHeader() });
