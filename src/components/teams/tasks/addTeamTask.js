@@ -21,17 +21,20 @@ export default class AddTask extends Component {
     this.onChangeStatus = this.onChangeStatus.bind(this);
 
     this.saveTask = this.saveTask.bind(this);
-    this.newTask = this.newTask.bind(this);
 
     this.state = {
       id: null,
       title: "",
-      duedate: null,
+      due_date: null,
+      // name
       priority: "",
       label: "",
-      status: "", 
+      status: "",
+      // ids 
+      priority_id: "",
+      label_id: "",
+      status_id: "", 
       description: "",
-      submitted: false,
       statuses: [],
       labels: [],
       priorities: [],
@@ -39,7 +42,6 @@ export default class AddTask extends Component {
       assignee_id: "",
       allUsers: [],
       task_id: this.props.match.params.taskId,
-
     };
   }
 
@@ -50,7 +52,7 @@ export default class AddTask extends Component {
       console.log("Labels", response);
       this.setState({
         labels:response.data,
-        label: response.data[0]['id'],
+        label_id: response.data[0]['id'],
       });
     })
 
@@ -58,7 +60,7 @@ export default class AddTask extends Component {
       console.log("Statuses ", response);
       this.setState({
         statuses:response.data,
-        status: response.data[0]['id'],
+        status_id: response.data[0]['id'],
       });
     })
 
@@ -66,7 +68,7 @@ export default class AddTask extends Component {
       console.log("Priorities" ,response);
       this.setState({
         priorities:response.data,
-        priority: response.data[0]['id'],
+        priority_id: response.data[0]['id'],
       });
     })
 
@@ -84,9 +86,8 @@ export default class AddTask extends Component {
           allUsers: arr // basically members of this team.
         });
       })
-
-  
   }
+
   onChangeTitle(e) {
     this.setState({
       title: e.target.value
@@ -95,19 +96,19 @@ export default class AddTask extends Component {
 
   onChangeDuedate(e) {
     this.setState({
-      duedate: e.target.value
+      due_date: e.target.value
     });
   }
 
   onChangePriority(e) {
     this.setState({
-      priority: e.target.value
+      priority_id: e.target.value
     });
   }
 
   onChangeLabel(e) {
     this.setState({
-      label: e.target.value
+      label_id: e.target.value
     });
   }
   onChangeAssigneeId(e){
@@ -118,7 +119,7 @@ export default class AddTask extends Component {
 
   onChangeStatus(e) {
     this.setState({
-      status: e.target.value
+      status_id: e.target.value
     });
   }
 
@@ -131,10 +132,10 @@ export default class AddTask extends Component {
   saveTask() {
     var data = {
       title: this.state.title,
-      due_date: this.state.duedate,
-      priority_id: this.state.priority,
-      status_id: this.state.status,
-      label_id: this.state.label,
+      due_date: this.state.due_date,
+      priority_id: this.state.priority_id,
+      status_id: this.state.status_id,
+      label_id: this.state.label_id,
       description: this.state.description,
       team_id: this.state.team_id,
       assignee_id: (this.state.assignee_id!=="" ? this.state.assignee_id : null)
@@ -146,33 +147,17 @@ export default class AddTask extends Component {
         this.setState({
           id: response.data.id,
           title: response.data.title,
-          duedate: response.data.due_date,
-          priority: response.data.priority_id,
-          label: response.data.label_id,
-          status: response.data.status_id, 
+          due_date: response.data.due_date,
+          priority_id: response.data.priority_id,
+          label_id: response.data.label_id,
+          status_id: response.data.status_id, 
           description: response.data.description,
-          submitted: true
         });
         console.log(response.data);
       })
       .catch(e => {
         console.log(e);
       });
-  }
-
-  newTask() {
-    this.setState({
-      id: null,
-      title: "",
-      duedate: null,
-      priority: "",
-      label: "",
-      status: "", 
-      description: "",
-      published: false,
-
-      submitted: false
-    });
   }
 
   componentDidMount(){
@@ -186,14 +171,6 @@ export default class AddTask extends Component {
 
     return (
       <div className="submit-form backNone db-white">
-        {this.state.submitted ? (
-          <div>
-            <h4>You submitted successfully!</h4>
-            <Link to={"/teams/" +team_id + "/tasks/list"} className="btn btn-success">
-              View All tasks
-            </Link>
-          </div>
-        ) : (
           <div>
             <div className="form-group">
               <label htmlFor="title">Title</label>
@@ -209,14 +186,14 @@ export default class AddTask extends Component {
             </div>
 
             <div className="form-group">
-              <label htmlFor="duedate">Due Date</label>
+              <label htmlFor="due_date">Due Date</label>
               <input
                 type="date"
                 className="form-control"
-                id="duedate"
-                value={this.state.duedate}
+                id="due_date"
+                value={this.state.due_date}
                 onChange={this.onChangeDuedate}
-                name="duedate"
+                name="due_date"
               />
             </div>
 
@@ -232,7 +209,6 @@ export default class AddTask extends Component {
                 <option key="" value=""> None</option>
 
                 {allUsers.map(user =>(
-                  // <option value="1">1234</option>
                   <option key={user.id} value={user['id']}>{user['email']}</option>
                 ))}
               </select>
@@ -245,11 +221,10 @@ export default class AddTask extends Component {
                 className="form-control"
                 id="priority"
                 required
-                value={this.state.priority}
+                value={this.state.priority_id}
                 onChange={this.onChangePriority}
                 name="priority">
                 {priorities.map(priority =>(
-                  // <option value="1">1234</option>
                   <option key={priority.id} value={priority['id']}>{priority['name']}</option>
                 ))}
               </select>
@@ -261,7 +236,7 @@ export default class AddTask extends Component {
                 className="form-control"
                 id="label"
                 required
-                value={this.state.label}
+                value={this.state.label_id}
                 onChange={this.onChangeLabel}
                 name="label">
                 
@@ -278,7 +253,7 @@ export default class AddTask extends Component {
                 className="form-control"
                 id="status"
                 required
-                value={this.state.status}
+                value={this.state.status_id}
                 onChange={this.onChangeStatus}
                 name="status">
                 
@@ -305,7 +280,6 @@ export default class AddTask extends Component {
               Submit
             </Link>
           </div>
-        )}
       </div>
     );
   }
