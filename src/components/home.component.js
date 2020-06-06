@@ -31,7 +31,7 @@ export default class Home extends Component {
 
   render() {
     return (
-      <div className="container">
+      <div className="container db-white">
         <header className="jumbotron">
           <h3>{this.state.content}</h3>
         </header>

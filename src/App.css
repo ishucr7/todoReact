@@ -19,6 +19,7 @@ body, html {
 }
 
 .task-title {
+  font-size: 16px;
   overflow: hidden;
   margin-right: 10px;
 }
@@ -30,11 +31,10 @@ body, html {
 {
   display: inline-block;
   /* min-width: 15px; */
-  width: 71px;
+  width: 75px;
   padding: 3px 7px;
   font-size: 12px;
-  font-weight: bold;
-  line-height: 1;
+  line-height: 1.5;
   color: #fff;
   text-align: center;
   white-space: nowrap;
@@ -47,6 +47,7 @@ body, html {
 }
 
 label {
+  font-weight: bold;
   display: block;
   margin-top: 10px;
 }
@@ -108,11 +109,72 @@ body {
 .db-white{
   padding: 38px;
   background-color: rgb(218, 216, 224);
+  border-radius: 15px 15px 15px 15px;
 }
 
 .color-azure{
   color:azure;
 }
+
+
+.Clay{
+  background-color: azure;
+  color:black;
+}
+
+.Red{
+  background-color: purple;
+}
+.Lime{
+  background-color: #D291BC;
+}
+.Yellow{
+  background-color: #E0BBE4;
+}
+
+.Purple{
+  background-color: #094869;
+}
+.Pink{
+  background-color: #398684;
+}
+.Orange{
+  background-color: #77bd98;
+}
+.lightBlue{
+  background-color: #a6dba7;
+}
+
+.RoyalBlue{
+  background-color:#B96F6F;
+}
+.Gold{
+  background-color: #C88E8E;
+}
+.Silver{
+  background-color: #D7ACAC;
+}
+
+
 h4{
   color:azure;
+}
+.Highlight{
+  font-weight: bolder;
+}
+
+.buttonAsALink{
+  border-radius: 10px 10px 10px 10px;
+  height: 24px;
+  border: none;
+}
+
+
+.Hovering:hover {
+  background: red;
+}
+
+.Hovering2:hover {
+  color: white;
+  background:#d39e00;
 }

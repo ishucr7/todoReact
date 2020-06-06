@@ -15,6 +15,10 @@ export default class TeamTasksList extends Component {
     this.removeAllTasks = this.removeAllTasks.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
     this.deleteTeam = this.deleteTeam.bind(this);
+    this.handlePriorityColor = this.handlePriorityColor.bind(this);
+    this.handleStatusColor = this.handleStatusColor.bind(this);
+    this.handleLabelColor = this.handleLabelColor.bind(this);
+    
 
     this.state = {
       tasks: [],
@@ -121,12 +125,57 @@ loadSeeder(){
       });
   }
 
+  handlePriorityColor(priority_name){
+    switch(priority_name){
+      case "High":{
+        return "badge Red"
+      }
+      case "Medium":{
+        return "badge Lime"
+      }
+      case "Low":{
+        return "badge Yellow"
+      }
+    }
+  }
+  handleStatusColor(status_name){
+    switch(status_name){
+      case "Completed":{
+        return "badge Silver"
+      }
+      case "In Progress":{
+        return "badge Gold"
+      }
+      case "New":{
+        return "badge RoyalBlue"
+      }
+    }
+  }
+
+  handleLabelColor(label_name){
+    switch(label_name){
+      case "Work":{
+        return "badge Purple"
+      }
+      case "Personal":{
+        return "badge Pink"
+      }
+      case "Shopping":{
+        return "badge Orange"
+      }
+      case "Others":{
+        return "badge lightBlue"
+      }
+    }
+  }
+
+
   render() {
     const { searchTitle, tasks, team_id, currentTeam,labels, statuses, priorities } = this.state;
 
     return (
       <div className="list row">
-        <div className="col-md-10">
+        <div className="col-md-11">
           <div className="input-group mb-3">
             <input
               type="text"
@@ -147,8 +196,31 @@ loadSeeder(){
           </div>
         </div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
-        <div className="col-md-10">
-          <h4>Team ToDo List</h4>
+        <div className="col-md-11">
+        <div className="col-md-13 ">
+          <div className="input-group mb-3">
+            <div className="mr-auto">
+            <h4>Team ToDo List</h4>
+            </div>
+            <div className="ml-auto">
+             <button
+            className="m-1 btn btn-sm btn-danger"
+            onClick={this.removeAllTasks}
+          >
+            Remove All
+          </button>
+            </div>
+            <div className="input-group-append ">
+             <Link to={"/teams/" + team_id + "/tasks/create"}
+            className="float-right m-1 btn btn-sm btn-success"
+            
+          >
+            Add
+          </Link>
+            </div>
+          </div>
+        </div>
+          
 
           <ul className="list-group">
             {tasks &&
@@ -156,26 +228,26 @@ loadSeeder(){
                 <li className="list-group-item ">
                 <div class="task-title row">
                     <div class="col-md-2">
-                        <span class="task-title-sp">{tutorial.title}   </span>
+                        <span class="task-title-sp Highlight">{tutorial.title}   </span>
                     </div>
                     <div class="col-md-2">
                       {(tutorial.due_date) ?
-                        <span class="badge bg-theme">{moment(tutorial.due_date).format("YYYY-MM-DD")}    </span>
+                        <span class="badge Clay">{moment(tutorial.due_date).format("DD-MM-YYYY")}    </span>
                         : <span></span>
                       }
                     </div>
                     <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.priority}    </span>
+                        <span class={this.handlePriorityColor(tutorial.priority)}>{tutorial.priority}    </span>
                     </div>
                     <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.label}    </span>
+                        <span class={this.handleLabelColor(tutorial.label)}>{tutorial.label}    </span>
                     </div>
-                    <div class="col-md-1">
-                        <span class="badge bg-theme">{tutorial.status}    </span>
+                    <div class="col-md-2">
+                        <span class={this.handleStatusColor(tutorial.status)}>{tutorial.status}    </span>
                     </div>              
-                    <div class="col-md-1">
+                    <div class="col-md-4">
                     </div>              
-                    <div class="col-md-3 pull-right row">
+                    <div class="col-md-1 pull-right row">
                         <div class="col-md-2">
                             <Link to={"/teams/"+team_id + "/tasks/" + tutorial.id + "/view/" } className="badge badge-primary">
                                 Open
@@ -183,7 +255,7 @@ loadSeeder(){
                         </div>
                         <div class="col-md-1"></div>
                         <div class="col-md-2">
-                          <button className = "badge badge-primary" onClick={() => {
+                          <button className = "badge badge-danger Hovering buttonAsALink" onClick={() => {
                             this.deleteTeam(
                             tutorial.id);
                           }                          
@@ -198,18 +270,7 @@ loadSeeder(){
               ))}
           </ul>
 
-          <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllTasks}
-          >
-            Remove All
-          </button>
-          <Link to={"/teams/" + team_id + "/tasks/create"}
-            className="float-right m-1 btn btn-sm btn-success"
-            
-          >
-            Add
-          </Link>
+         
         </div>
       </div>
     );

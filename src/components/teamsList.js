@@ -89,15 +89,36 @@ export default class Teams extends Component {
         </div>
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div className="col-md-10">
-          <h4>Teams List</h4>
-
+          <div className="col-md-13 ">
+          <div className="input-group mb-3">
+            <div className="mr-auto">
+            <h4>Teams List</h4>
+            </div>
+            <div className="ml-auto">
+             <button
+            className="m-1 btn btn-sm btn-danger"
+            onClick={this.removeAllteams}
+          >
+            Remove All
+          </button>
+            </div>
+            <div className="input-group-append ">
+             <Link to={"/teams/create/"}
+            className="float-right m-1 btn btn-sm btn-success"
+            
+          >
+            Add
+          </Link>
+            </div>
+          </div>
+        </div>
           <ul className="list-group">
             {teams &&
               teams.map((team, index) => (
                 <li className="list-group-item ">
                 <div class="task-title row">
                     <div class="col-md-3">
-                        <span class="task-title-sp">{team.name}   </span>
+                        <span class="task-title-sp Highlight">{team.name}   </span>
                     </div>
                     <div class="col-md-3">
                         <span class="badge bg-theme">{team.moderator_name}    </span>
@@ -120,7 +141,7 @@ export default class Teams extends Component {
                           Implement delete in the backend.
                          */}
                         <div class="col-md-2">
-                            <Link to={"/teams/" + team.id} className="badge badge-secondary">
+                            <Link to={"/teams/" + team.id} className="badge badge-danger Hovering">
                             Delete
                             </Link>
                         </div>
@@ -129,18 +150,6 @@ export default class Teams extends Component {
                 </li>
               ))}
           </ul>
-
-          <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllteams}
-          >
-            Remove All
-          </button>
-          <Link to={"/teams/create/"}
-            className="float-right m-1 btn btn-sm btn-success"
-          >
-            Add
-          </Link>
         </div>
       </div>
     );

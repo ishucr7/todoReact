@@ -47,7 +47,7 @@ export default class viewTutorial extends Component {
     return (
       <div>
         {currentTutorial ? (
-          <div className="view-form">
+          <div className="view-form db-white">
             <h4>Task</h4>
             <form>
               <div className="form-group">
