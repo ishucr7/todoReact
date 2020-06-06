@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import TeamDataService from "../../../services/tasks.service";
+import TaskDataService from "../../../services/tasks.service";
 import { Link } from "react-router-dom";
 import SeederDataService from "../../../services/seeder.service";
 import FilterService from "../../../services/filter.service";
@@ -15,7 +15,7 @@ export default class TeamTasksList extends Component {
     this.loadSeeder = this.loadSeeder.bind(this);
     this.removeAllTasks = this.removeAllTasks.bind(this);
     this.searchTitle = this.searchTitle.bind(this);
-    this.deleteTeam = this.deleteTeam.bind(this);
+    this.deleteTask = this.deleteTask.bind(this);
     this.handlePriorityColor = this.handlePriorityColor.bind(this);
     this.handleStatusColor = this.handleStatusColor.bind(this);
     this.handleLabelColor = this.handleLabelColor.bind(this);
@@ -109,7 +109,7 @@ export default class TeamTasksList extends Component {
   retrieveTasks(id) {
     console.log("inside retrwice");
     setTimeout(() => {
-    TeamDataService.getTasksByTeamId(id)
+    TaskDataService.getTasksByTeamId(id)
       .then(response => {
         this.setState({
           tasks: response.data
@@ -123,9 +123,9 @@ export default class TeamTasksList extends Component {
   }
 
 
-  deleteTeam(id) {
+  deleteTask(id) {
     const team_id = this.state.team_id; 
-    TeamDataService.delete(id)
+    TaskDataService.delete(id)
       .then(response => {
         console.log(response.data);
         this.props.history.push('/teams/' + team_id + '/tasks/list');
@@ -137,7 +137,7 @@ export default class TeamTasksList extends Component {
   }
 
   removeAllTasks() {
-    TeamDataService.deleteAll()
+    TaskDataService.deleteAll()
       .then(response => {
         console.log(response.data);
         this.retrieveTasks(this.props.match.params.id);
@@ -149,7 +149,7 @@ export default class TeamTasksList extends Component {
   }
 
   searchTitle() {
-    TeamDataService.findByTitle(this.state.searchTitle)
+    TaskDataService.findByTitle(this.state.searchTitle)
       .then(response => {
         this.setState({
           tasks: response.data
@@ -291,11 +291,10 @@ export default class TeamTasksList extends Component {
                         </div>
                         <div class="col-md-1"></div>
                         <div class="col-md-2">
-                          <button className = "badge badge-danger Hovering buttonAsALink" onClick={() => {
-                            this.deleteTeam(
-                            task.id);
-                          }                          
-                          }
+                          <button className = "badge badge-danger Hovering buttonAsALink" onClick={() =>
+                          {
+                            this.deleteTask(task.id);
+                          }}
                           >
                               Delete
                           </button>
