@@ -287,10 +287,24 @@ loadSeeder(){
             <div className="mr-auto">
             <h4>ToDo List</h4>
             </div>
-            <div className="ml-auto">
+            <div className="input-group-append ml-auto">
+              <Link to={"/me/tasks/create/"} className="float-right m-1 btn btn-sm btn-success">
+                Add
+              </Link>
+            </div>
+          </div>
+        </div>
+        
+        <div className="col-md-13 ">
+          <div className="input-group mb-3">
+            <div className="">
              <h5 style={{color:"white"}}> Sort By</h5>
              </div>
-            <div className="ml-auto">
+             <div>
+            <span class="col-md-1">
+            </span>
+            </div> 
+            <div className="mr-auto">
              <select
                 className="form-control"
                 id="sort"
@@ -309,7 +323,11 @@ loadSeeder(){
             <div className="ml-auto">
              <h5 style={{color:"white"}}> Filter By</h5>
              </div>
-            <div className="ml-auto">
+             <div>
+            <span class="col-md-1">
+            </span>
+            </div> 
+            <div className="">
              <select
                 className="form-control"
                 id="priority"
@@ -323,8 +341,12 @@ loadSeeder(){
                   <option key={priority.name} value={priority.name}>{priority.name}</option>
                 ))}
               </select>
-            </div>            
-            <div className="ml-auto">
+            </div>    
+            <div>
+            <span class="col-md-1">
+            </span>
+            </div>        
+            <div className="">
               <select
                 className="form-control"
                 id="label"
@@ -339,7 +361,11 @@ loadSeeder(){
                 ))}
               </select>
             </div>
-            <div className="ml-auto">
+            <div>
+            <span class="col-md-1">
+            </span>
+            </div> 
+            <div className="">
              <select
                 className="form-control"
                 id="status"
@@ -354,16 +380,45 @@ loadSeeder(){
                 ))}
               </select>
             </div>
-            <div className="input-group-append ml-auto">
-              <Link to={"/me/tasks/create/"} className="float-right m-1 btn btn-sm btn-success">
-                Add
-              </Link>
-            </div>
           </div>
-        </div>
-          
+        </div>  
 
           <ul className="list-group">
+            <li className="list-group-item" style={{backgroundColor:"azurblue"}}>
+                <div className="task-title row">
+                    <div className="col-md-2 ListHeading">
+                        <span className="">Title</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span className="ListHeading">Due Date</span>
+                    </div>
+                    <div class="col-md-1">
+                        <span className="ListHeading"> Priority </span>
+                    </div>
+                    <div class="col-md-1">
+                        <span className="ListHeading"> Label </span>
+                    </div>
+                    <div class="col-md-2">
+                        <span className="ListHeading">Status </span>
+                    </div>  
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-3.5 pull-right row">                        
+                        <div class="col-md-3">
+                            <span className="ListHeading">
+                              Open
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-5" >
+                          <span className="ListHeading" style={{align:"right"}}>
+                            Delete
+                          </span>
+                        </div>
+                    </div>
+                </div>
+            </li>
             {tasks &&
               tasks.map((task, index) => (
                 <li className="list-group-item ">

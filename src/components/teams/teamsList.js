@@ -118,6 +118,35 @@ export default class Teams extends Component {
           </div>
         </div>
           <ul className="list-group">
+             <li className="list-group-item" style={{backgroundColor:"azure"}}>
+                <div className="task-title row">
+                    <div className="col-md-3 ListHeading">
+                        <span className="">Team Name</span>
+                    </div>
+                    <div class="col-md-3">
+                        <span className="ListHeading">Moderator</span>
+                    </div>
+                    <div class="col-md-6 pull-right row">  
+                        <div class="col-md-4">
+                        </div>                     
+                        <div class="col-md-3">
+                            <span className="ListHeading">
+                              Tasks
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                            <span className="ListHeading">
+                              Open
+                            </span>
+                        </div>
+                        <div class="col-md-2" >
+                          <span className="ListHeading" style={{align:"right"}}>
+                            Delete
+                          </span>
+                        </div>
+                    </div>
+                </div>
+            </li>
             {teams &&
               teams.map((team, index) => (
                 <li className="list-group-item ">
