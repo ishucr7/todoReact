@@ -437,7 +437,7 @@ export default class TeamTask extends Component {
                 <label htmlFor="Comment"><b>Add Comment</b>
                     <div class="">
                       < textarea
-                        className="form-control"
+                        className="form-control MarginBottom"
                         id="newComment"
                         value={this.state.newComment}
                         onChange={this.onChangeComment}

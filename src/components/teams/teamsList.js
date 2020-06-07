@@ -80,26 +80,7 @@ export default class Teams extends Component {
 
     return (
       <div className="list row">
-        <div className="col-md-10">
-          <div className="input-group mb-3">
-            <input
-              type="text"
-              className="form-control"
-              placeholder="Search by title"
-              value={searchTitle}
-              onChange={this.onChangeSearchTitle}
-            />
-            <div className="input-group-append">
-              <button
-                className="btn btn-outline-secondary color-azure"
-                type="button"
-                onClick={this.searchTitle}
-              >
-                Search
-              </button>
-            </div>
-          </div>
-        </div>
+        
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css"></link>
         <div className="col-md-10">
           <div className="col-md-13 ">
@@ -107,15 +88,7 @@ export default class Teams extends Component {
             <div className="mr-auto">
             <h4>Teams List</h4>
             </div>
-            <div className="ml-auto">
-             <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllteams}
-          >
-            Remove All
-          </button>
-            </div>
-            <div className="input-group-append ">
+            <div className="input-group-append ml-auto">
              <Link to={"/teams/create/"}
             className="float-right m-1 btn btn-sm btn-success"
             
@@ -126,6 +99,35 @@ export default class Teams extends Component {
           </div>
         </div>
           <ul className="list-group">
+             <li className="list-group-item" style={{backgroundColor:"azure"}}>
+                <div className="task-title row">
+                    <div className="col-md-3 ListHeading">
+                        <span className="">Team Name</span>
+                    </div>
+                    <div class="col-md-3">
+                        <span className="ListHeading">Moderator</span>
+                    </div>
+                    <div class="col-md-6 pull-right row">  
+                        <div class="col-md-4">
+                        </div>                     
+                        <div class="col-md-3">
+                            <span className="ListHeading">
+                              Tasks
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                            <span className="ListHeading">
+                              Open
+                            </span>
+                        </div>
+                        <div class="col-md-2" >
+                          <span className="ListHeading" style={{align:"right"}}>
+                            Delete
+                          </span>
+                        </div>
+                    </div>
+                </div>
+            </li>
             {teams &&
               teams.map((team, index) => (
                 <li className="list-group-item ">
@@ -137,7 +139,7 @@ export default class Teams extends Component {
                         <span class="badge bg-theme">{team.moderator_name}    </span>
                     </div>
                     <div class="col-md-6 pull-right row">
-                        <div class="col-md-1">
+                        <div class="col-md-4">
                         </div>
                         <div class="col-md-3">
                             <Link to={"/teams/"+team.id+"/tasks/"} className="badge badge-primary">

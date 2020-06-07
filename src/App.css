@@ -155,9 +155,12 @@ body {
   background-color: #D7ACAC;
 }
 
+.MarginBottom{
+  marginBottom:10px;
+}
 
 .MarginTop{
-  marginTop:5px;
+  marginTop:10px;
 }
 
 .AntiBold{
@@ -167,6 +170,13 @@ body {
 .BlackHeading{
   color:black;
   font-weight: bold;
+}
+.ListHeading{
+  font-weight: bold;
+  font-size: 16px;
+  overflow: hidden;
+  margin-right: 10px;
+  text-align: left;
 }
 
 h4{
@@ -190,4 +200,11 @@ h4{
 .Hovering2:hover {
   color: white;
   background:#d39e00;
+}
+
+.center {
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  width: 50%;
 }

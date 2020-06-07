@@ -21,6 +21,9 @@ export default class AddTask extends Component {
     this.saveTask = this.saveTask.bind(this);
     this.newTask = this.newTask.bind(this);
 
+    this.contactSubmit = this.contactSubmit.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
+
     this.state = {
       id: null,
       title: "",
@@ -33,6 +36,7 @@ export default class AddTask extends Component {
       statuses: [],
       labels: [],
       priorities: [],
+      errors: {}
 
     };
   }
@@ -65,6 +69,60 @@ export default class AddTask extends Component {
     })
 
   }
+
+  handleValidation(){
+    let title = this.state.title;
+    let errors = {};
+    let formIsValid = true;
+    if(!title){
+      formIsValid = false;
+      errors["title"] = "Feild is required.";
+    }
+    if(typeof title !== "undefined"){
+      if(!(title.length>0)){
+        formIsValid = false;
+        errors["title"] = "Required*";
+      }        
+    }
+    this.setState({errors: errors});
+    return formIsValid;
+  }
+
+  contactSubmit(e){
+    e.preventDefault();
+    if(this.handleValidation()){
+    var data = {
+      title: this.state.title,
+      due_date: this.state.duedate,
+      priority_id: this.state.priority,
+      status_id: this.state.status,
+      label_id: this.state.label,
+      description: this.state.description
+    };
+    
+    TaskDataService.create(data)
+    .then(response => {
+      this.setState({
+        id: response.data.id,
+        title: response.data.title,
+        duedate: response.data.due_date,
+        priority: response.data.priority_id,
+        label: response.data.label_id,
+        status: response.data.status_id, 
+        description: response.data.description,
+        submitted: true
+      });
+      console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }else{
+      /*alert("Please complete the mandatory feilds.")*/
+    }
+  }
+
+
   onChangeTitle(e) {
     this.setState({
       title: e.target.value
@@ -181,6 +239,7 @@ export default class AddTask extends Component {
                 onChange={this.onChangeTitle}
                 name="title"
               />
+              <span style={{color: "red"}}>{this.state.errors["title"]}</span>
             </div>
 
             <div className="form-group">
@@ -257,7 +316,7 @@ export default class AddTask extends Component {
               />
             </div>
 
-            <Link to={"/me/tasks/list"} onClick={this.saveTask} className="btn btn-success">
+            <Link to={"/me/tasks/list"} onClick={this.contactSubmit} className="btn btn-success">
               Submit
             </Link>
           </div>
