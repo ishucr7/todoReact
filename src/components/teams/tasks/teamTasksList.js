@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import TaskDataService from "../../../services/tasks.service";
+import TeamDataService from "../../../services/teams.service";
 import { Link } from "react-router-dom";
 import SeederDataService from "../../../services/seeder.service";
 import FilterService from "../../../services/filter.service";
@@ -32,6 +33,7 @@ export default class TeamTasksList extends Component {
       labels: [],
       priorities: [],
       team_id: this.props.match.params.id,
+      team_name: "",
       filter: {
         priority: "all",
         status: "all",
@@ -53,7 +55,6 @@ export default class TeamTasksList extends Component {
             tasks: filtered_tasks,
             alltasks: response.data
           });
-          console.log(response.data);
         })
         .catch(e => {
           console.log(e);
@@ -133,6 +134,15 @@ export default class TeamTasksList extends Component {
 
   componentDidMount() {
     this.loadSeeder();
+      TeamDataService.getTeam(this.props.match.params.id)
+      .then(response =>{
+        this.setState({
+          team_name: response.data.Name,
+        })
+      })
+      .catch(e=>{
+        console.log(e);
+      });
     this.retrieveTasks(this.props.match.params.id);
   }
 
@@ -246,7 +256,7 @@ export default class TeamTasksList extends Component {
 
 
   render() {
-    const { searchTitle,alltasks, tasks, team_id, currentTeam,labels, statuses, priorities , filter} = this.state;
+    const { searchTitle,alltasks, team_name, tasks, team_id, currentTeam,labels, statuses, priorities , filter} = this.state;
 
     return (
       <div className="list row">
@@ -275,7 +285,7 @@ export default class TeamTasksList extends Component {
         <div className="col-md-13 ">
           <div className="input-group mb-3">
             <div className="mr-auto">
-            <h4>Team ToDo List</h4>
+              <h4>{team_name} : Tasks</h4>
             </div>
             <div className="ml-auto">
              <h5 style={{color:"white"}}> Filter By</h5>
