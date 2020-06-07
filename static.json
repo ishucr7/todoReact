@@ -1,6 +1,6 @@
 {
-    "root": "src/",
-    "routes": {
-      "/**": "App.js"
-    }
+  "root": "build/",
+  "routes": {
+    "/**": "index.html"
   }
+}
