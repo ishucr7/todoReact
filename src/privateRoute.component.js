@@ -19,6 +19,7 @@ import TeamsList from "./components/teams/teamsList";
 import TeamTask from "./components/teams/tasks/teamTask";
 import TeamTasksList from "./components/teams/tasks/teamTasksList";
 import AddTeamTask from "./components/teams/tasks/addTeamTask";
+import NotFoundPage from "./components/notFound.component";
 
 class PrivateComponent extends Component {
   constructor(props) {
@@ -121,6 +122,7 @@ class PrivateComponent extends Component {
               <Route exact path={["/", "/me/tasks/list"]} component={TasksList} />
               <Route exact path="/me/tasks/create" component={AddTask} />              
               <Route path="/me/tasks/:id/open" component={Task} />
+              <Route path="*" component={NotFoundPage} />
 
             </Switch>
           </div>
