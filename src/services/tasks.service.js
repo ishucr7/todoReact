@@ -7,32 +7,32 @@ class TaskDataService {
   }
 
   getAll() {
-    return http.get("/api/user/tasks", { headers: authHeader() });  
+    return http.get("/api/tasks", { headers: authHeader() });  
   }
   
   get(id) {
-    return http.get(`/api/user/tasks/${id}`, { headers: authHeader() });
+    return http.get(`/api/tasks/${id}`, { headers: authHeader() });
   }
 
   create(data) {
-    return http.post("/api/user/tasks", data, { headers: authHeader() });
+    return http.post("/api/tasks", data, { headers: authHeader() });
   }
 
   update(id, data) {
-    return http.put(`/api/user/tasks/${id}`, data, { headers: authHeader() });
+    return http.put(`/api/tasks/${id}`, data, { headers: authHeader() });
   }
 
   delete(id) {
-    return http.delete(`/api/user/tasks/${id}`, { headers: authHeader() });
+    return http.delete(`/api/tasks/${id}`, { headers: authHeader() });
   }
 
   deleteAll() {
-    return http.delete(`/api/user/tasks`, { headers: authHeader() });
+    return http.delete(`/api/tasks`, { headers: authHeader() });
   }
 
   findByTitle(title) {
     console.log("inside find byd title in service ", title);
-    return http.get(`/api/user/tasks/search/?title=${title}`, { headers: authHeader() });
+    return http.get(`/api/tasks/search/?title=${title}`, { headers: authHeader() });
   }
 }
 
