@@ -45,7 +45,8 @@ export default class AddTask extends Component {
       assignee_id: "",
       allUsers: [],
       task_id: this.props.match.params.taskId,
-      errors: {}
+      errors: {},
+      submitted: false,
     };
   }
 
@@ -116,25 +117,28 @@ export default class AddTask extends Component {
     e.preventDefault();
     if(this.handleValidation()){
       var data = {
-        title: this.state.title,
-        due_date: this.state.duedate,
-        priority_id: this.state.priority,
-        status_id: this.state.status,
-        label_id: this.state.label,
-        description: this.state.description
-      };
+      title: this.state.title,
+      due_date: this.state.due_date,
+      priority_id: this.state.priority_id,
+      status_id: this.state.status_id,
+      label_id: this.state.label_id,
+      description: this.state.description,
+      team_id: this.state.team_id,
+      assignee_id: (this.state.assignee_id!=="" ? this.state.assignee_id : null)
+    };
     
-      TaskDataService.create(data)
+    console.log("Before saving it " ,data);
+    TaskDataService.create(data)
       .then(response => {
         this.setState({
           id: response.data.id,
           title: response.data.title,
-          duedate: response.data.due_date,
-          priority: response.data.priority_id,
-          label: response.data.label_id,
-          status: response.data.status_id, 
+          due_date: response.data.due_date,
+          priority_id: response.data.priority_id,
+          label_id: response.data.label_id,
+          status_id: response.data.status_id, 
           description: response.data.description,
-          submitted: true
+          submitted: true,
         });
         console.log(response.data);
       })
@@ -229,6 +233,14 @@ export default class AddTask extends Component {
 
     return (
       <div className="submit-form backNone db-white">
+        {this.state.submitted ? (
+          <div>
+            <h4>You submitted successfully!</h4>
+            <Link to={"/teams/"+ team_id + "/tasks/"} className="btn btn-success">
+              View All Team tasks
+            </Link>
+          </div>
+        ) : (
           <div>
             <div className="form-group">
               <label htmlFor="title">Title</label>
@@ -339,6 +351,7 @@ export default class AddTask extends Component {
               Submit
             </Link>
           </div>
+          )}
       </div>
     );
   }

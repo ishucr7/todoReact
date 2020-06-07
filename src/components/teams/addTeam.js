@@ -28,7 +28,8 @@ export default class AddTeam extends Component {
       allUsers: [], // List of objects { id, name, email}
       user_list: [this.user.email], // List of emails of team members
       newMember: "",
-      errors: {}
+      errors: {},
+      submitted:false,
     };
   }
 
@@ -54,6 +55,7 @@ export default class AddTeam extends Component {
     let errors = {};
     let formIsValid = true;
 
+    console.log("nameeeee",Name);
     if(!Name){
       formIsValid = false;
       errors["Name"] = "Feild is required.";
@@ -83,6 +85,7 @@ export default class AddTeam extends Component {
       .then(response => {
         this.setState({
           Name: response.data.Name,
+          submitted: true,
         });
         console.log(response.data);
       })
@@ -140,6 +143,7 @@ export default class AddTeam extends Component {
     this.setState({
       id: null,
       Name: "",
+      submitted: false,
     });
   }
 
@@ -159,8 +163,8 @@ export default class AddTeam extends Component {
         {this.state.submitted ? (
           <div>
             <h4>You submitted successfully!</h4>
-            <Link to={"/teams/"} className="btn btn-success">
-              View All tasks
+            <Link to={"/teams/list"} className="btn btn-success">
+              View All Teams
             </Link>
           </div>
         ) : (
