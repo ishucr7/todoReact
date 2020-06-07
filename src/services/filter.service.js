@@ -9,13 +9,19 @@ class FilterService {
             if(task2==null || task2.due_date===null){
                 return -1;
             }
-            var cur = moment();
-            var d1 = moment(task1.due_date) - cur;
-            var d2 = moment(task2.due_date) - cur;
+            var cur = new Date(moment().format("YYYY-MM-DD"));
+            var d1 = moment(task1.due_date).toDate()-cur ;
+            var d2 = moment(task2.due_date).toDate()-cur ;
             if(d1>=0 && d2>=0){
                 return (d1<d2 ? -1: 1);
             }
-            return -1;
+            if(d1>=0 && d2<=0){
+               return -1; 
+            }
+            if(d1<=0 && d2>=0){
+                return 1;
+            }
+            return (d1<=d2) ? -1: 1;
         });
         return tasks;
     }
