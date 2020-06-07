@@ -283,10 +283,27 @@ export default class TeamTasksList extends Component {
             <div className="mr-auto">
             <h4>Team ToDo List</h4>
             </div>
-            <div className="ml-auto">
+            <div className="input-group-append ml-auto ">
+             <Link to={"/teams/" + team_id + "/tasks/create"}
+            className="float-right m-1 btn btn-sm btn-success"
+            
+          >
+            Add
+          </Link>
+            </div>
+          </div>
+        </div>
+
+         <div className="col-md-13 ">
+          <div className="input-group mb-3">
+            <div className="">
              <h5 style={{color:"white"}}> Sort By</h5>
              </div>
-            <div className="ml-auto">
+             <div>
+            <span class="col-md-1">
+            </span>
+            </div> 
+            <div className="mr-auto">
              <select
                 className="form-control"
                 id="sort"
@@ -305,7 +322,11 @@ export default class TeamTasksList extends Component {
             <div className="ml-auto">
              <h5 style={{color:"white"}}> Filter By</h5>
              </div>
-            <div className="ml-auto">
+             <div>
+            <span class="col-md-1">
+            </span>
+            </div> 
+            <div className="">
              <select
                 className="form-control"
                 id="priority"
@@ -313,14 +334,18 @@ export default class TeamTasksList extends Component {
                 value={filter.priority}
                 onChange={this.onChangePriorityFilter}
                 name="priority">
-                <option selected disabled>Priority</option>
+                <option selected disabled key="all" value="all">Priority</option>
                 <option key="all" value="all">All</option>
                 {priorities.map(priority =>(
                   <option key={priority.name} value={priority.name}>{priority.name}</option>
                 ))}
               </select>
-            </div>            
-            <div className="ml-auto">
+            </div>
+            <div>
+            <span class="col-md-1">
+            </span>
+            </div>             
+            <div className="">
               <select
                 className="form-control"
                 id="label"
@@ -328,14 +353,18 @@ export default class TeamTasksList extends Component {
                 value={filter.label}
                 onChange={this.onChangeLabelFilter}
                 name="label">
-                <option selected disabled>Label</option>
+                <option selected disabled key="all" value="all">Label</option>
                 <option key="all" value="all">All</option>
                 {labels.map(label =>(
                   <option key={label.name} value={label.name}>{label.name}</option>
                 ))}
               </select>
             </div>
-            <div className="ml-auto">
+            <div>
+            <span class="col-md-1">
+            </span>
+            </div> 
+            <div className="">
              <select
                 className="form-control"
                 id="status"
@@ -343,20 +372,12 @@ export default class TeamTasksList extends Component {
                 value={filter.status}
                 onChange={this.onChangeStatusFilter}
                 name="status">
-                <option selected disabled>Status</option>
+                <option selected disabled key="all" value="all">Status</option>
                 <option key="all" value="all">All</option>
                 {statuses.map(status =>(
                   <option key={status.name} value={status.name}>{status.name}</option>
                 ))}
               </select>
-            </div>
-            <div className="input-group-append ml-auto ">
-             <Link to={"/teams/" + team_id + "/tasks/create"}
-            className="float-right m-1 btn btn-sm btn-success"
-            
-          >
-            Add
-          </Link>
             </div>
           </div>
         </div>
