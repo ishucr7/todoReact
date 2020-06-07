@@ -9,6 +9,7 @@ export default class TasksList extends Component {
   constructor(props) {
     super(props);
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
+    this.onChangeSort = this.onChangeSort.bind(this);
     this.onChangePriorityFilter = this.onChangePriorityFilter.bind(this);
     this.onChangeStatusFilter = this.onChangeStatusFilter.bind(this);
     this.onChangeLabelFilter = this.onChangeLabelFilter.bind(this);
@@ -22,6 +23,7 @@ export default class TasksList extends Component {
     this.handlePriorityColor = this.handlePriorityColor.bind(this);
     this.handleStatusColor = this.handleStatusColor.bind(this);
     this.handleLabelColor = this.handleLabelColor.bind(this);
+
     
 
     this.state = {
@@ -36,6 +38,7 @@ export default class TasksList extends Component {
         status: "all",
         label:"all"
       },
+      sort: "",
     };
   }
 
@@ -141,23 +144,11 @@ loadSeeder(){
       .catch(e => {
         console.log(e);
       });
-}
+  }
 
+  onChangeSort(){
 
-  // filter_status(){
-  //   console.log("tasks--",this.state.filter);
-  //   var filtered_tasks = FilterService.getTasks({
-  //     'allTasks': this.state.alltasks,
-  //     'filter_status': this.state.filter.status,
-  //     'filter_priority': this.state.filter.priority,
-  //     'filter_label': this.state.filter.label,
-  //   });
-  //   this.setState({
-  //     tasks: filtered_tasks
-  //   });
-  //   console.log("filtered tasks--",this.state.tasks);
-    
-  // }
+  }
 
   retrieveTasks() {
     console.log("inside retrwice");
@@ -261,7 +252,7 @@ loadSeeder(){
     }
   }
   render() {
-    const { searchTitle,alltasks, tasks, currentTask,labels, statuses, priorities, filter } = this.state;
+    const { searchTitle,alltasks, tasks, currentTask,labels, statuses, priorities, filter ,sort} = this.state;
 
     return (
       <div className="list row">
@@ -293,6 +284,25 @@ loadSeeder(){
             <h4>ToDo List</h4>
             </div>
             <div className="ml-auto">
+             <h5 style={{color:"white"}}> Sort By</h5>
+             </div>
+            <div className="ml-auto">
+             <select
+                className="form-control"
+                id="sort"
+                required
+                value={sort}
+                onChange={this.onChangeSort}
+                name="sort">
+                <option selected disabled key="" value="">Priority/Date</option>
+                <option selected disabled key="" value="">Priority</option>
+                <option key="Highest" value="Highest">Highest</option>
+                <option key="Lowest" value="Lowest">Lowest</option>
+                <option selected disabled key="" value="">Due Date</option>
+                <option key="Earliest" value="Earliest">Earliest</option>
+              </select>
+            </div>
+            <div className="ml-auto">
              <h5 style={{color:"white"}}> Filter By</h5>
              </div>
             <div className="ml-auto">
@@ -303,7 +313,7 @@ loadSeeder(){
                 value={filter.priority}
                 onChange={this.onChangePriorityFilter}
                 name="priority">
-                <option selected disabled>Priority</option>
+                <option selected disabled key="all" value="all">Priority</option>
                 <option key="all" value="all">All</option>
                 {priorities.map(priority =>(
                   <option key={priority.name} value={priority.name}>{priority.name}</option>
@@ -318,7 +328,7 @@ loadSeeder(){
                 value={filter.label}
                 onChange={this.onChangeLabelFilter}
                 name="label">
-                <option selected disabled>Label</option>
+                <option selected disabled key="all" value="all">Label</option>
                 <option key="all" value="all">All</option>
                 {labels.map(label =>(
                   <option key={label.name} value={label.name}>{label.name}</option>
@@ -333,22 +343,14 @@ loadSeeder(){
                 value={filter.status}
                 onChange={this.onChangeStatusFilter}
                 name="status">
-                <option selected disabled>Status</option>
+                <option selected disabled key="all" value="all">Status</option>
                 <option key="all" value="all">All</option>
                 {statuses.map(status =>(
                   <option key={status.name} value={status.name}>{status.name}</option>
                 ))}
               </select>
             </div>
-            <div className="ml-auto">
-              <button
-              className="m-1 btn btn-sm btn-danger"
-              onClick={this.removeAllTasks}
-              >
-               Remove All
-              </button>
-            </div>
-            <div className="input-group-append ">
+            <div className="input-group-append ml-auto">
               <Link to={"/me/tasks/create/"} className="float-right m-1 btn btn-sm btn-success">
                 Add
               </Link>
