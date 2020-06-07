@@ -39,6 +39,10 @@ export default class TeamTasksList extends Component {
         status: "all",
         label:"all"
       },
+      sort_by: {
+        'due_date': "all",
+        'priority': "all",
+      }
     };
   }
 
@@ -50,6 +54,8 @@ export default class TeamTasksList extends Component {
             'filter_status': this.state.filter.status,
             'filter_priority': this.state.filter.priority,
             'filter_label': this.state.filter.label,
+            'sort_by_due_date': this.state.sort_by.due_date,
+            'sort_by_priority': this.state.sort_by.priority,
           });
           this.setState({
             tasks: filtered_tasks,
@@ -59,6 +65,35 @@ export default class TeamTasksList extends Component {
         .catch(e => {
           console.log(e);
         });
+  }
+
+  onChangeDueDateSortBy(e) {
+    const sort_by_due_date = e.target.value;
+    this.setState(function(prevState) {
+      return {
+        sort_by: {
+          ...prevState.sort_by,
+          due_date: sort_by_due_date,
+        }
+      };
+    },()=>{
+      this.filter_status();
+    });
+  }
+
+
+  onChangePrioritySortBy(e) {
+    const sort_by_priority = e.target.value;
+    this.setState(function(prevState) {
+      return {
+        sort_by: {
+          ...prevState.sort_by,
+          priority: sort_by_priority,
+        }
+      };
+    },()=>{
+      this.filter_status();
+    });
   }
 
    onChangePriorityFilter(e) {

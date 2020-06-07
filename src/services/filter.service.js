@@ -1,6 +1,12 @@
 
 class FilterService {
-    
+    sortByDate(tasks){
+        tasks.sort(function(task1, task2){
+            return task1.date < task2.date; 
+        });
+        return tasks;
+    }
+
     getTasks(info){
         var allTasks = info.allTasks;
         var filtered_tasks = [];
@@ -21,6 +27,14 @@ class FilterService {
                 filtered_tasks.push(task);
         });
 
+        var sort_by = ["low to high", "high to low", "earliest"];
+
+        var priority_map = {
+            "High": 3,
+            "Medium": 2,
+            "Low": 1,
+        };
+    
         return filtered_tasks;
     }
 }
