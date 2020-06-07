@@ -21,6 +21,9 @@ export default class AddTask extends Component {
     this.onChangeStatus = this.onChangeStatus.bind(this);
 
     this.saveTask = this.saveTask.bind(this);
+    this.contactSubmit = this.contactSubmit.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
+
 
     this.state = {
       id: null,
@@ -42,6 +45,8 @@ export default class AddTask extends Component {
       assignee_id: "",
       allUsers: [],
       task_id: this.props.match.params.taskId,
+      errors: {},
+      submitted: false,
     };
   }
 
@@ -86,6 +91,63 @@ export default class AddTask extends Component {
           allUsers: arr // basically members of this team.
         });
       })
+  }
+  handleValidation(){
+    let title = this.state.title;
+    let errors = {};
+    let formIsValid = true;
+
+    if(!title){
+      formIsValid = false;
+      errors["title"] = "Feild is required.";
+    }
+
+    if(typeof title !== "undefined"){
+      if(!(title.length>0)){
+        formIsValid = false;
+        errors["title"] = "Required*";
+      }        
+    }
+
+    this.setState({errors: errors});
+    return formIsValid;
+  }
+
+  contactSubmit(e){
+    e.preventDefault();
+    if(this.handleValidation()){
+      var data = {
+      title: this.state.title,
+      due_date: this.state.due_date,
+      priority_id: this.state.priority_id,
+      status_id: this.state.status_id,
+      label_id: this.state.label_id,
+      description: this.state.description,
+      team_id: this.state.team_id,
+      assignee_id: (this.state.assignee_id!=="" ? this.state.assignee_id : null)
+    };
+    
+    console.log("Before saving it " ,data);
+    TaskDataService.create(data)
+      .then(response => {
+        this.setState({
+          id: response.data.id,
+          title: response.data.title,
+          due_date: response.data.due_date,
+          priority_id: response.data.priority_id,
+          label_id: response.data.label_id,
+          status_id: response.data.status_id, 
+          description: response.data.description,
+          submitted: true,
+        });
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }else{
+      /*alert("Please complete the mandatory feilds.")*/
+    }
   }
 
   onChangeTitle(e) {
@@ -171,6 +233,14 @@ export default class AddTask extends Component {
 
     return (
       <div className="submit-form backNone db-white">
+        {this.state.submitted ? (
+          <div>
+            <h4>You submitted successfully!</h4>
+            <Link to={"/teams/"+ team_id + "/tasks/"} className="btn btn-success">
+              View All Team tasks
+            </Link>
+          </div>
+        ) : (
           <div>
             <div className="form-group">
               <label htmlFor="title">Title</label>
@@ -183,6 +253,7 @@ export default class AddTask extends Component {
                 onChange={this.onChangeTitle}
                 name="title"
               />
+              <span style={{color: "red"}}>{this.state.errors["title"]}</span>
             </div>
 
             <div className="form-group">
@@ -276,10 +347,11 @@ export default class AddTask extends Component {
               />
             </div>
 
-            <Link to={"/teams/"+ team_id + "/tasks/"} onClick={this.saveTask} className="btn btn-success">
+            <Link to={"/teams/"+ team_id + "/tasks/"} onClick={this.contactSubmit} className="btn btn-success">
               Submit
             </Link>
           </div>
+          )}
       </div>
     );
   }
