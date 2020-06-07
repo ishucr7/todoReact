@@ -360,6 +360,41 @@ loadSeeder(){
           
 
           <ul className="list-group">
+            <li className="list-group-item" style={{backgroundColor:"azure"}}>
+                <div className="task-title row">
+                    <div className="col-md-2 ListHeading">
+                        <span className="">Title</span>
+                    </div>
+                    <div class="col-md-2">
+                        <span className="ListHeading">Due Date</span>
+                    </div>
+                    <div class="col-md-1">
+                        <span className="ListHeading"> Priority </span>
+                    </div>
+                    <div class="col-md-1">
+                        <span className="ListHeading"> Label </span>
+                    </div>
+                    <div class="col-md-2">
+                        <span className="ListHeading">Status </span>
+                    </div>  
+                    <div class="col-md-1">
+                    </div>
+                    <div class="col-md-3.5 pull-right row">                        
+                        <div class="col-md-3">
+                            <span className="ListHeading">
+                              Open
+                            </span>
+                        </div>
+                        <div class="col-md-3">
+                        </div>
+                        <div class="col-md-5" >
+                          <span className="ListHeading" style={{align:"right"}}>
+                            Delete
+                          </span>
+                        </div>
+                    </div>
+                </div>
+            </li>
             {tasks &&
               tasks.map((task, index) => (
                 <li className="list-group-item ">

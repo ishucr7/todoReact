@@ -171,6 +171,13 @@ body {
   color:black;
   font-weight: bold;
 }
+.ListHeading{
+  font-weight: bold;
+  font-size: 16px;
+  overflow: hidden;
+  margin-right: 10px;
+  text-align: left;
+}
 
 h4{
   color:azure;
