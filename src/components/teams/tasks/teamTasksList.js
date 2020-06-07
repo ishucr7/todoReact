@@ -11,6 +11,7 @@ export default class TeamTasksList extends Component {
     super(props);
 
     this.onChangeSearchTitle = this.onChangeSearchTitle.bind(this);
+    this.onChangeSort = this.onChangeSort.bind(this);
     this.onChangePriorityFilter = this.onChangePriorityFilter.bind(this);
     this.onChangeStatusFilter = this.onChangeStatusFilter.bind(this);
     this.onChangeLabelFilter = this.onChangeLabelFilter.bind(this);
@@ -39,10 +40,7 @@ export default class TeamTasksList extends Component {
         status: "all",
         label:"all"
       },
-      sort_by: {
-        'due_date': "all",
-        'priority': "all",
-      }
+      sort_by: "all"
     };
   }
 
@@ -54,8 +52,7 @@ export default class TeamTasksList extends Component {
             'filter_status': this.state.filter.status,
             'filter_priority': this.state.filter.priority,
             'filter_label': this.state.filter.label,
-            'sort_by_due_date': this.state.sort_by.due_date,
-            'sort_by_priority': this.state.sort_by.priority,
+            'sort_by': this.state.sort_by,
           });
           this.setState({
             tasks: filtered_tasks,
@@ -65,35 +62,6 @@ export default class TeamTasksList extends Component {
         .catch(e => {
           console.log(e);
         });
-  }
-
-  onChangeDueDateSortBy(e) {
-    const sort_by_due_date = e.target.value;
-    this.setState(function(prevState) {
-      return {
-        sort_by: {
-          ...prevState.sort_by,
-          due_date: sort_by_due_date,
-        }
-      };
-    },()=>{
-      this.filter_status();
-    });
-  }
-
-
-  onChangePrioritySortBy(e) {
-    const sort_by_priority = e.target.value;
-    this.setState(function(prevState) {
-      return {
-        sort_by: {
-          ...prevState.sort_by,
-          priority: sort_by_priority,
-        }
-      };
-    },()=>{
-      this.filter_status();
-    });
   }
 
    onChangePriorityFilter(e) {
@@ -137,6 +105,13 @@ export default class TeamTasksList extends Component {
     },()=>{console.log("filter by label",label,this.state.filter.label);
       this.filter_status();
     });
+  }
+
+  onChangeSort(e){
+    this.setState({
+      sort_by: e.target.value
+    });
+    this.filter_status();
   }
 
   loadSeeder(){
@@ -291,7 +266,7 @@ export default class TeamTasksList extends Component {
 
 
   render() {
-    const { searchTitle,alltasks, team_name, tasks, team_id, currentTeam,labels, statuses, priorities , filter} = this.state;
+    const { searchTitle,alltasks, sort_by, team_name, tasks, team_id, currentTeam,labels, statuses, priorities , filter} = this.state;
 
     return (
       <div className="list row">
@@ -322,6 +297,25 @@ export default class TeamTasksList extends Component {
             <div className="mr-auto">
               <h4>{team_name} : Tasks</h4>
             </div>
+            <div className="ml-auto">
+             <h5 style={{color:"white"}}> Sort By</h5>
+             </div>
+            <div className="ml-auto">
+             <select
+                className="form-control"
+                id="sort"
+                required
+                value={this.sort_by}
+                onChange={this.onChangeSort}
+                name="sort">
+                <option selected disabled key="" value="">Priority/Date</option>
+                <option selected disabled key="" value="">Priority</option>
+                <option key="Highest" value="Highest">Highest</option>
+                <option key="Lowest" value="Lowest">Lowest</option>
+                <option selected disabled key="all" value="all">Due Date</option>
+                <option key="Earliest" value="Earliest">Earliest</option>
+              </select>
+            </div>            
             <div className="ml-auto">
              <h5 style={{color:"white"}}> Filter By</h5>
              </div>
@@ -370,15 +364,7 @@ export default class TeamTasksList extends Component {
                 ))}
               </select>
             </div>
-            <div className="ml-auto">
-             <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllTasks}
-          >
-            Remove All
-          </button>
-            </div>
-            <div className="input-group-append ">
+            <div className="input-group-append ml-auto ">
              <Link to={"/teams/" + team_id + "/tasks/create"}
             className="float-right m-1 btn btn-sm btn-success"
             
