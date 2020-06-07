@@ -107,15 +107,7 @@ export default class Teams extends Component {
             <div className="mr-auto">
             <h4>Teams List</h4>
             </div>
-            <div className="ml-auto">
-             <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllteams}
-          >
-            Remove All
-          </button>
-            </div>
-            <div className="input-group-append ">
+            <div className="input-group-append ml-auto">
              <Link to={"/teams/create/"}
             className="float-right m-1 btn btn-sm btn-success"
             
@@ -137,7 +129,7 @@ export default class Teams extends Component {
                         <span class="badge bg-theme">{team.moderator_name}    </span>
                     </div>
                     <div class="col-md-6 pull-right row">
-                        <div class="col-md-1">
+                        <div class="col-md-4">
                         </div>
                         <div class="col-md-3">
                             <Link to={"/teams/"+team.id+"/tasks/"} className="badge badge-primary">

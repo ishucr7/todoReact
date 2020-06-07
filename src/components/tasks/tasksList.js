@@ -340,15 +340,7 @@ loadSeeder(){
                 ))}
               </select>
             </div>
-            <div className="ml-auto">
-              <button
-              className="m-1 btn btn-sm btn-danger"
-              onClick={this.removeAllTasks}
-              >
-               Remove All
-              </button>
-            </div>
-            <div className="input-group-append ">
+            <div className="input-group-append ml-auto">
               <Link to={"/me/tasks/create/"} className="float-right m-1 btn btn-sm btn-success">
                 Add
               </Link>

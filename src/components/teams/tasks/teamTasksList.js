@@ -325,15 +325,7 @@ export default class TeamTasksList extends Component {
                 ))}
               </select>
             </div>
-            <div className="ml-auto">
-             <button
-            className="m-1 btn btn-sm btn-danger"
-            onClick={this.removeAllTasks}
-          >
-            Remove All
-          </button>
-            </div>
-            <div className="input-group-append ">
+            <div className="input-group-append ml-auto ">
              <Link to={"/teams/" + team_id + "/tasks/create"}
             className="float-right m-1 btn btn-sm btn-success"
             

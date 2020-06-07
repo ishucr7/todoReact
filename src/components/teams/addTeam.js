@@ -17,6 +17,9 @@ export default class AddTeam extends Component {
     this.saveTeam = this.saveTeam.bind(this);
     this.newTeam = this.newTeam.bind(this);
 
+    this.contactSubmit = this.contactSubmit.bind(this);
+    this.handleValidation = this.handleValidation.bind(this);
+
     this.user = AuthService.getCurrentUser();
 
     this.state = {
@@ -25,6 +28,7 @@ export default class AddTeam extends Component {
       allUsers: [], // List of objects { id, name, email}
       user_list: [this.user.email], // List of emails of team members
       newMember: "",
+      errors: {}
     };
   }
 
@@ -44,6 +48,51 @@ export default class AddTeam extends Component {
       });
     })
  }
+ 
+ handleValidation(){
+    let Name = this.state.Name;
+    let errors = {};
+    let formIsValid = true;
+
+    if(!Name){
+      formIsValid = false;
+      errors["Name"] = "Feild is required.";
+    }
+
+    if(typeof Name !== "undefined"){
+      if(!(Name.length>0)){
+        formIsValid = false;
+        errors["Name"] = "Required*";
+      }        
+    }
+
+    this.setState({errors: errors});
+    return formIsValid;
+  }
+
+  contactSubmit(e){
+    e.preventDefault();
+    if(this.handleValidation()){
+      var data = {
+      name: this.state.Name,
+    //   moderator_name: this.state.moderator_name,
+      user_list: this.state.user_list,
+    };
+    
+    TeamDataService.create(data)
+      .then(response => {
+        this.setState({
+          Name: response.data.Name,
+        });
+        console.log(response.data);
+      })
+      .catch(e => {
+        console.log(e);
+      });
+    }else{
+      /*alert("Please complete the mandatory feilds.")*/
+    }
+  }
 
  onChangeName(e) {
     this.setState({
@@ -127,6 +176,7 @@ export default class AddTeam extends Component {
                 onChange={this.onChangeName}
                 name="Name"
               />
+              <span style={{color: "red"}}>{this.state.errors["Name"]}</span>
             </div>
 
             <div className="form-group">
@@ -178,7 +228,7 @@ export default class AddTeam extends Component {
                 </div>
                 : "" 
             }
-            <Link to={"/teams/list"} onClick={this.saveTeam} className="btn btn-success">
+            <Link to={"/teams/list"} onClick={this.contactSubmit} className="btn btn-success">
               Submit
             </Link>
           </div>
